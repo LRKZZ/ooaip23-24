@@ -1,4 +1,4 @@
-public class Vector
+public class Vector2D
 {
     float X {get;};
     float Y {get;};
