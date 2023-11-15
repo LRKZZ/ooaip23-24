@@ -9,6 +9,6 @@ public class RotateCommand : ICommand
     // необходимо добавить обработку исключений, если нет значения угла или угловой скорости
     public void Execute()
     {
-        obj.Angle = Angle.CalculateAngle(obj.angle, obj.angleSpeed);
+        obj.angle = Angle.CalculateAngle(obj.angle, obj.angleSpeed);
     }
 }

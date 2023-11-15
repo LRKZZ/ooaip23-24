@@ -6265,33 +6265,34 @@
     ]
   },
   "packageFolders": {
-    "/Users/a123/.nuget/packages/": {}
+    "C:\\Users\\sashu\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/a123/Desktop/C Projects/GitHub/LR1/ooaip23-24/SpaceBattle/spacebattle/spacebattle.lib.tests/spacebattle.lib.tests.csproj",
+      "projectUniqueName": "C:\\Users\\sashu\\OneDrive\\Рабочий стол\\ooaip23-24\\spacebattle\\spacebattle.lib.tests\\spacebattle.lib.tests.csproj",
       "projectName": "spacebattle.lib.tests",
-      "projectPath": "/Users/a123/Desktop/C Projects/GitHub/LR1/ooaip23-24/SpaceBattle/spacebattle/spacebattle.lib.tests/spacebattle.lib.tests.csproj",
-      "packagesPath": "/Users/a123/.nuget/packages/",
-      "outputPath": "/Users/a123/Desktop/C Projects/GitHub/LR1/ooaip23-24/SpaceBattle/spacebattle/spacebattle.lib.tests/obj/",
+      "projectPath": "C:\\Users\\sashu\\OneDrive\\Рабочий стол\\ooaip23-24\\spacebattle\\spacebattle.lib.tests\\spacebattle.lib.tests.csproj",
+      "packagesPath": "C:\\Users\\sashu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sashu\\OneDrive\\Рабочий стол\\ooaip23-24\\spacebattle\\spacebattle.lib.tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/a123/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\sashu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "/Users/a123/Desktop/C Projects/GitHub/LR1/ooaip23-24/SpaceBattle/spacebattle/spacebattle.lib/spacebattle.lib.csproj": {
-              "projectPath": "/Users/a123/Desktop/C Projects/GitHub/LR1/ooaip23-24/SpaceBattle/spacebattle/spacebattle.lib/spacebattle.lib.csproj"
+            "C:\\Users\\sashu\\OneDrive\\Рабочий стол\\ooaip23-24\\spacebattle\\spacebattle.lib\\spacebattle.lib.csproj": {
+              "projectPath": "C:\\Users\\sashu\\OneDrive\\Рабочий стол\\ooaip23-24\\spacebattle\\spacebattle.lib\\spacebattle.lib.csproj"
             }
           }
         }
@@ -6347,7 +6348,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.100/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

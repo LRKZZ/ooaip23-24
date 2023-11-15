@@ -1,6 +1,6 @@
 public class Angle 
 {
-  float X { get; };
+  float X { get; }
 
   public Angle(float x) 
   {

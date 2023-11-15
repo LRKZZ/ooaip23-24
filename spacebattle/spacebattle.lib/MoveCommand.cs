@@ -9,6 +9,6 @@ public class MoveCommand : ICommand
 
     public void Execute()
     {
-        obj.Position = Vector.Add(obj.Position, obj.Velocity)
+        obj.Position = Vector2D.Add(obj.Position, obj.Velocity);
     }
 }
