@@ -10,3 +10,15 @@ C:\Users\QForm\Source\Repos\OmSTU-AMCS-SummerPractice2023\spacebattle\obj\Debug\
 C:\Users\QForm\Source\Repos\OmSTU-AMCS-SummerPractice2023\spacebattle\obj\Debug\net6.0\refint\spacebattle.dll
 C:\Users\QForm\Source\Repos\OmSTU-AMCS-SummerPractice2023\spacebattle\obj\Debug\net6.0\spacebattle.pdb
 C:\Users\QForm\Source\Repos\OmSTU-AMCS-SummerPractice2023\spacebattle\obj\Debug\net6.0\ref\spacebattle.dll
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\bin\Debug\net6.0\spacebattle.deps.json
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\bin\Debug\net6.0\spacebattle.dll
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\bin\Debug\net6.0\spacebattle.pdb
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.csproj.AssemblyReference.cache
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.GeneratedMSBuildEditorConfig.editorconfig
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.AssemblyInfoInputs.cache
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.AssemblyInfo.cs
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.csproj.CoreCompileInputs.cache
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.dll
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\refint\spacebattle.dll
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.pdb
+D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\ref\spacebattle.dll

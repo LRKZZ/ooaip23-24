@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\QForm\\Source\\Repos\\OmSTU-AMCS-SummerPractice2023\\spacebattle\\spacebattle.csproj": {}
+    "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattle\\spacebattle.csproj": {}
   },
   "projects": {
-    "C:\\Users\\QForm\\Source\\Repos\\OmSTU-AMCS-SummerPractice2023\\spacebattle\\spacebattle.csproj": {
+    "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattle\\spacebattle.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\QForm\\Source\\Repos\\OmSTU-AMCS-SummerPractice2023\\spacebattle\\spacebattle.csproj",
+        "projectUniqueName": "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattle\\spacebattle.csproj",
         "projectName": "spacebattle",
-        "projectPath": "C:\\Users\\QForm\\Source\\Repos\\OmSTU-AMCS-SummerPractice2023\\spacebattle\\spacebattle.csproj",
+        "projectPath": "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattle\\spacebattle.csproj",
         "packagesPath": "C:\\Users\\QForm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\QForm\\Source\\Repos\\OmSTU-AMCS-SummerPractice2023\\spacebattle\\obj\\",
+        "outputPath": "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattle\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

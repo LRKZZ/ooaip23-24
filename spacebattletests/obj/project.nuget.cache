@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7hjzaBkH0EP/2sQeDvl6JjGRhTLvIMu/kpdxqwmER0oVz966u7gyBMRGb41BHjJwteK04RIne0QD9TGKmqjzxg==",
+  "dgSpecHash": "LBvmEva5/Y1Q0/zK0YL002rY7/GsJBtIiauMvruEhO/WXZ9jaPybLn7/ZaO5Hocj1TlFkYzYoD6x6wSOIidg+Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\QForm\\Source\\Repos\\OmSTU-AMCS-SummerPractice2023\\spacebattletests\\spacebattletests.csproj",
+  "projectFilePath": "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattletests\\spacebattletests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\QForm\\.nuget\\packages\\bodi\\1.5.0\\bodi.1.5.0.nupkg.sha512",
     "C:\\Users\\QForm\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
