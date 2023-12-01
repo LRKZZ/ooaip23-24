@@ -21,5 +21,19 @@ namespace spacebattle
         {
             return new Vector(vec1.X + vec2.X, vec1.Y + vec2.Y);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Vector other = (Vector)obj;
+            return X == other.X && Y == other.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+        }
     }
 }
