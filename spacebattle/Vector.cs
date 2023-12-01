@@ -17,18 +17,22 @@ namespace spacebattle
             Y = y;
         }
 
-        public static Vector Add(Vector vec1, Vector vec2)
+        public static Vector operator +(Vector vector1, Vector vector2)
         {
-            return new Vector(vec1.X + vec2.X, vec1.Y + vec2.Y);
+            float newX = vector1.X + vector2.X;
+            float newY = vector1.Y + vector2.Y;
+            return new Vector(newX, newY);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
-                return false;
+            //if (obj == null || GetType() != obj.GetType())
+            //{
+                //return false;
+            //}
 
             Vector other = (Vector)obj;
-            return X == other.X && Y == other.Y;
+            return GetHashCode() == other.GetHashCode();
         }
 
         public override int GetHashCode()

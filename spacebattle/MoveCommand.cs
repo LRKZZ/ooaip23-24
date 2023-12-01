@@ -18,7 +18,7 @@ namespace spacebattle
 
         public void Execute()
         {
-            obj.Position = Vector.Add(obj.Position, obj.Velocity);
+            obj.Position += obj.Velocity;
         }
     }
 }
