@@ -28,7 +28,7 @@ namespace spacebattle
         {
             if (obj == null || GetType() != obj.GetType())
             {
-                return false;
+                throw new Exception();
             }
 
             Vector other = (Vector)obj;

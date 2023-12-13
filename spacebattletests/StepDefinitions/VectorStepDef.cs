@@ -33,7 +33,7 @@ namespace spacebattletests.VectorStepDef
         }
 
         [When(@"происходит сравнение векторов")]
-        public void WhenMovingAction()
+        public void WhenVectorAction()
         {
             try
             {
@@ -52,7 +52,7 @@ namespace spacebattletests.VectorStepDef
         }
 
         [Then(@"возникает ошибка")]
-        public void ThenSpaceshipMovingToCoordinates()
+        public void ThrowEx()
         {
             Assert.IsType<Exception>(_ex);
         }

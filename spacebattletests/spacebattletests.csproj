@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\Spaceship - Копировать.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
 	 <PackageReference Include="coverlet.msbuild" Version="6.0.0">
 		 <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		 <PrivateAssets>all</PrivateAssets>
@@ -27,6 +31,19 @@
 
   <ItemGroup>
     <ProjectReference Include="..\spacebattle\spacebattle.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Features\Vector.feature.cs">
+      <DependentUpon>Vector.feature</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="Features\Vector.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 
 </Project>

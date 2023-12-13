@@ -7217,11 +7217,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattletests\\spacebattletests.csproj",
+      "projectUniqueName": "C:\\Users\\QForm\\source\\repos\\ooaip23-24\\spacebattletests\\spacebattletests.csproj",
       "projectName": "spacebattletests",
-      "projectPath": "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattletests\\spacebattletests.csproj",
+      "projectPath": "C:\\Users\\QForm\\source\\repos\\ooaip23-24\\spacebattletests\\spacebattletests.csproj",
       "packagesPath": "C:\\Users\\QForm\\.nuget\\packages\\",
-      "outputPath": "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattletests\\obj\\",
+      "outputPath": "C:\\Users\\QForm\\source\\repos\\ooaip23-24\\spacebattletests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -7242,8 +7242,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattle\\spacebattle.csproj": {
-              "projectPath": "D:\\NotSystemFiles_Garbage\\ooaip23-24\\spacebattle\\spacebattle.csproj"
+            "C:\\Users\\QForm\\source\\repos\\ooaip23-24\\spacebattle\\spacebattle.csproj": {
+              "projectPath": "C:\\Users\\QForm\\source\\repos\\ooaip23-24\\spacebattle\\spacebattle.csproj"
             }
           }
         }
