@@ -9,7 +9,7 @@ namespace spacebattle
     internal interface IMoveCommandStartable
     {
         UObject Target { get; }
-        Vector Velocity { get; }
-        Queue<ICommand> Commands { get; }
+        string cmd { get; }
+        IDict<string, object> Args { get; set; }
     }
 }

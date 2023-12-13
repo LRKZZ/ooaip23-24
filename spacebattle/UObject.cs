@@ -8,15 +8,11 @@ namespace spacebattle
 {
     internal class UObject
     {
-        int id { get; set; }
-        string action { get; set; }
-        Dictionary<string, int> param { get; set; }
+        public IDict<string, object> args { get; set; }
 
-        public UObject(int id, string action, Dictionary<string, int> param) 
+        public UObject(IDict<string, object> args) 
         {
-            this.id = id;
-            this.action = action;
-            this.param = param;
+            this.args = args;
         }
     }
 }

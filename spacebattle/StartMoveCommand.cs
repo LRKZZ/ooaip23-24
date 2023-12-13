@@ -18,11 +18,18 @@ namespace spacebattle
 
         public void Execute()
         {
-            //1.Устанвить скорость в таргет
-            // order.target.set_property("Velocity", order.initialVelocity)
-            //2.Создать операцию движения
-            //3.записать операцию в таргет
-            //4.Закинуть команду в очередь
+            var command = new LongObjectCommand(order.Target, order.cmd);
+            order.Args.dictionary.ToList().ForEach(e => 
+                order.Target.args.Add(e.Key, e.Value)
+            );
+
+            order.Target.args.Add(
+                order.cmd,
+                Hwdtech.IoC.Resolve<ICommand>(
+                        order.cmd,
+                        order.Target
+                    )
+                );
         }
     }
 }
