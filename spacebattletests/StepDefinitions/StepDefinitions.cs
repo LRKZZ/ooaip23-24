@@ -9,7 +9,6 @@ namespace spacebattletests.StepDefinitions
     [Binding]
     public class StepDefinitions
     {
-        private RotateCommand rotateCommand;
         Exception excep = new Exception();
 
         Mock<IRotatable> rotateMock = new Mock<IRotatable>();
@@ -50,7 +49,7 @@ namespace spacebattletests.StepDefinitions
         {
             try
             {
-                rotateCommand = new RotateCommand(rotateMock.Object);
+                RotateCommand rotateCommand = new RotateCommand(rotateMock.Object);
                 rotateCommand.Execute();
             }
             catch (Exception ex)
