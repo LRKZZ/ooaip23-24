@@ -8,7 +8,6 @@ namespace spacebattletests.StepDefinitions
     [Binding]
     public class StepDefinitions
     {
-        private MoveCommand moveCommand;
         Exception excep = new Exception();
 
         Mock<IMovable> moveMock = new Mock<IMovable>();
@@ -49,7 +48,7 @@ namespace spacebattletests.StepDefinitions
         {
             try
             {
-                moveCommand = new MoveCommand(moveMock.Object);
+                MoveCommand moveCommand = new MoveCommand(moveMock.Object);
                 moveCommand.Execute();
             }
             catch (Exception ex)

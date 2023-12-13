@@ -24,12 +24,12 @@ namespace spacebattle
             return new Vector(newX, newY);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            //if (obj == null || GetType() != obj.GetType())
-            //{
-                //return false;
-            //}
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
 
             Vector other = (Vector)obj;
             return GetHashCode() == other.GetHashCode();
