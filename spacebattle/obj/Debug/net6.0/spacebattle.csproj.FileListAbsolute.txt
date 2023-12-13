@@ -22,3 +22,15 @@ D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.dl
 D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\refint\spacebattle.dll
 D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.pdb
 D:\NotSystemFiles_Garbage\ooaip23-24\spacebattle\obj\Debug\net6.0\ref\spacebattle.dll
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\bin\Debug\net6.0\spacebattle.deps.json
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\bin\Debug\net6.0\spacebattle.dll
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\bin\Debug\net6.0\spacebattle.pdb
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.csproj.AssemblyReference.cache
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.AssemblyInfoInputs.cache
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.AssemblyInfo.cs
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.csproj.CoreCompileInputs.cache
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.dll
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\refint\spacebattle.dll
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\spacebattle.pdb
+C:\Users\QForm\source\repos\ooaip23-24\spacebattle\obj\Debug\net6.0\ref\spacebattle.dll

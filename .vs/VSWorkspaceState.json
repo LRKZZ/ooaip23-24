@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\spacebattle",
+    "\\spacebattletests"
   ],
-  "SelectedNode": "\\D:\\NotSystemFiles_Garbage\\ooaip23-24",
+  "SelectedNode": "\\spacebattle.sln",
   "PreviewInSolutionExplorer": false
 }
