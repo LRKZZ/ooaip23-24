@@ -1,19 +1,14 @@
-using spacebattle;
-using System;
-using TechTalk.SpecFlow;
-using Moq;
-using System.Reflection.Metadata;
-using System.Numerics;
+﻿using spacebattle;
 
 namespace spacebattletests.AngleActionStepDefinition
 {
     [Binding]
     public class StepDefinitions
     {
-        object v1 = new Angle(0);
-        object? v2;
-        bool ans;
-        Exception? _ex;
+        private object v1 = new Angle(0);
+        private object? v2;
+        private bool ans;
+        private Exception? _ex;
 
         [Given(@"первый угол равен (.*)")]
         public void GivenFirstVec(int p0)
@@ -28,7 +23,7 @@ namespace spacebattletests.AngleActionStepDefinition
         }
 
         [Given(@"второй угол неопределён")]
-        public void GivenNullVector()
+        public static void GivenNullVector()
         {
 
         }
@@ -57,6 +52,5 @@ namespace spacebattletests.AngleActionStepDefinition
         {
             Assert.IsType<Exception>(_ex);
         }
-
     }
 }

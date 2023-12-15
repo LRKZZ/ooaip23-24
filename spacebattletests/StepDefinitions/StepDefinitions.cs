@@ -1,17 +1,13 @@
+﻿using Moq;
 using spacebattle;
-using System;
-using TechTalk.SpecFlow;
-using Moq;
-using System.Reflection.Metadata;
 
 namespace spacebattletests.StepDefinitions
 {
     [Binding]
     public class StepDefinitions
     {
-        Exception excep = new Exception();
-
-        Mock<IRotatable> rotateMock = new Mock<IRotatable>();
+        private Exception excep = new Exception();
+        private readonly Mock<IRotatable> rotateMock = new Mock<IRotatable>();
 
         [Given(@"космический корабль имеет угол наклона (.*) град к оси OX")]
         public void GivenCoordinates(int p0)
@@ -49,7 +45,7 @@ namespace spacebattletests.StepDefinitions
         {
             try
             {
-                RotateCommand rotateCommand = new RotateCommand(rotateMock.Object);
+                var rotateCommand = new RotateCommand(rotateMock.Object);
                 rotateCommand.Execute();
             }
             catch (Exception ex)

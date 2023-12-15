@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace spacebattle
+﻿namespace spacebattle
 {
     public class Angle
     {
-        int X { get; }
+        private int X { get; }
 
         public Angle(int x)
         {
             X = x;
         }
-
 
         public static Angle operator +(Angle angle, Angle angularVelocity)
         {
@@ -28,7 +21,7 @@ namespace spacebattle
                 throw new Exception();
             }
 
-            Angle other = (Angle)obj;
+            var other = (Angle)obj;
             return GetHashCode() == other.GetHashCode();
         }
 
@@ -36,6 +29,5 @@ namespace spacebattle
         {
             return X.GetHashCode();
         }
-
     }
 }
