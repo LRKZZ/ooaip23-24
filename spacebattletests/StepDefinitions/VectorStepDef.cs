@@ -1,18 +1,14 @@
-using spacebattle;
-using System;
-using TechTalk.SpecFlow;
-using Moq;
-using TechTalk.SpecFlow.CommonModels;
+﻿using spacebattle;
 
 namespace spacebattletests.VectorStepDef
 {
     [Binding]
     public class VectorStepDef
     {
-        object v1 = new Vector(0, 0);
-        object? v2;
-        bool ans;
-        Exception? _ex;
+        private object v1 = new Vector(0, 0);
+        private object? v2;
+        private bool ans;
+        private Exception? _ex;
 
         [Given(@"первый вектор равен \((.*), (.*)\)")]
         public void GivenFirstVec(int p0, int p1)
@@ -27,7 +23,7 @@ namespace spacebattletests.VectorStepDef
         }
 
         [Given(@"второй вектор равен null")]
-        public void GivenNullVector()
+        public static void GivenNullVector()
         {
 
         }

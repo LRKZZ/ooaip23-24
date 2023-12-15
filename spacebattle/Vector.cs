@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace spacebattle
+﻿namespace spacebattle
 {
     public class Vector
     {
-        float X { get; }
-        float Y { get; }
+        private float X { get; }
+        private float Y { get; }
 
         public Vector(float x, float y)
         {
@@ -19,8 +13,8 @@ namespace spacebattle
 
         public static Vector operator +(Vector vector1, Vector vector2)
         {
-            float newX = vector1.X + vector2.X;
-            float newY = vector1.Y + vector2.Y;
+            var newX = vector1.X + vector2.X;
+            var newY = vector1.Y + vector2.Y;
             return new Vector(newX, newY);
         }
 
@@ -31,7 +25,7 @@ namespace spacebattle
                 throw new Exception();
             }
 
-            Vector other = (Vector)obj;
+            var other = (Vector)obj;
             return GetHashCode() == other.GetHashCode();
         }
 

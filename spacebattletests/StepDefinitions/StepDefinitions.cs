@@ -1,16 +1,13 @@
+﻿using Moq;
 using spacebattle;
-using System;
-using TechTalk.SpecFlow;
-using Moq;
 
 namespace spacebattletests.StepDefinitions
 {
     [Binding]
     public class StepDefinitions
     {
-        Exception excep = new Exception();
-
-        Mock<IMovable> moveMock = new Mock<IMovable>();
+        private Exception excep = new Exception();
+        private readonly Mock<IMovable> moveMock = new Mock<IMovable>();
 
         [Given(@"космический корабль находится в точке пространства с координатами \((.*), (.*)\)")]
         public void GivenCoordinates(int p0, int p1)
@@ -48,7 +45,7 @@ namespace spacebattletests.StepDefinitions
         {
             try
             {
-                MoveCommand moveCommand = new MoveCommand(moveMock.Object);
+                var moveCommand = new MoveCommand(moveMock.Object);
                 moveCommand.Execute();
             }
             catch (Exception ex)

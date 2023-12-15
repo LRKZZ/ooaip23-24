@@ -20,6 +20,9 @@ jobs:
 
       - name: Build
         run: dotnet build spacebattle --no-restore /p:ContinuousIntegrationBuild=true
+
+      - name: Format
+        run: dotnet format --verify-no-changes
         
       - name: UnitTest + Coverage
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults /p:CoverletOutputFormat=cobertura

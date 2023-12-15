@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace spacebattle
+﻿namespace spacebattle
 {
     public class MoveCommand : ICommand
     {
-        private IMovable obj;
+        private readonly IMovable obj;
 
         public MoveCommand(IMovable movable)
         {
