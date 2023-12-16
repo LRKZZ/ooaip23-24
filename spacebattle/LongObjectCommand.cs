@@ -8,18 +8,18 @@
         private readonly UObject _object;
         private readonly string _cmd;
         private readonly ReplaceCommand _replaceCommand;
-        public LongObjectCommand(UObject obj, string cmd) 
+        public LongObjectCommand(UObject obj, string cmd)
         {
             _object = obj;
             _cmd = cmd;
             _replaceCommand = new ReplaceCommand(obj, cmd);
         }
-        
+
         public void Inject()
         {
             _replaceCommand.Execute();
         }
-        public void Execute() 
+        public void Execute()
         {
             ((ICommand)_object.args.GetP(_cmd)).Execute();
             Hwdtech.IoC.Resolve<Queue<ICommand>>("Game.Commands").Enqueue(this);

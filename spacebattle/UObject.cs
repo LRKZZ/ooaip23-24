@@ -4,7 +4,7 @@
     {
         public IDict<string, object> args { get; set; }
 
-        public UObject(IDict<string, object> args) 
+        public UObject(IDict<string, object> args)
         {
             this.args = args;
         }

@@ -5,7 +5,7 @@ namespace spacebattle
     internal class EndMoveCommand : ICommand
     {
         private readonly Order _order;
-        public EndMoveCommand(Order order) 
+        public EndMoveCommand(Order order)
         {
             _order = order;
             //в данном классе мы получаем команду, которую необходимо удалить

@@ -3,7 +3,7 @@
     internal class MovableAdapter : IMovable
     {
         private readonly UObject _obj;
-        public MovableAdapter(UObject obj) 
+        public MovableAdapter(UObject obj)
         {
             _obj = obj;
         }
