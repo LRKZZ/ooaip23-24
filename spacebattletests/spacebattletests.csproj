@@ -36,11 +36,14 @@
   <ItemGroup>
     <Compile Update="Features\AngleAction.feature.cs">
       <DependentUpon>AngleAction.feature</DependentUpon>
+    <Compile Update="Features\Vector.feature.cs">
+      <DependentUpon>Vector.feature</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <SpecFlowFeatureFiles Update="Features\AngleAction.feature">
+    <SpecFlowFeatureFiles Update="Features\Vector.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
