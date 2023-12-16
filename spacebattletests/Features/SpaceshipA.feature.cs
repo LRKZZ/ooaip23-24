@@ -19,7 +19,7 @@ namespace spacebattletests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class MovingActionFeature : object, Xunit.IClassFixture<MovingActionFeature.FixtureData>, System.IDisposable
+    public partial class RotatingActionFeature : object, Xunit.IClassFixture<RotatingActionFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -31,7 +31,7 @@ namespace spacebattletests.Features
 #line 1 "SpaceshipA.feature"
 #line hidden
         
-        public MovingActionFeature(MovingActionFeature.FixtureData fixtureData, spacebattletests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public RotatingActionFeature(RotatingActionFeature.FixtureData fixtureData, spacebattletests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace spacebattletests.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("ru"), "Features", "MovingAction", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("ru"), "Features", "RotatingAction", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,7 +81,7 @@ namespace spacebattletests.Features
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Игровой объект может вращаться вокруг собственной оси")]
-        [Xunit.TraitAttribute("FeatureTitle", "MovingAction")]
+        [Xunit.TraitAttribute("FeatureTitle", "RotatingAction")]
         [Xunit.TraitAttribute("Description", "Игровой объект может вращаться вокруг собственной оси")]
         public virtual void ИгровойОбъектМожетВращатьсяВокругСобственнойОси()
         {
@@ -126,7 +126,7 @@ this.ScenarioInitialize(scenarioInfo);
         
         [Xunit.SkippableFactAttribute(DisplayName="Если невозможно определить угол наклона к оси OX космического корабля, то вращени" +
             "е вокруг собственной оси  невозможно")]
-        [Xunit.TraitAttribute("FeatureTitle", "MovingAction")]
+        [Xunit.TraitAttribute("FeatureTitle", "RotatingAction")]
         [Xunit.TraitAttribute("Description", "Если невозможно определить угол наклона к оси OX космического корабля, то вращени" +
             "е вокруг собственной оси  невозможно")]
         public virtual void ЕслиНевозможноОпределитьУголНаклонаКОсиOXКосмическогоКорабляТоВращениеВокругСобственнойОсиНевозможно()
@@ -165,7 +165,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("происходит вращение вокруг собственной оси", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 15
- testRunner.Then("возникает ошибка Exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
+ testRunner.Then("возникает ошибка вращения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -173,7 +173,7 @@ this.ScenarioInitialize(scenarioInfo);
         
         [Xunit.SkippableFactAttribute(DisplayName="Если невозможно определить мгновенную угловую скорость космического корабля, то в" +
             "ращение вокруг собственной оси  невозможно")]
-        [Xunit.TraitAttribute("FeatureTitle", "MovingAction")]
+        [Xunit.TraitAttribute("FeatureTitle", "RotatingAction")]
         [Xunit.TraitAttribute("Description", "Если невозможно определить мгновенную угловую скорость космического корабля, то в" +
             "ращение вокруг собственной оси  невозможно")]
         public virtual void ЕслиНевозможноОпределитьМгновеннуюУгловуюСкоростьКосмическогоКорабляТоВращениеВокругСобственнойОсиНевозможно()
@@ -212,7 +212,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("происходит вращение вокруг собственной оси", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 21
- testRunner.Then("возникает ошибка Exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
+ testRunner.Then("возникает ошибка вращения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -220,7 +220,7 @@ this.ScenarioInitialize(scenarioInfo);
         
         [Xunit.SkippableFactAttribute(DisplayName="Если невозможно установить новый угол наклона космического корабля космического к" +
             "орабля, то вращение вокруг собственной оси  невозможно")]
-        [Xunit.TraitAttribute("FeatureTitle", "MovingAction")]
+        [Xunit.TraitAttribute("FeatureTitle", "RotatingAction")]
         [Xunit.TraitAttribute("Description", "Если невозможно установить новый угол наклона космического корабля космического к" +
             "орабля, то вращение вокруг собственной оси  невозможно")]
         public virtual void ЕслиНевозможноУстановитьНовыйУголНаклонаКосмическогоКорабляКосмическогоКорабляТоВращениеВокругСобственнойОсиНевозможно()
@@ -262,7 +262,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("происходит вращение вокруг собственной оси", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 28
- testRunner.Then("возникает ошибка Exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
+ testRunner.Then("возникает ошибка вращения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -275,12 +275,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                MovingActionFeature.FeatureSetup();
+                RotatingActionFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                MovingActionFeature.FeatureTearDown();
+                RotatingActionFeature.FeatureTearDown();
             }
         }
     }

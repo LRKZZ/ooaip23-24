@@ -1,10 +1,10 @@
 ﻿using Moq;
 using spacebattle;
 
-namespace spacebattletests.StepDefinitions
+namespace spacebattletests.RotateActionStepDefinitions
 {
     [Binding]
-    public class StepDefinitions
+    public class RotateActionStepDefinitions
     {
         private Exception excep = new Exception();
         private readonly Mock<IRotatable> rotateMock = new Mock<IRotatable>();
@@ -60,8 +60,8 @@ namespace spacebattletests.StepDefinitions
             rotateMock.VerifySet(m => m.angle = new Angle(p0), Times.Once);
         }
 
-        [Then(@"возникает ошибка Exception")]
-        public void ThenThrowsException()
+        [Then(@"возникает ошибка вращения")]
+        public void ThenThrowsExceptionRotating()
         {
             Assert.IsType<Exception>(excep);
         }

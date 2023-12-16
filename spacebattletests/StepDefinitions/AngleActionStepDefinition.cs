@@ -3,7 +3,7 @@
 namespace spacebattletests.AngleActionStepDefinition
 {
     [Binding]
-    public class StepDefinitions
+    public class AngleActionStepDefinition
     {
         private object v1 = new Angle(0);
         private object? v2;
@@ -41,13 +41,13 @@ namespace spacebattletests.AngleActionStepDefinition
             }
         }
 
-        [Then(@"получаем \((true|false)\)")]
+        [Then(@"получаем (true|false)")]
         public void checkResult(bool expectedResult)
         {
             Assert.Equal(expectedResult, ans);
         }
 
-        [Then(@"возникает ошибка")]
+        [Then(@"возникает ошибка сравнения углов")]
         public void ThrowEx()
         {
             Assert.IsType<Exception>(_ex);

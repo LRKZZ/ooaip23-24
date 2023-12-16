@@ -3,7 +3,7 @@
 namespace spacebattletests.VectorStepDef
 {
     [Binding]
-    public class VectorStepDef
+    public class VectorActionStepDef
     {
         private object v1 = new Vector(0, 0);
         private object? v2;
@@ -47,7 +47,7 @@ namespace spacebattletests.VectorStepDef
             Assert.Equal(expectedResult, ans);
         }
 
-        [Then(@"возникает ошибка")]
+        [Then(@"возникает ошибка сравнения векторов")]
         public void ThrowEx()
         {
             Assert.IsType<Exception>(_ex);

@@ -1,10 +1,10 @@
 ﻿using Moq;
 using spacebattle;
 
-namespace spacebattletests.StepDefinitions
+namespace spacebattletests.MovingActionStepDefinitions
 {
     [Binding]
-    public class StepDefinitions
+    public class MovingActionStepDefinition
     {
         private Exception excep = new Exception();
         private readonly Mock<IMovable> moveMock = new Mock<IMovable>();
@@ -60,8 +60,8 @@ namespace spacebattletests.StepDefinitions
             moveMock.VerifySet(m => m.Position = new Vector(p0, p1), Times.Once);
         }
 
-        [Then(@"возникает ошибка Exception")]
-        public void ThenThrowsException()
+        [Then(@"возникает ошибка перемещения")]
+        public void ThenThrowsExceptionMoving()
         {
             Assert.IsType<Exception>(excep);
         }
