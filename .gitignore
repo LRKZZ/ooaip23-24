@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/spacebattle/IDictionary.cs
+/spacebattle/LongObjectCommand.cs
+/spacebattle/MovableAdapter.cs
+/spacebattle/ObjectProperties.cs
+/spacebattle/Order.cs
+/spacebattle/UObject.cs
