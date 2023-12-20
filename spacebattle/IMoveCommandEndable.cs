@@ -1,9 +1,9 @@
 ﻿namespace spacebattle
 {
-    internal interface IMoveCommandEndable
+    public interface IMoveCommandEndable
     {
-        string endCommand { get; }
-        UObject Target { get; }
-        IDict<string, object> args { get; }
+        public ICommand endCommand { get; }
+        public IUObject Target { get; }
+        public IEnumerable<string> args { get; }
     }
 }
