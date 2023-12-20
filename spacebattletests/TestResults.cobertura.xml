@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.9753000000000001" branch-rate="1" version="1.9" timestamp="1703093614" lines-covered="79" lines-valid="81" branches-covered="8" branches-valid="8">
+<coverage line-rate="1" branch-rate="1" version="1.9" timestamp="1703098771" lines-covered="82" lines-valid="82" branches-covered="8" branches-valid="8">
   <sources>
     <source>C:\Users\QForm\source\repos\ooaip23-24\spacebattle\</source>
   </sources>
   <packages>
-    <package name="spacebattle" line-rate="0.9753000000000001" branch-rate="1" complexity="26">
+    <package name="spacebattle" line-rate="1" branch-rate="1" complexity="27">
       <classes>
         <class name="spacebattle.Angle" filename="Angle.cs" line-rate="1" branch-rate="1" complexity="8">
           <methods>
@@ -78,6 +78,18 @@
             <line number="10" hits="16" branch="False" />
           </lines>
         </class>
+        <class name="spacebattle.EmptyCommand" filename="EmptyCommand.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="Execute" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="2" branch="False" />
+          </lines>
+        </class>
         <class name="spacebattle.MoveCommand" filename="MoveCommand.cs" line-rate="1" branch-rate="1" complexity="2">
           <methods>
             <method name="Execute" signature="()" line-rate="1" branch-rate="1" complexity="1">
@@ -106,28 +118,28 @@
             <line number="10" hits="4" branch="False" />
           </lines>
         </class>
-        <class name="spacebattle.ReplaceCommand" filename="ReplaceCommand.cs" line-rate="0.3333" branch-rate="1" complexity="3">
+        <class name="spacebattle.ReplaceCommand" filename="ReplaceCommand.cs" line-rate="1" branch-rate="1" complexity="3">
           <methods>
-            <method name="Execute" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="Execute" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="9" hits="0" branch="False" />
+                <line number="9" hits="1" branch="False" />
               </lines>
             </method>
-            <method name="Inject" signature="(spacebattle.ICommand)" line-rate="0" branch-rate="1" complexity="1">
+            <method name="Inject" signature="(spacebattle.ICommand)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="11" hits="0" branch="False" />
+                <line number="11" hits="1" branch="False" />
               </lines>
             </method>
             <method name=".ctor" signature="(spacebattle.ICommand)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="7" hits="4" branch="False" />
+                <line number="7" hits="6" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="9" hits="0" branch="False" />
-            <line number="11" hits="0" branch="False" />
-            <line number="7" hits="4" branch="False" />
+            <line number="9" hits="1" branch="False" />
+            <line number="11" hits="1" branch="False" />
+            <line number="7" hits="6" branch="False" />
           </lines>
         </class>
         <class name="spacebattle.RotateCommand" filename="RotateCommand.cs" line-rate="1" branch-rate="1" complexity="2">
