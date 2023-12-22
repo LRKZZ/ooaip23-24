@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\AngleAction - Копировать.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Features\Spaceship - Копировать.feature.cs" />
   </ItemGroup>
 
@@ -35,12 +36,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Features\MacroCommand.feature.cs">
+      <DependentUpon>MacroCommand.feature</DependentUpon>
+    </Compile>
     <Compile Update="Features\AngleAction.feature.cs">
       <DependentUpon>AngleAction.feature</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowFeatureFiles Update="Features\MacroCommand.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Features\Vector.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>

@@ -21,7 +21,7 @@ public class MacroCommandBuilder
         cmdNames.ToList().ForEach(cmd_name =>
         {
             cmds.Add(IoC.Resolve<ICommand>(
-                cmd_name,
+                "Game.Commands." + cmd_name,
                 _obj
                 ));
         });
