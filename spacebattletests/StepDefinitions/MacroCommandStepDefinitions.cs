@@ -1,5 +1,5 @@
-﻿using Hwdtech.Ioc;
-using Hwdtech;
+﻿using Hwdtech;
+using Hwdtech.Ioc;
 using Moq;
 
 namespace spacebattle
@@ -12,7 +12,7 @@ namespace spacebattle
         private IUObject? _object;
         private List<ICommand>? cmds;
         private MacroCommand? macroCommand;
-        public static void StartTest() 
+        public static void StartTest()
         {
             new InitScopeBasedIoCImplementationCommand().Execute();
             IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
