@@ -13,10 +13,14 @@ public class MacroCommandBuilder
         _obj = obj;
     }
 
-    public List<ICommand> BuildCommands()
+    public List<ICommand>? BuildCommands()
     {
         var cmds = new List<ICommand>();
         var cmdNames = IoC.Resolve<string[]>(_dependencyName);
+        if (cmdNames.Length == 0)
+        {
+            return null;
+        }
 
         cmdNames.ToList().ForEach(cmd_name =>
         {
