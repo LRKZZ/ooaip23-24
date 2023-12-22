@@ -79,7 +79,7 @@ namespace spacebattle
             {
                 macroCommand = new MacroCommand(cmds);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _exception = ex;
             }
