@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="1" branch-rate="1" version="1.9" timestamp="1702727761" lines-covered="54" lines-valid="54" branches-covered="8" branches-valid="8">
+<coverage line-rate="0.9895" branch-rate="1" version="1.9" timestamp="1703333484" lines-covered="95" lines-valid="96" branches-covered="8" branches-valid="8">
   <sources>
-    <source>C:\Users\QForm\Source\Repos\ooaip23-24\spacebattle\</source>
+    <source>C:\Users\QForm\source\repos\ooaip23-24\spacebattle\</source>
   </sources>
   <packages>
-    <package name="spacebattle" line-rate="1" branch-rate="1" complexity="21">
+    <package name="spacebattle" line-rate="0.9895" branch-rate="1" complexity="28">
       <classes>
         <class name="spacebattle.Angle" filename="Angle.cs" line-rate="1" branch-rate="1" complexity="8">
           <methods>
@@ -78,6 +78,50 @@
             <line number="10" hits="16" branch="False" />
           </lines>
         </class>
+        <class name="spacebattle.LongOperation" filename="LongOperation.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="Invoke" signature="(System.Object[])" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="2" branch="False" />
+                <line number="17" hits="2" branch="False" />
+                <line number="19" hits="2" branch="False" />
+                <line number="21" hits="2" branch="False" />
+                <line number="22" hits="2" branch="False" />
+                <line number="23" hits="8" branch="False" />
+                <line number="25" hits="2" branch="False" />
+                <line number="27" hits="2" branch="False" />
+                <line number="29" hits="2" branch="False" />
+                <line number="30" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.String,spacebattle.IUObject)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="10" hits="2" branch="False" />
+                <line number="11" hits="2" branch="False" />
+                <line number="12" hits="2" branch="False" />
+                <line number="13" hits="2" branch="False" />
+                <line number="14" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="16" hits="2" branch="False" />
+            <line number="17" hits="2" branch="False" />
+            <line number="19" hits="2" branch="False" />
+            <line number="21" hits="2" branch="False" />
+            <line number="22" hits="2" branch="False" />
+            <line number="23" hits="8" branch="False" />
+            <line number="25" hits="2" branch="False" />
+            <line number="27" hits="2" branch="False" />
+            <line number="29" hits="2" branch="False" />
+            <line number="30" hits="2" branch="False" />
+            <line number="10" hits="2" branch="False" />
+            <line number="11" hits="2" branch="False" />
+            <line number="12" hits="2" branch="False" />
+            <line number="13" hits="2" branch="False" />
+            <line number="14" hits="2" branch="False" />
+          </lines>
+        </class>
         <class name="spacebattle.MoveCommand" filename="MoveCommand.cs" line-rate="1" branch-rate="1" complexity="2">
           <methods>
             <method name="Execute" signature="()" line-rate="1" branch-rate="1" complexity="1">
@@ -106,6 +150,30 @@
             <line number="10" hits="4" branch="False" />
           </lines>
         </class>
+        <class name="spacebattle.ReplaceCommand" filename="ReplaceCommand.cs" line-rate="0.6666" branch-rate="1" complexity="3">
+          <methods>
+            <method name="Execute" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name="Inject" signature="(spacebattle.ICommand)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="11" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(spacebattle.ICommand)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="4" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="9" hits="2" branch="False" />
+            <line number="11" hits="0" branch="False" />
+            <line number="7" hits="4" branch="False" />
+          </lines>
+        </class>
         <class name="spacebattle.RotateCommand" filename="RotateCommand.cs" line-rate="1" branch-rate="1" complexity="2">
           <methods>
             <method name="Execute" signature="()" line-rate="1" branch-rate="1" complexity="1">
@@ -132,6 +200,68 @@
             <line number="8" hits="4" branch="False" />
             <line number="9" hits="4" branch="False" />
             <line number="10" hits="4" branch="False" />
+          </lines>
+        </class>
+        <class name="spacebattle.StartMoveCommand" filename="StartMoveCommand.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="Execute" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="13" hits="2" branch="False" />
+                <line number="14" hits="2" branch="False" />
+                <line number="15" hits="2" branch="False" />
+                <line number="16" hits="2" branch="False" />
+                <line number="17" hits="2" branch="False" />
+                <line number="18" hits="2" branch="False" />
+                <line number="19" hits="2" branch="False" />
+                <line number="21" hits="2" branch="False" />
+                <line number="22" hits="2" branch="False" />
+                <line number="23" hits="2" branch="False" />
+                <line number="24" hits="2" branch="False" />
+                <line number="26" hits="2" branch="False" />
+                <line number="28" hits="2" branch="False" />
+                <line number="29" hits="2" branch="False" />
+                <line number="30" hits="2" branch="False" />
+                <line number="31" hits="2" branch="False" />
+                <line number="32" hits="2" branch="False" />
+                <line number="33" hits="2" branch="False" />
+                <line number="35" hits="2" branch="False" />
+                <line number="36" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(spacebattle.IMoveStartable)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="7" hits="2" branch="False" />
+                <line number="8" hits="2" branch="False" />
+                <line number="9" hits="2" branch="False" />
+                <line number="10" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="13" hits="2" branch="False" />
+            <line number="14" hits="2" branch="False" />
+            <line number="15" hits="2" branch="False" />
+            <line number="16" hits="2" branch="False" />
+            <line number="17" hits="2" branch="False" />
+            <line number="18" hits="2" branch="False" />
+            <line number="19" hits="2" branch="False" />
+            <line number="21" hits="2" branch="False" />
+            <line number="22" hits="2" branch="False" />
+            <line number="23" hits="2" branch="False" />
+            <line number="24" hits="2" branch="False" />
+            <line number="26" hits="2" branch="False" />
+            <line number="28" hits="2" branch="False" />
+            <line number="29" hits="2" branch="False" />
+            <line number="30" hits="2" branch="False" />
+            <line number="31" hits="2" branch="False" />
+            <line number="32" hits="2" branch="False" />
+            <line number="33" hits="2" branch="False" />
+            <line number="35" hits="2" branch="False" />
+            <line number="36" hits="2" branch="False" />
+            <line number="7" hits="2" branch="False" />
+            <line number="8" hits="2" branch="False" />
+            <line number="9" hits="2" branch="False" />
+            <line number="10" hits="2" branch="False" />
           </lines>
         </class>
         <class name="spacebattle.Vector" filename="Vector.cs" line-rate="1" branch-rate="1" complexity="9">
