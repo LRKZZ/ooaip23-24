@@ -16,14 +16,14 @@ namespace spacebattle
         {
             var cmd = IoC.Resolve<ICommand>("Game.Command." + _name, _target);
 
-            var macroCmd = IoC.Resolve<ICommand>("Game.Command.Macro" , cmd);
+            var macroCmd = IoC.Resolve<ICommand>("Game.Command.Macro", cmd);
 
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
-            "Game.Commands.LongMove",(object[] args) =>
-            {return macroCmd; }).Execute();
+            "Game.Commands.LongMove", (object[] args) =>
+            { return macroCmd; }).Execute();
 
-            var startObject = IoC.Resolve<IMoveStartable>("Game.ConvertToStartable" , _target);
-            
+            var startObject = IoC.Resolve<IMoveStartable>("Game.ConvertToStartable", _target);
+
             var startCmd = IoC.Resolve<ICommand>("Game.Command.StartMoveCommand", startObject);
 
             return startCmd;
