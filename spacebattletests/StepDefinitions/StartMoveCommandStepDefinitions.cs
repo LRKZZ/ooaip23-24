@@ -15,7 +15,6 @@ namespace spacebattletests.StepDefinitions
         private Mock<IUObject> order = new Mock<IUObject>();
         private Dictionary<string, object> orderDict = new Dictionary<string, object>();
         private Dictionary<string, object> properties = new Dictionary<string, object>();
-        private StartMoveCommand? startMoveCommand;
 
         public static void StartScope()
         {
@@ -90,7 +89,7 @@ namespace spacebattletests.StepDefinitions
         [When(@"команда успешно выполняется")]
         public void WhenКомандаУспешноВыполняется()
         {
-            startMoveCommand = new StartMoveCommand(startable.Object);
+            var startMoveCommand = new StartMoveCommand(startable.Object);
             startMoveCommand.Execute();
         }
 
@@ -121,13 +120,12 @@ namespace spacebattletests.StepDefinitions
             startable.SetupGet(s => s.PropertiesOfOrder).Returns(properties);
             startable.SetupGet(s => s.Order).Returns(order.Object);
             order.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback(() => throw new NotImplementedException());
-
-            startMoveCommand = new StartMoveCommand(startable.Object);
         }
 
         [Then(@"возникает исключение")]
         public void ThenВозникаетИсключение()
         {
+            var startMoveCommand = new StartMoveCommand(startable.Object);
             Assert.Throws<NotImplementedException>(startMoveCommand.Execute);
         }
 
@@ -149,7 +147,7 @@ namespace spacebattletests.StepDefinitions
             startable.SetupGet(s => s.Order).Returns(order.Object);
             order.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(orderDict.Add);
 
-            startMoveCommand = new StartMoveCommand(startable.Object);
+            var startMoveCommand = new StartMoveCommand(startable.Object);
             startMoveCommand.Execute();
         }
 
@@ -164,7 +162,6 @@ namespace spacebattletests.StepDefinitions
         {
             startable = new Mock<IMoveStartable>();
             startable.SetupGet(s => s.PropertiesOfOrder).Throws(new NotImplementedException());
-            startMoveCommand = new StartMoveCommand(startable.Object);
         }
 
         [When(@"не могу прочитать заказ")]
@@ -177,7 +174,6 @@ namespace spacebattletests.StepDefinitions
         };
 
             startable.SetupGet(s => s.PropertiesOfOrder).Returns(properties);
-            startMoveCommand = new StartMoveCommand(startable.Object);
         }
 
         private Mock<spacebattle.ICommand> _mockCommand = new Mock<spacebattle.ICommand>();
