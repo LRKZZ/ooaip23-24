@@ -52,9 +52,8 @@ namespace spacebattletests.StepDefinitions
             _target.Setup(t => t.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>((key, value) => _characteristics.Add(key, value));
             _target.Setup(t => t.DeleteProperty(It.IsAny<string>())).Callback<string>((string key) => _characteristics.Remove(key));
             _target.Setup(t => t.GetProperty(It.IsAny<string>())).Returns((string key) => _characteristics[key]);
-            _target.Object.SetProperty("Movement", 1);
+            _target.Object.SetProperty("Movement", new ReplaceCommand(_mockCommand.Object));
 
-            _mockEndable.SetupGet(e => e.endCommand).Returns(_replaceCommand);
             _mockEndable.SetupGet(e => e.Target).Returns(_target.Object);
             _mockEndable.SetupGet(e => e.args).Returns(_keys);
         }
@@ -65,7 +64,7 @@ namespace spacebattletests.StepDefinitions
             IoC.Resolve<spacebattle.EndMoveCommand>("Game.Command.EndMovement", _mockEndable.Object).Execute();
         }
 
-        [Then(@"свойство Движение удаляется из игрового объекта и исключение KeyNotFoundException генерируется при попытке доступа к свойству Движение")]
+        [Then(@"исключение KeyNotFoundException генерируется при попытке доступа к свойству Движение")]
         public void ThenMovementPropertyRemovedAndExceptionThrown()
         {
             Assert.Throws<System.Collections.Generic.KeyNotFoundException>(() => _target.Object.GetProperty("Movement"));

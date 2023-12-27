@@ -115,8 +115,8 @@ namespace spacebattletests.Features
         testRunner.When("выполняется команда завершения движения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 8
-        testRunner.Then("свойство Движение удаляется из игрового объекта и исключение KeyNotFoundException" +
-                        " генерируется при попытке доступа к свойству Движение", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
+        testRunner.Then("исключение KeyNotFoundException генерируется при попытке доступа к свойству Движе" +
+                        "ние", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
 #line hidden
             }
             this.ScenarioCleanup();

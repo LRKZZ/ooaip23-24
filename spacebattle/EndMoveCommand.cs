@@ -12,8 +12,8 @@ namespace spacebattle
 
         public void Execute()
         {
+            var command = _order.Target.GetProperty("Movement");
             IoC.Resolve<string>("Game.UObject.DeleteProperty", _order.Target, _order.args);
-            var command = _order.endCommand;
             var emptyCommand = IoC.Resolve<ICommand>("Game.Command.EmptyCommand");
             IoC.Resolve<IInjectable>("Game.Command.Inject", command, emptyCommand);
         }
