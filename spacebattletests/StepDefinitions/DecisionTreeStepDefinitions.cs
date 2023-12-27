@@ -7,15 +7,11 @@ namespace spacebattle
     public class DecisionTreeStepDefinitions
     {
         private Mock<IFileReader> reader = new Mock<IFileReader>();
-        private Dictionary<float, object>.KeyCollection layer1;
-        private IEnumerable<float> layer2;
-        private IEnumerable<float> layer3;
-        private IEnumerable<float> layer4;
         private HashSet<float> expected_layer_1 = new HashSet<float>();
         private HashSet<float> expected_layer_2 = new HashSet<float>();
         private HashSet<float> expected_layer_3 = new HashSet<float>();
         private HashSet<float> expected_layer_4 = new HashSet<float>();
-        private DecisionTreeBuilderCommand cmd;
+        private Dictionary<float, object> tree = new();
         public static void StartDecisionTreeTest()
         {
             new InitScopeBasedIoCImplementationCommand().Execute();
@@ -51,14 +47,9 @@ namespace spacebattle
         {
             try
             {
-                cmd = new DecisionTreeBuilderCommand(reader.Object);
+                var cmd = new DecisionTreeBuilderCommand(reader.Object);
                 cmd.Execute();
-                var tree = IoC.Resolve<Dictionary<float, object>>("Game.Collisions.Tree");
-
-                layer1 = tree.Keys;
-                layer2 = ((Dictionary<float, object>)tree[1]).Keys.Union(((Dictionary<float, object>)tree[2]).Keys);
-                layer3 = ((Dictionary<float, object>)((Dictionary<float, object>)tree[1])[1]).Keys.Union(((Dictionary<float, object>)((Dictionary<float, object>)tree[2])[1]).Keys.Union(((Dictionary<float, object>)((Dictionary<float, object>)tree[2])[2]).Keys));
-                layer4 = ((Dictionary<float, object>)((Dictionary<float, object>)((Dictionary<float, object>)tree[1])[1])[1]).Keys.Union(((Dictionary<float, object>)((Dictionary<float, object>)((Dictionary<float, object>)tree[2])[1])[3]).Keys.Union(((Dictionary<float, object>)((Dictionary<float, object>)((Dictionary<float, object>)tree[2])[2])[3]).Keys));
+                tree = IoC.Resolve<Dictionary<float, object>>("Game.Collisions.Tree");
             }
             catch (Exception)
             {
@@ -69,6 +60,11 @@ namespace spacebattle
         [Then(@"считанное дерево равно ожидаемому")]
         public void ThenСчитанноеДеревоРавноОжидаемому()
         {
+            var layer1 = tree.Keys;
+            var layer2 = ((Dictionary<float, object>)tree[1]).Keys.Union(((Dictionary<float, object>)tree[2]).Keys);
+            var layer3 = ((Dictionary<float, object>)((Dictionary<float, object>)tree[1])[1]).Keys.Union(((Dictionary<float, object>)((Dictionary<float, object>)tree[2])[1]).Keys.Union(((Dictionary<float, object>)((Dictionary<float, object>)tree[2])[2]).Keys));
+            var layer4 = ((Dictionary<float, object>)((Dictionary<float, object>)((Dictionary<float, object>)tree[1])[1])[1]).Keys.Union(((Dictionary<float, object>)((Dictionary<float, object>)((Dictionary<float, object>)tree[2])[1])[3]).Keys.Union(((Dictionary<float, object>)((Dictionary<float, object>)((Dictionary<float, object>)tree[2])[2])[3]).Keys));
+
             Assert.True(expected_layer_1.SequenceEqual(layer1));
             Assert.True(expected_layer_2.SequenceEqual(layer2));
             Assert.True(expected_layer_3.SequenceEqual(layer3));
@@ -85,6 +81,7 @@ namespace spacebattle
         [Then(@"получается ошибка считывания файла")]
         public void ThenПолучаетсяОшибкаСчитыванияФайла()
         {
+            var cmd = new DecisionTreeBuilderCommand(reader.Object);
             Assert.Throws<Exception>(cmd.Execute);
         }
     }
