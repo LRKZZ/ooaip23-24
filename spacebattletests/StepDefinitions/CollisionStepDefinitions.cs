@@ -20,7 +20,6 @@ namespace spacebattle
         }
 
         private Mock<ICommand> mockCommand = new Mock<ICommand>();
-        private ICommand checkCollisionCommand;
         private Mock<IDictionary<float, object>> mockDictionary = new Mock<IDictionary<float, object>>();
 
         [Given(@"команда просчитать коллизию")]
@@ -36,15 +35,13 @@ namespace spacebattle
 
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.BuildCollisionTree", (object[] args) => mockDictionary.Object).Execute();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Event.Collision", (object[] args) => mockCommand.Object).Execute();
-
-            var mockUObject = new Mock<IUObject>();
-
-            checkCollisionCommand = IoC.Resolve<ICommand>("Game.Command.CheckCollision", mockUObject.Object, mockUObject.Object);
         }
 
         [When(@"выполняется команда проверки коллизий")]
-        public void WhenВыполняетсяКомандаПроверкиКоллизий()
+        public static void WhenВыполняетсяКомандаПроверкиКоллизий()
         {
+            var mockUObject = new Mock<IUObject>();
+            var checkCollisionCommand = IoC.Resolve<ICommand>("Game.Command.CheckCollision", mockUObject.Object, mockUObject.Object);
             checkCollisionCommand.Execute();
         }
 
@@ -67,15 +64,13 @@ namespace spacebattle
 
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.BuildCollisionTree", (object[] args) => mockDictionary.Object).Execute();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Event.Collision", (object[] args) => mockCommand.Object).Execute();
-
-            var mockUObject = new Mock<IUObject>();
-
-            checkCollisionCommand = IoC.Resolve<ICommand>("Game.Command.CheckCollision", mockUObject.Object, mockUObject.Object);
         }
 
         [When(@"выполняется команда проверки коллизий с ошибкой")]
-        public void WhenВыполняетсяКомандаПроверкиКоллизийСОшибкой()
+        public static void WhenВыполняетсяКомандаПроверкиКоллизийСОшибкой()
         {
+            var mockUObject = new Mock<IUObject>();
+            var checkCollisionCommand = IoC.Resolve<ICommand>("Game.Command.CheckCollision", mockUObject.Object, mockUObject.Object);
             Assert.Throws<Exception>(() => checkCollisionCommand.Execute());
         }
 

@@ -28,7 +28,7 @@ namespace spacebattletests.Features
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "AngleAction - Копировать.feature"
+#line 1 "Collision.feature"
 #line hidden
         
         public CollisionFeature(CollisionFeature.FixtureData fixtureData, spacebattletests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
