@@ -43,7 +43,6 @@ namespace spacebattletests.StepDefinitions
             EndCommandStartTest();
             _mockEndable = new Mock<IMoveCommandEndable>();
             _mockCommand = new Mock<spacebattle.ICommand>();
-            _replaceCommand = new ReplaceCommand(_mockCommand.Object);
             _target = new Mock<IUObject>();
             _keys = new List<string>() { "Movement" };
             _characteristics = new Dictionary<string, object>();
