@@ -33,7 +33,6 @@ namespace spacebattletests.StepDefinitions
 
         private Mock<IMoveCommandEndable> _mockEndable = new Mock<IMoveCommandEndable>();
         private Mock<spacebattle.ICommand> _mockCommand = new Mock<spacebattle.ICommand>();
-        private ReplaceCommand? _replaceCommand;
         private Mock<IUObject> _target = new Mock<IUObject>();
         private List<string>? _keys;
         private Dictionary<string, object>? _characteristics;
