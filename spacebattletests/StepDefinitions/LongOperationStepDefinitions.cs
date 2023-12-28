@@ -148,7 +148,8 @@ namespace spacebattle
             try
             {
                 var macroCommand = new MacroCommand(mcb.BuildCommands());
-            } catch
+            }
+            catch
             {
 
             }
