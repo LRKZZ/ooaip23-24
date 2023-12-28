@@ -42,7 +42,6 @@ namespace spacebattle
         private Mock<IQueue> queue = new Mock<IQueue>();
         private Queue<ICommand> realQueue = new Queue<ICommand>();
         private Mock<IUObject> mockUObject = new Mock<IUObject>();
-        private Mock<ICommand> unactiveMockCommand = new Mock<ICommand>();
         private Mock<ICommand> moveCommand = new Mock<ICommand>();
         private Mock<ICommand> fireCommand = new Mock<ICommand>();
 
