@@ -1,0 +1,35 @@
+﻿using Hwdtech;
+
+namespace spacebattle;
+
+public class MacroCommandBuilder
+{
+    private readonly string _dependencyName;
+    private readonly IUObject _obj;
+
+    public MacroCommandBuilder(string dependencyName, IUObject obj)
+    {
+        _dependencyName = dependencyName;
+        _obj = obj;
+    }
+
+    public List<ICommand>? BuildCommands()
+    {
+        var cmds = new List<ICommand>();
+        var cmdNames = IoC.Resolve<string[]>(_dependencyName);
+        if (cmdNames.Length == 0)
+        {
+            return null;
+        }
+
+        cmdNames.ToList().ForEach(cmd_name =>
+        {
+            cmds.Add(IoC.Resolve<ICommand>(
+                "Game.Commands." + cmd_name,
+                _obj
+                ));
+        });
+
+        return cmds;
+    }
+}

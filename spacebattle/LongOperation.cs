@@ -14,9 +14,7 @@ namespace spacebattle
         }
         public object Invoke(params object[] args)
         {
-            var cmd = IoC.Resolve<ICommand>("Game.Command." + _name, _target);
-
-            var macroCmd = IoC.Resolve<ICommand>("Game.Command.Macro", cmd);
+            var macroCmd = IoC.Resolve<ICommand>("Game.Command." + _name, _target);
 
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
             "Game.Commands.LongMove", (object[] args) =>
