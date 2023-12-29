@@ -33,5 +33,7 @@
         {
             return (X.GetHashCode() * 397) ^ Y.GetHashCode();
         }
+
+        public float[] Floats => new float[] { X, Y };
     }
 }
