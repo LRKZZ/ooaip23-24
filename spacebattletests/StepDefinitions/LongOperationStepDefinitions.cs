@@ -37,7 +37,6 @@ namespace spacebattle
             }).Execute();
         }
 
-        private Mock<ICommand> mockCommand = new Mock<ICommand>();
         private readonly string name = "LongMacroCommand";
         private Mock<IQueue> queue = new Mock<IQueue>();
         private Queue<ICommand> realQueue = new Queue<ICommand>();
@@ -49,8 +48,6 @@ namespace spacebattle
         public void GivenИнициализированIoCКонтейнерСНеобходимымиЗависимостями_()
         {
             StartLongOpTest();
-            mockCommand = new Mock<ICommand>();
-            mockCommand.Setup(x => x.Execute()).Verifiable();
             moveCommand = new Mock<ICommand>();
             moveCommand.Setup(mc => mc.Execute()).Callback(() => { }).Verifiable();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Move", (object[] args) =>
@@ -66,10 +63,6 @@ namespace spacebattle
             }).Execute();
 
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.Macro." + name, (object[] args) => new MacroCommand(new MacroCommandBuilder("Game.Commands.MoveWithFire", (IUObject)args[0]).BuildCommands())).Execute();
-
-            var mcb = new MacroCommandBuilder("Game.Commands.MoveWithFire", mockUObject.Object);
-
-            var macroCommand = new MacroCommand(mcb.BuildCommands());
 
             mockUObject = new Mock<IUObject>();
 
@@ -87,26 +80,10 @@ namespace spacebattle
                 }
             ).Execute();
 
-            var startable = new Mock<IMoveStartable>();
-            var order = new Mock<IUObject>();
             var orderDict = new Dictionary<string, object>();
-            var properties = new Dictionary<string, object> {
-                { "id", 1 },
-            };
 
-            startable.SetupGet(s => s.PropertiesOfOrder).Returns(properties);
-            startable.SetupGet(s => s.Order).Returns(order.Object);
-            order.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(orderDict.Add);
+            mockUObject.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(orderDict.Add);
             queue.Setup(q => q.Add(It.IsAny<ICommand>())).Callback(realQueue.Enqueue);
-
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command." + name, (object[] args) => mockCommand.Object).Execute();
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.ConvertToStartable", (object[] args) =>
-            {
-                var emptyStartableObject = new Mock<IMoveStartable>();
-                emptyStartableObject.Setup(x => x.Order).Returns((IUObject)args[0]);
-                emptyStartableObject.Setup(x => x.PropertiesOfOrder).Returns(new Dictionary<string, object>());
-                return emptyStartableObject.Object;
-            }).Execute();
 
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => new ReplaceCommand((ICommand)args[0])).Execute();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Operation." + name, (object[] args) => { return new LongOperation(name, (IUObject)args[0]); }).Execute();
@@ -130,8 +107,6 @@ namespace spacebattle
         public void GivenИнициализированIoCКонтейнерБезАктивацииКоманды_()
         {
             StartLongOpTest();
-            mockCommand = new Mock<ICommand>();
-            mockCommand.Setup(x => x.Execute());
 
             moveCommand.Setup(mc => mc.Execute()).Callback(() => { }).Verifiable();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Move", (object[] args) =>
@@ -148,8 +123,6 @@ namespace spacebattle
 
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.Macro." + name, (object[] args) => new MacroCommand(new MacroCommandBuilder("Game.Commands.EmptyMacroCommand", (IUObject)args[0]).BuildCommands())).Execute();
 
-            mockUObject = new Mock<IUObject>();
-
             queue = new Mock<IQueue>();
             realQueue = new Queue<ICommand>();
 
@@ -165,26 +138,11 @@ namespace spacebattle
                 }
             ).Execute();
 
-            var startable = new Mock<IMoveStartable>();
-            var order = new Mock<IUObject>();
             var orderDict = new Dictionary<string, object>();
-            var properties = new Dictionary<string, object> {
-                { "id", 1 },
-            };
 
-            startable.SetupGet(s => s.PropertiesOfOrder).Returns(properties);
-            startable.SetupGet(s => s.Order).Returns(order.Object);
-            order.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(orderDict.Add);
+            mockUObject.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(orderDict.Add);
             queue.Setup(q => q.Add(It.IsAny<ICommand>())).Callback(realQueue.Enqueue);
 
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command." + name, (object[] args) => mockCommand.Object).Execute();
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.ConvertToStartable", (object[] args) =>
-            {
-                var emptyStartableObject = new Mock<IMoveStartable>();
-                emptyStartableObject.Setup(x => x.Order).Returns((IUObject)args[0]);
-                emptyStartableObject.Setup(x => x.PropertiesOfOrder).Returns(new Dictionary<string, object>());
-                return emptyStartableObject.Object;
-            }).Execute();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => new ReplaceCommand((ICommand)args[0])).Execute();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Operation." + name, (object[] args) => { return new LongOperation(name, (IUObject)args[0]); }).Execute();
         }
