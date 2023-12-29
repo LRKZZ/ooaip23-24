@@ -2,6 +2,6 @@
 {
     public interface IStrategy
     {
-        public object Invoke(params object[] args);
+        public void Invoke();
     }
 }

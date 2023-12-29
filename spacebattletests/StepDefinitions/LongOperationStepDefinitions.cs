@@ -65,6 +65,8 @@ namespace spacebattle
                 return fireCommand.Object;
             }).Execute();
 
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.Macro." + name, (object[] args) => new MacroCommand(new MacroCommandBuilder("Game.Commands.MoveWithFire", (IUObject)args[0]).BuildCommands())).Execute();
+
             var mcb = new MacroCommandBuilder("Game.Commands.MoveWithFire", mockUObject.Object);
 
             var macroCommand = new MacroCommand(mcb.BuildCommands());
@@ -105,15 +107,15 @@ namespace spacebattle
                 emptyStartableObject.Setup(x => x.PropertiesOfOrder).Returns(new Dictionary<string, object>());
                 return emptyStartableObject.Object;
             }).Execute();
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.StartMoveCommand", (object[] args) => new StartMoveCommand((IMoveStartable)args[0])).Execute();
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => new ReplaceCommand(macroCommand)).Execute();
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Operation." + name, (object[] args) => { return new LongOperation(name, (IUObject)args[0]).Invoke(); }).Execute();
+
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => new ReplaceCommand((ICommand)args[0])).Execute();
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Operation." + name, (object[] args) => { return new LongOperation(name, (IUObject)args[0]); }).Execute();
         }
 
         [When(@"Выполняется команда Game.Operation.Movement.")]
         public void WhenВыполняетсяКоманда_()
         {
-            IoC.Resolve<ICommand>("Game.Operation." + name, mockUObject.Object).Execute();
+            IoC.Resolve<LongOperation>("Game.Operation." + name, mockUObject.Object).Invoke();
         }
 
         [Then(@"Команда успешно завершает выполнение\.")]
@@ -144,15 +146,7 @@ namespace spacebattle
                 return fireCommand.Object;
             }).Execute();
 
-            var mcb = new MacroCommandBuilder("Game.Commands.EmptyMacroCommand", mockUObject.Object);
-            try
-            {
-                var macroCommand = new MacroCommand(mcb.BuildCommands());
-            }
-            catch
-            {
-
-            }
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.Macro." + name, (object[] args) => new MacroCommand(new MacroCommandBuilder("Game.Commands.EmptyMacroCommand", (IUObject)args[0]).BuildCommands())).Execute();
 
             mockUObject = new Mock<IUObject>();
 
@@ -191,16 +185,14 @@ namespace spacebattle
                 emptyStartableObject.Setup(x => x.PropertiesOfOrder).Returns(new Dictionary<string, object>());
                 return emptyStartableObject.Object;
             }).Execute();
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.StartMoveCommand", (object[] args) => new StartMoveCommand((IMoveStartable)args[0])).Execute();
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => new ReplaceCommand(mockCommand.Object)).Execute();
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Operation." + name, (object[] args) => { return new LongOperation(name, (IUObject)args[0]).Invoke(); }).Execute();
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => new ReplaceCommand((ICommand)args[0])).Execute();
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Operation." + name, (object[] args) => { return new LongOperation(name, (IUObject)args[0]); }).Execute();
         }
 
         [Then(@"Команда не вызывается и не выполняется\.")]
         public void ThenКомандаНеВызываетсяИНеВыполняется_()
         {
             queue.Object.Take().Execute();
-            mockCommand.Verify(x => x.Execute(), Times.Once);
             fireCommand.Verify(x => x.Execute(), Times.Never);
             moveCommand.Verify(x => x.Execute(), Times.Never);
         }

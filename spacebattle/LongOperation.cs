@@ -12,19 +12,20 @@ namespace spacebattle
             _name = name;
             _target = target;
         }
-        public object Invoke(params object[] args)
+        public void Invoke()
         {
-            var macroCmd = IoC.Resolve<ICommand>("Game.Command." + _name, _target);
+            var command = IoC.Resolve<ICommand>("Game.Command.Macro." + _name, _target);
 
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register",
-            "Game.Commands.LongMove", (object[] args) =>
-            { return macroCmd; }).Execute();
+            var injectableCommand = IoC.Resolve<IInjectable>("Game.Commands.Inject", command);
 
-            var startObject = IoC.Resolve<IMoveStartable>("Game.ConvertToStartable", _target);
+            IoC.Resolve<object>(
+                "Game.IUObject.SetProperty",
+                _target,
+                $"Game.Commands.Inject.{_name}",
+                injectableCommand
+            );
 
-            var startCmd = IoC.Resolve<ICommand>("Game.Command.StartMoveCommand", startObject);
-
-            return startCmd;
+            IoC.Resolve<IQueue>("Game.Queue").Add((ICommand)injectableCommand);
         }
     }
 }
