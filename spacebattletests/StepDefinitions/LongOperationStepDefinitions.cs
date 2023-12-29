@@ -37,7 +37,7 @@ namespace spacebattle
             }).Execute();
         }
 
-        private readonly string name = "LongMacroCommand";
+        private string name = "";
         private Mock<IQueue> queue = new Mock<IQueue>();
         private Queue<ICommand> realQueue = new Queue<ICommand>();
         private Mock<IUObject> mockUObject = new Mock<IUObject>();
@@ -48,6 +48,7 @@ namespace spacebattle
         public void GivenИнициализированIoCКонтейнерСНеобходимымиЗависимостями_()
         {
             StartLongOpTest();
+            name = "Macro.MoveWithFire";
             moveCommand = new Mock<ICommand>();
             moveCommand.Setup(mc => mc.Execute()).Callback(() => { }).Verifiable();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Move", (object[] args) =>
@@ -62,7 +63,7 @@ namespace spacebattle
                 return fireCommand.Object;
             }).Execute();
 
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.Macro." + name, (object[] args) => new MacroCommand(new MacroCommandBuilder("Game.Commands.MoveWithFire", (IUObject)args[0]).BuildCommands())).Execute();
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands." + name, (object[] args) => new MacroCommand(new MacroCommandBuilder("Game.Commands.MoveWithFire", (IUObject)args[0]).BuildCommands())).Execute();
 
             mockUObject = new Mock<IUObject>();
 
@@ -89,25 +90,12 @@ namespace spacebattle
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Operation." + name, (object[] args) => { return new LongOperation(name, (IUObject)args[0]); }).Execute();
         }
 
-        [When(@"Выполняется команда Game.Operation.Movement.")]
-        public void WhenВыполняетсяКоманда_()
-        {
-            IoC.Resolve<LongOperation>("Game.Operation." + name, mockUObject.Object).Invoke();
-        }
-
-        [Then(@"Команда успешно завершает выполнение\.")]
-        public void ThenКомандаУспешноЗавершаетВыполнение_()
-        {
-            queue.Object.Take().Execute();
-            moveCommand.Verify(mc => mc.Execute(), Times.Once());
-            fireCommand.Verify(cfc => cfc.Execute(), Times.Once());
-        }
-
-        [Given(@"Инициализирован IoC контейнер без активации команды.")]
-        public void GivenИнициализированIoCКонтейнерБезАктивацииКоманды_()
+        [Given(@"Инициализирован IoC контейнер с обычной командой\.")]
+        public void GivenИнициализированIoCКонтейнерСНОбычнойКомандой_()
         {
             StartLongOpTest();
-
+            name = "Move";
+            moveCommand = new Mock<ICommand>();
             moveCommand.Setup(mc => mc.Execute()).Callback(() => { }).Verifiable();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Move", (object[] args) =>
             {
@@ -121,7 +109,72 @@ namespace spacebattle
                 return fireCommand.Object;
             }).Execute();
 
-            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.Macro." + name, (object[] args) => new MacroCommand(new MacroCommandBuilder("Game.Commands.EmptyMacroCommand", (IUObject)args[0]).BuildCommands())).Execute();
+            mockUObject = new Mock<IUObject>();
+
+            queue = new Mock<IQueue>();
+            realQueue = new Queue<ICommand>();
+            queue.Setup(q => q.Add(It.IsAny<ICommand>())).Callback(realQueue.Enqueue);
+            queue.Setup(q => q.Take()).Returns(() => realQueue.Dequeue());
+
+            IoC.Resolve<Hwdtech.ICommand>(
+                "IoC.Register",
+                "Game.Queue",
+                (object[] args) =>
+                {
+                    return queue.Object;
+                }
+            ).Execute();
+
+            var orderDict = new Dictionary<string, object>();
+
+            mockUObject.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(orderDict.Add);
+            queue.Setup(q => q.Add(It.IsAny<ICommand>())).Callback(realQueue.Enqueue);
+
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Inject", (object[] args) => new ReplaceCommand((ICommand)args[0])).Execute();
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Operation." + name, (object[] args) => { return new LongOperation(name, (IUObject)args[0]); }).Execute();
+        }
+
+        [Then(@"Команда успешно завершает выполнение\.")]
+        public void ThenКомандаУспешноЗавершаетВыполнение_()
+        {
+            queue.Object.Take().Execute();
+            moveCommand.Verify(mc => mc.Execute(), Times.Once());
+            fireCommand.Verify(cfc => cfc.Execute(), Times.Never());
+        }
+
+        [When(@"Выполняется команда Game.Operation.Movement.")]
+        public void WhenВыполняетсяКоманда_()
+        {
+            IoC.Resolve<LongOperation>("Game.Operation." + name, mockUObject.Object).Invoke();
+        }
+
+        [Then(@"Макро Команда успешно завершает выполнение\.")]
+        public void ThenМакроКомандаУспешноЗавершаетВыполнение_()
+        {
+            queue.Object.Take().Execute();
+            moveCommand.Verify(mc => mc.Execute(), Times.Once());
+            fireCommand.Verify(cfc => cfc.Execute(), Times.Once());
+        }
+
+        [Given(@"Инициализирован IoC контейнер без активации команды.")]
+        public void GivenИнициализированIoCКонтейнерБезАктивацииКоманды_()
+        {
+            StartLongOpTest();
+            name = "Macro.EmptyMacroCommand";
+            moveCommand.Setup(mc => mc.Execute()).Callback(() => { }).Verifiable();
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Move", (object[] args) =>
+            {
+                return moveCommand.Object;
+            }).Execute();
+
+            fireCommand = new Mock<ICommand>();
+            fireCommand.Setup(fc => fc.Execute()).Callback(() => { }).Verifiable();
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.Fire", (object[] args) =>
+            {
+                return fireCommand.Object;
+            }).Execute();
+
+            IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands." + name, (object[] args) => new MacroCommand(new MacroCommandBuilder("Game.Commands.EmptyMacroCommand", (IUObject)args[0]).BuildCommands())).Execute();
 
             queue = new Mock<IQueue>();
             realQueue = new Queue<ICommand>();

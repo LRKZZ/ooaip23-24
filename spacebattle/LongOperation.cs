@@ -14,7 +14,7 @@ namespace spacebattle
         }
         public void Invoke()
         {
-            var command = IoC.Resolve<ICommand>("Game.Command.Macro." + _name, _target);
+            var command = IoC.Resolve<ICommand>("Game.Commands." + _name, _target);
 
             var injectableCommand = IoC.Resolve<IInjectable>("Game.Commands.Inject", command);
 

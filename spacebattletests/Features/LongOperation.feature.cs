@@ -115,20 +115,20 @@ testRunner.Given("Инициализирован IoC контейнер с не�
 testRunner.When("Выполняется команда Game.Operation.Movement.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 9
-testRunner.Then("Команда успешно завершает выполнение.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "То ");
+testRunner.Then("Макро Команда успешно завершает выполнение.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "То ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Негативный тест долгой операции")]
+        [Xunit.SkippableFactAttribute(DisplayName="Позитивный тест долгой операции с обычной командой")]
         [Xunit.TraitAttribute("FeatureTitle", "LongOperation")]
-        [Xunit.TraitAttribute("Description", "Негативный тест долгой операции")]
-        public virtual void НегативныйТестДолгойОперации()
+        [Xunit.TraitAttribute("Description", "Позитивный тест долгой операции с обычной командой")]
+        public virtual void ПозитивныйТестДолгойОперацииСОбычнойКомандой()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Негативный тест долгой операции", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Позитивный тест долгой операции с обычной командой", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -150,12 +150,53 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 13
-testRunner.Given("Инициализирован IoC контейнер без активации команды.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
+testRunner.Given("Инициализирован IoC контейнер с обычной командой.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
 #line hidden
 #line 14
 testRunner.When("Выполняется команда Game.Operation.Movement.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 15
+testRunner.Then("Команда успешно завершает выполнение.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "То ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Негативный тест долгой операции")]
+        [Xunit.TraitAttribute("FeatureTitle", "LongOperation")]
+        [Xunit.TraitAttribute("Description", "Негативный тест долгой операции")]
+        public virtual void НегативныйТестДолгойОперации()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Негативный тест долгой операции", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 17
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 19
+testRunner.Given("Инициализирован IoC контейнер без активации команды.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
+#line hidden
+#line 20
+testRunner.When("Выполняется команда Game.Operation.Movement.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
+#line hidden
+#line 21
 testRunner.Then("Команда не вызывается и не выполняется.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "То ");
 #line hidden
             }
