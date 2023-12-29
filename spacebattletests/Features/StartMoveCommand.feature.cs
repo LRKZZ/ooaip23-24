@@ -40,8 +40,8 @@ namespace spacebattletests.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("ru"), "Features", "StartMoveCommand", "  Как система\r\n  Я хочу начать команду движения\r\n  Чтобы правильно инициировать п" +
-                    "роцесс движения.", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("ru"), "Features", "StartMoveCommand", "  Как система\n  Я хочу начать команду движения\n  Чтобы правильно инициировать про" +
+                    "цесс движения.", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
