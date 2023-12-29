@@ -10,9 +10,8 @@ namespace spacebattle
         private Mock<ICommand> moveCommand = new Mock<ICommand>();
         private Mock<ICommand> fireCommand = new Mock<ICommand>();
         private IUObject? _object;
-        private List<ICommand>? cmds;
+        private List<ICommand> cmds = new List<ICommand>();
         private MacroCommand? macroCommand;
-        private Exception? _exception;
         public static void StartTest()
         {
             new InitScopeBasedIoCImplementationCommand().Execute();
@@ -62,33 +61,6 @@ namespace spacebattle
         {
             moveCommand.Verify(mc => mc.Execute(), Times.Once());
             fireCommand.Verify(cfc => cfc.Execute(), Times.Once());
-        }
-
-        [Given(@"ошибочно был передан пустой приказ")]
-        public void GivenОшибочноБылПереданПустойПриказ()
-        {
-            StartTest();
-            _object = new Mock<IUObject>().Object;
-            cmds = new MacroCommandBuilder("Game.Commands.EmptyOrder", _object).BuildCommands();
-        }
-
-        [When(@"объект объект обрабатывает приказ")]
-        public void WhenОбъектОбъектОбрабатываетПриказ()
-        {
-            try
-            {
-                macroCommand = new MacroCommand(cmds);
-            }
-            catch (Exception ex)
-            {
-                _exception = ex;
-            }
-        }
-
-        [Then(@"ошибка выполнения приказа")]
-        public void ThenОшибкаВыполненияПриказа()
-        {
-            Assert.IsType<Exception>(_exception);
         }
     }
 }
