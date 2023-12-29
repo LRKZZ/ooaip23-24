@@ -5,7 +5,7 @@ public class MacroCommand : ICommand
 
     public MacroCommand(List<ICommand> cmds)
     {
-         _cmds = cmds;
+        _cmds = cmds;
     }
 
     public void Execute()
