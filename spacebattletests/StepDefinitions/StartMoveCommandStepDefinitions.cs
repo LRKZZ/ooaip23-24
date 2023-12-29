@@ -121,13 +121,12 @@ namespace spacebattletests.StepDefinitions
             startable.SetupGet(s => s.PropertiesOfOrder).Returns(properties);
             startable.SetupGet(s => s.Order).Returns(order.Object);
             order.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback(() => throw new NotImplementedException());
-
-            startMoveCommand = new StartMoveCommand(startable.Object);
         }
 
         [Then(@"возникает исключение")]
         public void ThenВозникаетИсключение()
         {
+            var startMoveCommand = new StartMoveCommand(startable.Object);
             Assert.Throws<NotImplementedException>(startMoveCommand.Execute);
         }
 
