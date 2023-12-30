@@ -20,7 +20,6 @@ namespace spacebattle
                 var order = (IUObject)args[0];
                 var key = (string)args[1];
                 var value = args[2];
-
                 order.SetProperty(key, value);
                 return new object();
             }
