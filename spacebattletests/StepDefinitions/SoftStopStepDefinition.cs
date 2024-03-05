@@ -3,7 +3,6 @@
 using System.Collections.Concurrent;
 using Hwdtech;
 using Hwdtech.Ioc;
-using Moq;
 
 public class SoftStopTest
 {
@@ -35,7 +34,6 @@ public class SoftStopTest
         var t = new ServerThread(q);
 
         var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", t, () => { mre.Set(); });
-
 
         q.Add(new ActionCommand(() => { }));
         q.Add(new ActionCommand(() => { Thread.Sleep(3000); }));

@@ -2,7 +2,7 @@
 {
     public class HardStopCommand : ICommand
     {
-        private ServerThread _t;
+        private readonly ServerThread _t;
         public HardStopCommand(ServerThread t)
         {
             _t = t;

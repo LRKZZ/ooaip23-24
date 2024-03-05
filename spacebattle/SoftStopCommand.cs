@@ -1,12 +1,10 @@
-﻿using Hwdtech;
-
-namespace spacebattle
+﻿namespace spacebattle
 {
     public class SoftStopCommand : ICommand
     {
-        private ServerThread _t;
+        private readonly ServerThread _t;
 
-        private Action _action;
+        private readonly Action _action;
         public SoftStopCommand(ServerThread t)
         {
             _t = t;

@@ -3,7 +3,6 @@
 using System.Collections.Concurrent;
 using Hwdtech;
 using Hwdtech.Ioc;
-using Moq;
 
 public class ServerThreadTest
 {
@@ -35,7 +34,6 @@ public class ServerThreadTest
         var t = new ServerThread(q);
 
         var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", t, () => { mre.Set(); });
-
 
         q.Add(new ActionCommand(() => { }));
         q.Add(new ActionCommand(() => { Thread.Sleep(3000); }));

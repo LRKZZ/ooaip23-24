@@ -1,20 +1,20 @@
 ﻿using System.Collections.Concurrent;
-using Hwdtech;
 
 namespace spacebattle
 {
     public class ServerThread
     {
         private Action _behaviour;
-        private BlockingCollection<ICommand> _queue;
-        private Thread _thread;
+        private readonly BlockingCollection<ICommand> _queue;
+        private readonly Thread _thread;
         private bool _stop = false;
 
         public ServerThread(BlockingCollection<ICommand> queue)
         {
             _queue = queue;
 
-            _behaviour = () => {
+            _behaviour = () =>
+            {
                 while (!_stop)
                 {
                     var cmd = _queue.Take();
@@ -29,9 +29,9 @@ namespace spacebattle
                 }
             };
 
-            _thread = new Thread(() => 
+            _thread = new Thread(() =>
             {
-                    _behaviour();
+                _behaviour();
             });
         }
 
