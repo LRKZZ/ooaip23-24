@@ -21,7 +21,7 @@ public class SoftStopTest
             return new ActionCommand(() =>
             {
                 new SoftStopCommand((ServerThread)args[0]).Execute();
-                new ActionCommand((Action)args[2]).Execute();
+                new ActionCommand((Action)args[1]).Execute();
             });
         }).Execute();
     }
