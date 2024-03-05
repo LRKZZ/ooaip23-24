@@ -2,14 +2,15 @@
 {
     public class HardStopCommand : ICommand
     {
-        public HardStopCommand() 
+        private ServerThread _t;
+        public HardStopCommand(ServerThread t)
         {
-
+            _t = t;
         }
 
         public void Execute()
         {
-
+            _t.Stop();
         }
     }
 }

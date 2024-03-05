@@ -1,56 +1,68 @@
-﻿using Hwdtech;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
+using Hwdtech;
 
 namespace spacebattle
 {
     public class ServerThread
     {
-        private BlockingCollection<ICommand> _q;
-        private Thread _t;
-        private bool _stop = false;
         private Action _behaviour;
+        private BlockingCollection<ICommand> _queue;
+        private Thread _thread;
+        private bool _stop = false;
 
-        public ServerThread(BlockingCollection<ICommand> q)
+        public ServerThread(BlockingCollection<ICommand> queue)
         {
-            _q = q;
+            _queue = queue;
 
-            _behaviour = () =>
-            {
-                var cmd = _q.Take();
-                try
+            _behaviour = () => {
+                while (!_stop)
                 {
-                    cmd.Execute();
-                }
-                catch (Exception e)
-                {
-                    IoC.Resolve<ICommand>("ExceptionHandler.Handle", cmd, e).Execute();
+                    var cmd = _queue.Take();
+                    try
+                    {
+                        cmd.Execute();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
                 }
             };
 
-            _t = new Thread(() =>
+            _thread = new Thread(() => 
             {
-                while (!_stop)
-                {
                     _behaviour();
-                }
             });
-        }
-
-        public void Start()
-        {
-            _t.Start();
         }
 
         internal void Stop()
         {
-            // HardStop должен вызывать команду Stop
-            _stop = true;
+            _stop = !_stop;
         }
 
-        internal void SetBehaviour(Action behaviour)
+        internal Action GetBehaviour()
         {
-            // SoftStop должен вызывать команду смены поведения и добавлять новое условие в цикл
-            _behaviour = behaviour;
+            return _behaviour;
+        }
+
+        internal bool GetStop()
+        {
+            return _stop;
+        }
+
+        internal BlockingCollection<ICommand> GetQue()
+        {
+            return _queue;
+        }
+
+        internal void SetBehaviour(Action newBehaviour)
+        {
+            _behaviour = newBehaviour;
+        }
+
+        public void Start()
+        {
+            _thread.Start();
         }
     }
 }
