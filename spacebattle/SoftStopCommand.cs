@@ -12,7 +12,7 @@
             var _queue = _t.GetQue();
             _action = () =>
             {
-                /*while (!_stop && _queue.IsCompleted)
+                while (!_stop && _queue.IsCompleted)
                 {
                     var cmd = _queue.Take();
                     try
@@ -23,7 +23,7 @@
                     {
                         Console.WriteLine(e);
                     }
-                }*/
+                }
             };
         }
 
