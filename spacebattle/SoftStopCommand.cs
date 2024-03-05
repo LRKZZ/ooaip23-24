@@ -12,7 +12,7 @@
             var _queue = _t.GetQue();
             _action = () =>
             {
-                while (!_stop && _queue.IsCompleted)
+                while (!(_queue.Count == 0))
                 {
                     var cmd = _queue.Take();
                     try
@@ -30,7 +30,6 @@
         public void Execute()
         {
             _t.SetBehaviour(_action);
-            _t.Stop();
         }
     }
 }

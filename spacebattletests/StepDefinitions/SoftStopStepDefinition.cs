@@ -33,16 +33,23 @@ public class SoftStopTest
         var q = new BlockingCollection<ICommand>(100);
         var t = new ServerThread(q);
 
-        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", t, () => { mre.Set(); });
+        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", t, () =>
+        {
+            q.Add(new ActionCommand(() => { mre.Set(); }));
+        });
 
         q.Add(new ActionCommand(() => { }));
         q.Add(new ActionCommand(() => { Thread.Sleep(3000); }));
         q.Add(ss);
         q.Add(new ActionCommand(() => { }));
+        q.Add(new ActionCommand(() => { }));
+        q.Add(new ActionCommand(() => { }));
+        q.Add(new ActionCommand(() => { Thread.Sleep(3000); }));
+        q.Add(new ActionCommand(() => { }));
 
         t.Start();
         mre.WaitOne();
 
-        Assert.Single(q);
+        Assert.Empty(q);
     }
 }
