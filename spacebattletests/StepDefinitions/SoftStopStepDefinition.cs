@@ -38,6 +38,7 @@ public class SoftStopTest
         q.Add(new ActionCommand(() => { }));
         q.Add(ss);
         q.Add(new ActionCommand(() => { }));
+        q.Add(new ActionCommand(() => { }));
 
         t.Start();
         mre.WaitOne();
