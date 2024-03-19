@@ -8,6 +8,7 @@ namespace spacebattle
         private readonly BlockingCollection<ICommand> _queue;
         private readonly Thread _thread;
         private bool _stop = false;
+        private Action? _event;
 
         public ServerThread(BlockingCollection<ICommand> queue)
         {
@@ -15,8 +16,6 @@ namespace spacebattle
 
             _behaviour = () =>
             {
-                while (!_stop)
-                {
                     var cmd = _queue.Take();
                     try
                     {
@@ -26,12 +25,16 @@ namespace spacebattle
                     {
                         Console.WriteLine(e);
                     }
-                }
             };
 
             _thread = new Thread(() =>
             {
-                _behaviour();
+                while (!_stop)
+                {
+                    _behaviour();
+                }
+
+                if (_event != null) { _event(); }
             });
         }
 
@@ -40,14 +43,9 @@ namespace spacebattle
             _stop = !_stop;
         }
 
-        internal Action GetBehaviour()
+        internal void SetAction(Action action)
         {
-            return _behaviour;
-        }
-
-        internal bool GetStop()
-        {
-            return _stop;
+            _event = action;
         }
 
         internal BlockingCollection<ICommand> GetQue()

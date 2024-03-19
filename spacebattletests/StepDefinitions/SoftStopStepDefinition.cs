@@ -21,7 +21,7 @@ public class SoftStopTest
             return new ActionCommand(() =>
             {
                 new SoftStopCommand((ServerThread)args[0]).Execute();
-                new ActionCommand((Action)args[1]).Execute();
+                new AfterCloseThreadStrategy((ServerThread)args[0], (Action)args[1]).Run();
             });
         }).Execute();
     }
@@ -33,18 +33,10 @@ public class SoftStopTest
         var q = new BlockingCollection<ICommand>(100);
         var t = new ServerThread(q);
 
-        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", t, () =>
-        {
-            q.Add(new ActionCommand(() => { mre.Set(); }));
-        });
+        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", t, () => { mre.Set(); });
 
         q.Add(new ActionCommand(() => { }));
-        q.Add(new ActionCommand(() => { Thread.Sleep(3000); }));
         q.Add(ss);
-        q.Add(new ActionCommand(() => { }));
-        q.Add(new ActionCommand(() => { }));
-        q.Add(new ActionCommand(() => { }));
-        q.Add(new ActionCommand(() => { Thread.Sleep(3000); }));
         q.Add(new ActionCommand(() => { }));
 
         t.Start();

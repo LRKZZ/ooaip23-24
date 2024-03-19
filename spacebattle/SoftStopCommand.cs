@@ -1,18 +1,23 @@
-﻿namespace spacebattle
+﻿using System.Collections.Concurrent;
+
+namespace spacebattle
 {
     public class SoftStopCommand : ICommand
     {
         private readonly ServerThread _t;
-
+        private readonly BlockingCollection<ICommand> _queue;
         private readonly Action _action;
         public SoftStopCommand(ServerThread t)
         {
             _t = t;
-            var _stop = _t.GetStop();
-            var _queue = _t.GetQue();
+            _queue = _t.GetQue();
             _action = () =>
             {
-                while (!(_queue.Count == 0))
+                if (_queue.Count == 0) 
+                { 
+                    _t.Stop(); 
+                }
+                else
                 {
                     var cmd = _queue.Take();
                     try

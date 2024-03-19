@@ -21,7 +21,7 @@ public class ServerThreadTest
             return new ActionCommand(() =>
             {
                 new HardStopCommand((ServerThread)args[0]).Execute();
-                new ActionCommand((Action)args[1]).Execute();
+                new AfterCloseThreadStrategy((ServerThread)args[0], (Action)args[1]).Run();
             });
         }).Execute();
     }
@@ -36,7 +36,6 @@ public class ServerThreadTest
         var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", t, () => { mre.Set(); });
 
         q.Add(new ActionCommand(() => { }));
-        q.Add(new ActionCommand(() => { Thread.Sleep(3000); }));
         q.Add(hs);
         q.Add(new ActionCommand(() => { }));
 
