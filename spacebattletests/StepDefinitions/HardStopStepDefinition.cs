@@ -3,6 +3,7 @@
 using System.Collections.Concurrent;
 using Hwdtech;
 using Hwdtech.Ioc;
+using Moq;
 
 public class ServerThreadTest
 {
@@ -43,5 +44,26 @@ public class ServerThreadTest
         mre.WaitOne();
 
         Assert.Single(q);
+    }
+
+    [Fact]
+    public void HardStopCommandExeptionError()
+    {
+        var exCommand = new Mock<ICommand>();
+        var mre = new ManualResetEvent(false);
+        var q = new BlockingCollection<ICommand>(100);
+        var t = new ServerThread(q);
+        exCommand.Setup(x => x.Execute()).Throws<Exception>().Verifiable();
+
+        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", t, () => { mre.Set(); });
+
+        q.Add(exCommand.Object);
+        q.Add(hs);
+        q.Add(new ActionCommand(() => { }));
+
+        t.Start();
+        mre.WaitOne();
+
+        exCommand.Verify(m => m.Execute(), Times.Once);
     }
 }
