@@ -16,15 +16,15 @@ namespace spacebattle
 
             _behaviour = () =>
             {
-                    var cmd = _queue.Take();
-                    try
-                    {
-                        cmd.Execute();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e);
-                    }
+                var cmd = _queue.Take();
+                try
+                {
+                    cmd.Execute();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             };
 
             _thread = new Thread(() =>
@@ -34,7 +34,10 @@ namespace spacebattle
                     _behaviour();
                 }
 
-                if (_event != null) { _event(); }
+                if (_event != null)
+                {
+                    _event();
+                }
             });
         }
 

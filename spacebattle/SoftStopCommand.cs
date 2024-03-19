@@ -13,9 +13,9 @@ namespace spacebattle
             _queue = _t.GetQue();
             _action = () =>
             {
-                if (_queue.Count == 0) 
-                { 
-                    _t.Stop(); 
+                if (_queue.Count == 0)
+                {
+                    _t.Stop();
                 }
                 else
                 {
