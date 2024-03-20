@@ -1,7 +1,6 @@
 ﻿namespace spacebattle;
 
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Hwdtech;
 using Hwdtech.Ioc;
 using Moq;
@@ -94,7 +93,6 @@ public class SoftStopTest
         IoC.Resolve<ICommand>("Server.SendCommand", 2, sss, list).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 2, new ActionCommand(() => { }), list).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object, list).Execute();
-
 
         IoC.Resolve<ICommand>("Server.Command.Start", 1, list).Execute();
         IoC.Resolve<ICommand>("Server.Command.Start", 2, list).Execute();

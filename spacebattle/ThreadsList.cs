@@ -13,11 +13,6 @@
             _threads.Add(id, thread);
         }
 
-        //public void removethread(int id)
-        //{
-        //    _threads.remove(id);
-        //}
-
         public ServerThread GetThread(int id)
         {
             return _threads[id];

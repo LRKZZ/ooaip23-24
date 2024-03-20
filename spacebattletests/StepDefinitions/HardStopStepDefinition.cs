@@ -1,8 +1,6 @@
 ﻿namespace spacebattle;
 
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using Castle.Components.DictionaryAdapter.Xml;
 using Hwdtech;
 using Hwdtech.Ioc;
 using Moq;
