@@ -51,7 +51,7 @@ namespace spacebattle
             _event = action;
         }
 
-        internal BlockingCollection<ICommand> GetQue()
+        public BlockingCollection<ICommand> GetQue()
         {
             return _queue;
         }

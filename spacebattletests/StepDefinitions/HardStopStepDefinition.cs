@@ -1,6 +1,8 @@
 ﻿namespace spacebattle;
 
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using Castle.Components.DictionaryAdapter.Xml;
 using Hwdtech;
 using Hwdtech.Ioc;
 using Moq;
@@ -17,12 +19,43 @@ public class ServerThreadTest
             )
         ).Execute();
 
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.GetThreadById", (object[] args) =>
+        {
+            return new ThreadsListStrategy((ThreadsList)args[1]).GetThread((int)args[0]);
+        }).Execute();
+
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Command.Create", (object[] args) =>
+        {
+            var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
+            new ThreadsListStrategy((ThreadsList)args[2]).AddThread((int)args[0], t);
+            return t;
+        }).Execute();
+
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Command.Start", (object[] args) =>
+        {
+            return new ActionCommand(() =>
+            {
+                var tl = new ThreadsListStrategy((ThreadsList)args[1]);
+                tl.GetThread((int)args[0]).Start();
+            });
+        }).Execute();
+
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Commands.HardStop", (object[] args) =>
         {
             return new ActionCommand(() =>
             {
-                new HardStopCommand((ServerThread)args[0]).Execute();
-                new AfterCloseThreadStrategy((ServerThread)args[0], (Action)args[1]).Run();
+                new HardStopCommand(new ThreadsListStrategy((ThreadsList)args[1]).GetThread((int)args[0])).Execute();
+                new AfterCloseThreadStrategy(new ThreadsListStrategy((ThreadsList)args[1]).GetThread((int)args[0]), (Action)args[2]).Run();
+            });
+        }).Execute();
+
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.SendCommand", (object[] args) =>
+        {
+            return new ActionCommand(() =>
+            {
+                var tl = new ThreadsListStrategy((ThreadsList)args[2]);
+                var q = tl.GetThread((int)args[0]).GetQue();
+                q.Add((ICommand)args[1]);
             });
         }).Execute();
     }
@@ -30,17 +63,18 @@ public class ServerThreadTest
     [Fact]
     public void HardStopCommandShouldStopServer()
     {
+        var list = new ThreadsList();
         var mre = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
-        var t = new ServerThread(q);
+        var p = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list);
 
-        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", t, () => { mre.Set(); });
+        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, list, () => { mre.Set(); });
 
-        q.Add(new ActionCommand(() => { }));
-        q.Add(hs);
-        q.Add(new ActionCommand(() => { }));
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, hs, list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
 
-        t.Start();
+        IoC.Resolve<ICommand>("Server.Command.Start", 1, list).Execute();
         mre.WaitOne();
 
         Assert.Single(q);
@@ -49,19 +83,20 @@ public class ServerThreadTest
     [Fact]
     public void HardStopCommandExeptionError()
     {
+        var list = new ThreadsList();
         var exCommand = new Mock<ICommand>();
         var mre = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
-        var t = new ServerThread(q);
+        var p = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list);
+
         exCommand.Setup(x => x.Execute()).Throws<Exception>().Verifiable();
+        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, list, () => { mre.Set(); });
 
-        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", t, () => { mre.Set(); });
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, exCommand.Object, list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, hs, list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
 
-        q.Add(exCommand.Object);
-        q.Add(hs);
-        q.Add(new ActionCommand(() => { }));
-
-        t.Start();
+        IoC.Resolve<ICommand>("Server.Command.Start", 1, list).Execute();
         mre.WaitOne();
 
         exCommand.Verify(m => m.Execute(), Times.Once);
