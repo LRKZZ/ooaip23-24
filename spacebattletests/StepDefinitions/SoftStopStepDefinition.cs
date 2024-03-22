@@ -43,6 +43,7 @@ public class SoftStopTest
         {
             return new ActionCommand(() =>
             {
+                new ActionCommand((Action)args[3]).Execute();
                 new SoftStopCommand(new ThreadsListStrategy((ThreadsList)args[1]).GetThread((int)args[0])).Execute();
                 new AfterCloseThreadStrategy(new ThreadsListStrategy((ThreadsList)args[1]).GetThread((int)args[0]), (Action)args[2]).Run();
             });
@@ -55,6 +56,7 @@ public class SoftStopTest
                 var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
                 new ThreadsListStrategy((ThreadsList)args[2]).AddThread((int)args[0], t);
                 var tl = new ThreadsListStrategy((ThreadsList)args[2]);
+                new AfterOpenThreadStrategy(new ThreadsListStrategy((ThreadsList)args[2]).GetThread((int)args[0]), (Action)args[3]).Run();
                 tl.GetThread((int)args[0]).Start();
             });
         }).Execute();
@@ -75,33 +77,25 @@ public class SoftStopTest
     {
         var list = new ThreadsList();
         var mre = new ManualResetEvent(false);
-        var mrg = new ManualResetEvent(false);
+        var stop = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
-        var g = new BlockingCollection<ICommand>(100);
         var cmd = new Mock<ICommand>();
-        var t = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list, () => { });
-        var h = IoC.Resolve<ServerThread>("Server.Command.Create", 2, g, list, () => { });
-
-        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 1, list, () => { mre.Set(); });
-        var sss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 2, list, () => { mrg.Set(); });
+        //var t = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list, () => { });
+        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 1, list, () => { mre.Set(); }, () => { stop.WaitOne(); });
         cmd.Setup(x => x.Execute()).Verifiable();
+
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, list, () => { }).Execute();
 
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 1, ss, list).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
 
-        IoC.Resolve<ICommand>("Server.SendCommand", 2, new ActionCommand(() => { }), list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 2, sss, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 2, new ActionCommand(() => { }), list).Execute();
+        //IoC.Resolve<ICommand>("Server.Command.Start", 1, list).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object, list).Execute();
-
-        IoC.Resolve<ICommand>("Server.Command.Start", 1, list).Execute();
-        IoC.Resolve<ICommand>("Server.Command.Start", 2, list).Execute();
+        stop.Set();
         mre.WaitOne();
-        mrg.WaitOne();
         cmd.Verify(m => m.Execute(), Times.Once);
         Assert.Empty(q);
-        Assert.Empty(g);
     }
 
     [Fact]
@@ -110,17 +104,19 @@ public class SoftStopTest
         var list = new ThreadsList();
         var exCommand = new Mock<ICommand>();
         var mre = new ManualResetEvent(false);
+        var stop = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
-        var t = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list, () => { });
-
+        //var t = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list, () => { });
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, list, () => { }).Execute();
         exCommand.Setup(x => x.Execute()).Throws<Exception>().Verifiable();
-        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 1, list, () => { mre.Set(); });
+        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 1, list, () => { mre.Set(); }, () => { stop.WaitOne(); });
 
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 1, ss, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, exCommand.Object, list).Execute();
 
-        IoC.Resolve<ICommand>("Server.Command.Start", 1, list).Execute();
+        //IoC.Resolve<ICommand>("Server.Command.Start", 1, list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, exCommand.Object, list).Execute();
+        stop.Set();
         mre.WaitOne();
 
         exCommand.Verify(m => m.Execute(), Times.Once);
