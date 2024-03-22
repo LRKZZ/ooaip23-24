@@ -26,6 +26,7 @@ public class ServerThreadTest
         {
             var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
             new ThreadsListStrategy((ThreadsList)args[2]).AddThread((int)args[0], t);
+            new AfterOpenThreadStrategy(new ThreadsListStrategy((ThreadsList)args[2]).GetThread((int)args[0]), (Action)args[3]).Run();
             return t;
         }).Execute();
 
@@ -64,7 +65,7 @@ public class ServerThreadTest
         var list = new ThreadsList();
         var mre = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
-        var p = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list);
+        var p = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list, () => { });
 
         var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, list, () => { mre.Set(); });
 
@@ -85,7 +86,7 @@ public class ServerThreadTest
         var exCommand = new Mock<ICommand>();
         var mre = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
-        var p = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list);
+        var p = IoC.Resolve<ServerThread>("Server.Command.Create", 1, q, list, () => { });
 
         exCommand.Setup(x => x.Execute()).Throws<Exception>().Verifiable();
         var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, list, () => { mre.Set(); });
