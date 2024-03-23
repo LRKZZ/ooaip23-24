@@ -2,7 +2,7 @@ namespace spacebattle;
 
 public class StartServer: ICommand 
 {
-    private int count;
+    private readonly int count;
     public StartServer(int count) 
     {
         this.count = count;
