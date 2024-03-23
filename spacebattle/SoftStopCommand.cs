@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Hwdtech;
 
 namespace spacebattle
 {
@@ -26,7 +27,7 @@ namespace spacebattle
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
+                        IoC.Resolve<ICommand>("Exception.Handler", e).Execute();
                     }
                 }
             };

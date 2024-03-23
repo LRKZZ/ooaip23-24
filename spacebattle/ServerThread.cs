@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Hwdtech;
 
 namespace spacebattle
 {
@@ -10,6 +11,7 @@ namespace spacebattle
         private bool _stop = false;
         private Action? _afterEvent;
         private Action? _beforeEvent;
+        private object? _scope;
 
         public ServerThread(BlockingCollection<ICommand> queue)
         {
@@ -24,12 +26,17 @@ namespace spacebattle
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    IoC.Resolve<ICommand>("Exception.Handler", e).Execute();
                 }
             };
 
             _thread = new Thread(() =>
             {
+                if (_scope != null)
+                {
+                    IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", _scope).Execute();
+                }
+
                 if (_beforeEvent != null)
                 {
                     _beforeEvent();
@@ -60,6 +67,11 @@ namespace spacebattle
         internal void SetBeforeAction(Action action)
         {
             _beforeEvent = action;
+        }
+
+        public void SetScope(object scope)
+        {
+            _scope = scope;
         }
 
         public BlockingCollection<ICommand> GetQue()
