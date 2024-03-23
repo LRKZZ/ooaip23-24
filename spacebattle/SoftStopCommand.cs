@@ -35,7 +35,14 @@ namespace spacebattle
 
         public void Execute()
         {
-            _t.SetBehaviour(_action);
+            if (_t.Equals(Thread.CurrentThread))
+            {
+                _t.SetBehaviour(_action);
+            }
+            else
+            {
+                throw new Exception("WRONG!");
+            }
         }
     }
 }

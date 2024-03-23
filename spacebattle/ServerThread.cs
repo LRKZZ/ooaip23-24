@@ -88,5 +88,33 @@ namespace spacebattle
         {
             _thread.Start();
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            if (obj.GetType() == typeof(Thread))
+            {
+                return _thread == (Thread)obj;
+            }
+
+            if (obj.GetType() == typeof(ServerThread))
+            {
+                return GetHashCode() == obj.GetHashCode();
+            }
+
+            return false;
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            // TODO: write your implementation of GetHashCode() here
+            // throw new System.NotImplementedException();
+            return base.GetHashCode();
+        }
     }
 }

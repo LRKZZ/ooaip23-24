@@ -10,7 +10,14 @@
 
         public void Execute()
         {
-            _t.Stop();
+            if (_t.Equals(Thread.CurrentThread))
+            {
+                _t.Stop();
+            }
+            else
+            {
+                throw new Exception("WRONG!");
+            }
         }
     }
 }

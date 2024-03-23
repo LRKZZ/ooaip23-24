@@ -7,6 +7,7 @@ using Moq;
 
 public class SoftStopTest
 {
+    private Exception? _exception;
     public SoftStopTest()
     {
         new InitScopeBasedIoCImplementationCommand().Execute();
@@ -76,7 +77,7 @@ public class SoftStopTest
         {
             return new ActionCommand(() =>
             {
-
+                _exception = (Exception)args[0];
             });
         }).Execute();
     }
@@ -135,5 +136,40 @@ public class SoftStopTest
         Assert.Empty(q);
         exCommand.Verify(m => m.Execute(), Times.Once);
         cmd.Verify(m => m.Execute(), Times.Once);
+    }
+
+    [Fact]
+    public void HardStopCommandSendIntoAnotherThread()
+    {
+        var list = new ThreadsList();
+        var cmd = new Mock<ICommand>();
+        var mre = new ManualResetEvent(false);
+        var stop = new ManualResetEvent(false);
+        var q_1 = new BlockingCollection<ICommand>(100);
+        var q_2 = new BlockingCollection<ICommand>(100);
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q_1, list, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
+        {
+
+        }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 2, q_2, list, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
+        {
+
+        }).Execute();
+        var ss_1 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 1, list, () => { mre.Set(); }, () => { stop.WaitOne(); });
+        var ss_2 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 2, list, () => { mre.Set(); }, () => { stop.WaitOne(); });
+
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object, list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, ss_1, list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 2, ss_1, list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 2, ss_2, list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
+        
+        stop.Set();
+        mre.WaitOne();
+
+        if (_exception != null)
+        {
+            Assert.Equal("WRONG!", _exception.Message);
+        }
     }
 }
