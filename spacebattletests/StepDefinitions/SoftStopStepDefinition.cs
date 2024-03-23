@@ -163,7 +163,7 @@ public class SoftStopTest
         IoC.Resolve<ICommand>("Server.SendCommand", 2, ss_1, list).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 2, ss_2, list).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
-        
+
         stop.Set();
         mre.WaitOne();
 

@@ -155,7 +155,7 @@ public class ServerThreadTest
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
 
         mre.WaitOne();
-        if(_exception != null)
+        if (_exception != null)
         {
             Assert.Equal("WRONG!", _exception.Message);
         }

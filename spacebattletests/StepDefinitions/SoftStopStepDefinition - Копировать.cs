@@ -6,7 +6,7 @@ public class EqualTest
 {
     public EqualTest()
     {
-        
+
     }
 
     [Fact]
