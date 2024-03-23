@@ -109,11 +109,8 @@ namespace spacebattle
             return false;
         }
 
-        // override object.GetHashCode
         public override int GetHashCode()
         {
-            // TODO: write your implementation of GetHashCode() here
-            // throw new System.NotImplementedException();
             return base.GetHashCode();
         }
     }
