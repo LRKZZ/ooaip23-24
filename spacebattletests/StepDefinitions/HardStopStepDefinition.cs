@@ -123,7 +123,6 @@ public class ServerThreadTest
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
 
         mre.WaitOne();
-        Console.WriteLine(_exception);
         Assert.Single(q);
         exCommand.Verify(m => m.Execute(), Times.Once);
         cmd.Verify(m => m.Execute(), Times.Once);
