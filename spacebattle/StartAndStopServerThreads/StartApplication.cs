@@ -1,7 +1,7 @@
-namespace spacebattle;
 using Hwdtech;
-
-public class StartApplication 
+namespace spacebattle
+{
+    public class StartApplication 
 {
     private readonly int _threadCount;
 
@@ -10,12 +10,25 @@ public class StartApplication
         _threadCount = threadCount;
     }
 
-    public void Execute()
+    private static ICommand GetCommand(string key, params object[] args)
     {
-        IoC.Resolve<ICommand>("ConsoleOutputStrategy", "press any button for start").Execute();
-        IoC.Resolve<ICommand>("StartAppStrategy", _threadCount).Execute();
-        IoC.Resolve<ICommand>("ConsoleOutputStrategy", "press any button for stop").Execute();
-        IoC.Resolve<ICommand>("StopServerStrategy").Execute();
+        return IoC.Resolve<ICommand>(key, args);
     }
 
+    public void Execute()
+    {
+        var commands = new List<ICommand>
+        {
+            GetCommand("ConsoleOutputStrategy", "press any button for start"),
+            GetCommand("StartAppStrategy", _threadCount),
+            GetCommand("ConsoleOutputStrategy", "press any button for stop"),
+            GetCommand("StopServerStrategy")
+        };
+
+        foreach (var command in commands) 
+        {
+            command.Execute();
+        }
+    }
+}
 }
