@@ -98,6 +98,7 @@ public class ServerThreadTest
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
 
         mre.WaitOne();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
 
         Assert.Single(q);
     }

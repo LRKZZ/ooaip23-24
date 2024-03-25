@@ -64,6 +64,11 @@ namespace spacebattle
             _afterEvent = action;
         }
 
+        public void Wait()
+        {
+            _thread.Join();
+        }
+
         internal void SetBeforeAction(Action action)
         {
             _beforeEvent = action;
