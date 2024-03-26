@@ -7,7 +7,7 @@ using Moq;
 
 public class SoftStopTest
 {
-    private Exception? _exception;
+    private Exception _exception = new Exception();
     public SoftStopTest()
     {
         new InitScopeBasedIoCImplementationCommand().Execute();
@@ -168,9 +168,7 @@ public class SoftStopTest
         stop.Set();
         mre.WaitOne();
         IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
-        if (_exception != null)
-        {
-            Assert.Equal("WRONG!", _exception.Message);
-        }
+
+        Assert.Equal("WRONG!", _exception.Message);
     }
 }

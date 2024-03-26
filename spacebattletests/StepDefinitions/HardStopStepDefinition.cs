@@ -7,7 +7,7 @@ using Moq;
 
 public class ServerThreadTest
 {
-    private Exception? _exception;
+    private Exception _exception = new Exception();
     public ServerThreadTest()
     {
         new InitScopeBasedIoCImplementationCommand().Execute();
@@ -158,9 +158,7 @@ public class ServerThreadTest
         mre.WaitOne();
         IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
         IoC.Resolve<ServerThread>("Server.GetThreadById", 2, list).Wait();
-        if (_exception != null)
-        {
-            Assert.Equal("WRONG!", _exception.Message);
-        }
+
+        Assert.Equal("WRONG!", _exception.Message);
     }
 }
