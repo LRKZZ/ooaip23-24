@@ -105,6 +105,7 @@ public class SoftStopTest
         IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object, list).Execute();
         stop.Set();
         mre.WaitOne();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
         cmd.Verify(m => m.Execute(), Times.Once);
         Assert.Empty(q);
     }
@@ -132,7 +133,7 @@ public class SoftStopTest
         IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object, list).Execute();
         stop.Set();
         mre.WaitOne();
-
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
         Assert.Empty(q);
         exCommand.Verify(m => m.Execute(), Times.Once);
         cmd.Verify(m => m.Execute(), Times.Once);
@@ -166,7 +167,7 @@ public class SoftStopTest
 
         stop.Set();
         mre.WaitOne();
-
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
         if (_exception != null)
         {
             Assert.Equal("WRONG!", _exception.Message);

@@ -124,6 +124,7 @@ public class ServerThreadTest
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
 
         mre.WaitOne();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
         Assert.Single(q);
         exCommand.Verify(m => m.Execute(), Times.Once);
         cmd.Verify(m => m.Execute(), Times.Once);
@@ -155,6 +156,8 @@ public class ServerThreadTest
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
 
         mre.WaitOne();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 2, list).Wait();
         if (_exception != null)
         {
             Assert.Equal("WRONG!", _exception.Message);
