@@ -187,6 +187,7 @@ public class SoftStopTest
         stop.Set();
         mre.WaitOne();
         IoC.Resolve<ServerThread>("Server.GetThreadById", 1).Wait();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 2).Wait();
 
         Assert.Equal("WRONG!", _exception.Message);
     }
