@@ -27,7 +27,9 @@ public class ServerThreadTest
         {
             var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
             new ThreadsListStrategy().AddThread((int)args[0], t);
-            new AfterOpenThreadStrategy(new ThreadsListStrategy().GetThread((int)args[0]), (Action)args[2]).Run();
+            var tl = new ThreadsListStrategy();
+            new AfterOpenThreadStrategy(new ThreadsListStrategy().GetThread((int)args[0]), (Action)args[3]).Run();
+            tl.GetThread((int)args[0]).SetScope(args[2]);
             return t;
         }).Execute();
 
@@ -63,13 +65,18 @@ public class ServerThreadTest
         {
             return new ActionCommand(() =>
             {
-                var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
-                new ThreadsListStrategy().AddThread((int)args[0], t);
-                var tl = new ThreadsListStrategy();
-                new AfterOpenThreadStrategy(new ThreadsListStrategy().GetThread((int)args[0]), (Action)args[3]).Run();
-                tl.GetThread((int)args[0]).SetScope(args[2]);
-                tl.GetThread((int)args[0]).Start();
+                IoC.Resolve<ServerThread>("Server.Command.Create", (int)args[0], (BlockingCollection<ICommand>)args[1], args[2], (Action)args[3]);
+                IoC.Resolve<ICommand>("Server.Command.Start", (int)args[0]).Execute();
             });
+            //return new ActionCommand(() =>
+            //{
+            //    var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
+            //    new ThreadsListStrategy().AddThread((int)args[0], t);
+            //    var tl = new ThreadsListStrategy();
+            //    new AfterOpenThreadStrategy(new ThreadsListStrategy().GetThread((int)args[0]), (Action)args[3]).Run();
+            //    tl.GetThread((int)args[0]).SetScope(args[2]);
+            //    tl.GetThread((int)args[0]).Start();
+            //});
         }).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handler", (object[] args) =>
