@@ -140,7 +140,7 @@ public class SoftStopTest
     }
 
     [Fact]
-    public void HardStopCommandSendIntoAnotherThread()
+    public void StopSoftCommandSendIntoAnotherThread()
     {
         var list = new ThreadsList();
         var cmd = new Mock<ICommand>();
