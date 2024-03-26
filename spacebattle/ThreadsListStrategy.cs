@@ -1,11 +1,12 @@
-﻿namespace spacebattle
+﻿using Hwdtech;
+namespace spacebattle
 {
     public class ThreadsListStrategy
     {
         private readonly ThreadsList _threads;
-        public ThreadsListStrategy(ThreadsList threads)
+        public ThreadsListStrategy()
         {
-            _threads = threads;
+            _threads = IoC.Resolve<ThreadsList>("GetThreadsList");
         }
 
         public ServerThread GetThread(int threadId)

@@ -20,14 +20,14 @@ public class ServerThreadTest
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.GetThreadById", (object[] args) =>
         {
-            return new ThreadsListStrategy((ThreadsList)args[1]).GetThread((int)args[0]);
+            return new ThreadsListStrategy().GetThread((int)args[0]);
         }).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Command.Create", (object[] args) =>
         {
             var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
-            new ThreadsListStrategy((ThreadsList)args[2]).AddThread((int)args[0], t);
-            new AfterOpenThreadStrategy(new ThreadsListStrategy((ThreadsList)args[2]).GetThread((int)args[0]), (Action)args[3]).Run();
+            new ThreadsListStrategy().AddThread((int)args[0], t);
+            new AfterOpenThreadStrategy(new ThreadsListStrategy().GetThread((int)args[0]), (Action)args[2]).Run();
             return t;
         }).Execute();
 
@@ -35,7 +35,7 @@ public class ServerThreadTest
         {
             return new ActionCommand(() =>
             {
-                var tl = new ThreadsListStrategy((ThreadsList)args[1]);
+                var tl = new ThreadsListStrategy();
                 tl.GetThread((int)args[0]).Start();
             });
         }).Execute();
@@ -44,8 +44,8 @@ public class ServerThreadTest
         {
             return new ActionCommand(() =>
             {
-                new HardStopCommand(new ThreadsListStrategy((ThreadsList)args[1]).GetThread((int)args[0])).Execute();
-                new AfterCloseThreadStrategy(new ThreadsListStrategy((ThreadsList)args[1]).GetThread((int)args[0]), (Action)args[2]).Run();
+                new HardStopCommand(new ThreadsListStrategy().GetThread((int)args[0])).Execute();
+                new AfterCloseThreadStrategy(new ThreadsListStrategy().GetThread((int)args[0]), (Action)args[1]).Run();
             });
         }).Execute();
 
@@ -53,7 +53,7 @@ public class ServerThreadTest
         {
             return new ActionCommand(() =>
             {
-                var tl = new ThreadsListStrategy((ThreadsList)args[2]);
+                var tl = new ThreadsListStrategy();
                 var q = tl.GetThread((int)args[0]).GetQue();
                 q.Add((ICommand)args[1]);
             });
@@ -64,10 +64,10 @@ public class ServerThreadTest
             return new ActionCommand(() =>
             {
                 var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
-                new ThreadsListStrategy((ThreadsList)args[2]).AddThread((int)args[0], t);
-                var tl = new ThreadsListStrategy((ThreadsList)args[2]);
-                new AfterOpenThreadStrategy(new ThreadsListStrategy((ThreadsList)args[2]).GetThread((int)args[0]), (Action)args[4]).Run();
-                tl.GetThread((int)args[0]).SetScope(args[3]);
+                new ThreadsListStrategy().AddThread((int)args[0], t);
+                var tl = new ThreadsListStrategy();
+                new AfterOpenThreadStrategy(new ThreadsListStrategy().GetThread((int)args[0]), (Action)args[3]).Run();
+                tl.GetThread((int)args[0]).SetScope(args[2]);
                 tl.GetThread((int)args[0]).Start();
             });
         }).Execute();
@@ -85,20 +85,24 @@ public class ServerThreadTest
     public void HardStopCommandShouldStopServer()
     {
         var list = new ThreadsList();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetThreadsList", (object[] args) =>
+        {
+            return list;
+        }).Execute();
         var mre = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
-        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, list, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
         {
 
         }).Execute();
-        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, list, () => { mre.Set(); });
+        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, () => { mre.Set(); });
 
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, hs, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { })).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, hs).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { })).Execute();
 
         mre.WaitOne();
-        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1).Wait();
 
         Assert.Single(q);
     }
@@ -107,24 +111,28 @@ public class ServerThreadTest
     public void HardStopCommandExeptionError()
     {
         var list = new ThreadsList();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetThreadsList", (object[] args) =>
+        {
+            return list;
+        }).Execute();
         var exCommand = new Mock<ICommand>();
         var cmd = new Mock<ICommand>();
         var mre = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
-        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, list, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
         {
 
         }).Execute();
         exCommand.Setup(x => x.Execute()).Throws<Exception>().Verifiable();
-        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, list, () => { mre.Set(); });
+        var hs = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, () => { mre.Set(); });
 
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, exCommand.Object, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, hs, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, exCommand.Object).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, hs).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { })).Execute();
 
         mre.WaitOne();
-        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1).Wait();
         Assert.Single(q);
         exCommand.Verify(m => m.Execute(), Times.Once);
         cmd.Verify(m => m.Execute(), Times.Once);
@@ -134,30 +142,34 @@ public class ServerThreadTest
     public void HardStopCommandSendIntoAnotherThread()
     {
         var list = new ThreadsList();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetThreadsList", (object[] args) =>
+        {
+            return list;
+        }).Execute();
         var cmd = new Mock<ICommand>();
         var mre = new ManualResetEvent(false);
         var q_1 = new BlockingCollection<ICommand>(100);
         var q_2 = new BlockingCollection<ICommand>(100);
-        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q_1, list, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q_1, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
         {
 
         }).Execute();
-        IoC.Resolve<ICommand>("Server.CreateAndStart", 2, q_2, list, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 2, q_2, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () =>
         {
 
         }).Execute();
-        var hs_1 = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, list, () => { mre.Set(); });
-        var hs_2 = IoC.Resolve<ICommand>("Server.Commands.HardStop", 2, list, () => { mre.Set(); });
+        var hs_1 = IoC.Resolve<ICommand>("Server.Commands.HardStop", 1, () => { mre.Set(); });
+        var hs_2 = IoC.Resolve<ICommand>("Server.Commands.HardStop", 2, () => { mre.Set(); });
 
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, hs_1, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 2, hs_1, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 2, hs_2, list).Execute();
-        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { }), list).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, cmd.Object).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, hs_1).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 2, hs_1).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 2, hs_2).Execute();
+        IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { })).Execute();
 
         mre.WaitOne();
-        IoC.Resolve<ServerThread>("Server.GetThreadById", 1, list).Wait();
-        IoC.Resolve<ServerThread>("Server.GetThreadById", 2, list).Wait();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 1).Wait();
+        IoC.Resolve<ServerThread>("Server.GetThreadById", 2).Wait();
 
         Assert.Equal("WRONG!", _exception.Message);
     }
