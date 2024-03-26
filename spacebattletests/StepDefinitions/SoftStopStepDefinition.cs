@@ -96,7 +96,7 @@ public class SoftStopTest
         var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 1, () => { mre.Set(); }, () => { stop.WaitOne(); });
         cmd.Setup(x => x.Execute()).Verifiable();
 
-        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => {  }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
 
         IoC.Resolve<ICommand>("Server.SendCommand", 1, new ActionCommand(() => { })).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", 1, ss).Execute();
@@ -119,7 +119,7 @@ public class SoftStopTest
         var stop = new ManualResetEvent(false);
         var q = new BlockingCollection<ICommand>(100);
 
-        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => {  }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
 
         var exCommand = new Mock<ICommand>();
         exCommand.Setup(x => x.Execute()).Throws<Exception>().Verifiable();
@@ -148,8 +148,8 @@ public class SoftStopTest
         var q_1 = new BlockingCollection<ICommand>(100);
         var q_2 = new BlockingCollection<ICommand>(100);
 
-        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q_1, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => {  }).Execute();
-        IoC.Resolve<ICommand>("Server.CreateAndStart", 2, q_2, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => {  }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 1, q_1, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", 2, q_2, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
 
         var ss_1 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 1, () => { mre.Set(); }, () => { stop.WaitOne(); });
         var ss_2 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", 2, () => { mre.Set(); }, () => { stop.WaitOne(); });
