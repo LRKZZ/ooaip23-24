@@ -1,9 +1,9 @@
+﻿using System.Collections.Concurrent;
 using Hwdtech;
-using System.Collections.Concurrent;
-namespace spacebattle 
+namespace spacebattle
 {
-    public class StopServer: ICommand
-    {   
+    public class StopServer : ICommand
+    {
         private readonly IExceptionHandler _exceptionHandler;
         private readonly ConcurrentDictionary<int, object> _threadMap;
 
@@ -11,27 +11,27 @@ namespace spacebattle
         {
             _threadMap = threadMap;
             _exceptionHandler = exceptionHandler;
-        }   
+        }
 
         public void Execute()
         {
-            try 
+            try
             {
-                _threadMap.ToList().ForEach(pair => 
+                _threadMap.ToList().ForEach(pair =>
             {
                 var threadId = pair.Key;
-                IoC.Resolve<ICommand>("ServerCommandSend", threadId, 
+                IoC.Resolve<ICommand>("ServerCommandSend", threadId,
                     IoC.Resolve<ICommand>("StopServerCommand", threadId)).Execute();
             });
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _exceptionHandler.HandleException(ex, "StopServerCommand");
             }
         }
     }
 
-    public class StartServer: ICommand
+    public class StartServer : ICommand
     {
         private readonly IExceptionHandler _exceptionHandler;
         private readonly int _threadCount;
@@ -44,13 +44,13 @@ namespace spacebattle
 
         public void Execute()
         {
-            try 
+            try
             {
                 Enumerable.Range(0, _threadCount)
             .ToList()
                 .ForEach(i => IoC.Resolve<ICommand>("StartCommand", i).Execute());
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _exceptionHandler.HandleException(ex, "StartCommand");
             }

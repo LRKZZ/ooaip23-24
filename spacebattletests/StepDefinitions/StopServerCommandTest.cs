@@ -1,10 +1,10 @@
-namespace spacebattletests;
+﻿namespace spacebattletests;
 
+using System.Collections.Concurrent;
 using Hwdtech;
 using Hwdtech.Ioc;
 using Moq;
 using spacebattle;
-using System.Collections.Concurrent;
 
 public class StopServerCommandTest
 {
