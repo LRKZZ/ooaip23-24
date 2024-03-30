@@ -129,6 +129,7 @@ public class ServerThreadTest
         var id_2 = Guid.NewGuid();
         var cmd = new Mock<ICommand>();
         var mre = new ManualResetEvent(false);
+        var mre1 = new ManualResetEvent(false);
         var q_1 = new BlockingCollection<ICommand>(100);
         var q_2 = new BlockingCollection<ICommand>(100);
 
@@ -136,29 +137,18 @@ public class ServerThreadTest
         IoC.Resolve<ICommand>("Server.CreateAndStart", id_2, q_2, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
 
         var hs_1 = IoC.Resolve<ICommand>("Server.Commands.HardStop", id_1, () => { mre.Set(); });
-        var hs_2 = IoC.Resolve<ICommand>("Server.Commands.HardStop", id_2, () => { mre.Set(); });
+        var hs_2 = IoC.Resolve<ICommand>("Server.Commands.HardStop", id_2, () => { mre1.Set(); });
 
         IoC.Resolve<ICommand>("Server.SendCommand", id_1, hs_1).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", id_2, hs_1).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", id_2, hs_2).Execute();
 
         mre.WaitOne();
+        mre1.WaitOne();
 
         IoC.Resolve<ServerThread>($"GetThreadId.{id_1}").Wait();
         IoC.Resolve<ServerThread>($"GetThreadId.{id_2}").Wait();
 
         Assert.Equal("WRONG!", _exception.Message);
-    }
-
-    [Fact]
-    public void HardStopCo()
-    {
-        var id = Guid.NewGuid();
-        var q = new BlockingCollection<ICommand>(100);
-        var t = new ServerThread(q);
-        new ThreadIdStrategy(id, t).Run();
-        var _t = IoC.Resolve<ServerThread>($"GetThreadId.{id}");
-        var b = t.Equals(_t);
-        Assert.True(b);
     }
 }

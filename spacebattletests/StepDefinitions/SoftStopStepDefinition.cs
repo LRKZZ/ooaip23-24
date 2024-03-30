@@ -137,7 +137,9 @@ public class SoftStopTest
         var id_2 = Guid.NewGuid();
         var cmd = new Mock<ICommand>();
         var mre = new ManualResetEvent(false);
+        var mre1 = new ManualResetEvent(false);
         var stop = new ManualResetEvent(false);
+        var stop1 = new ManualResetEvent(false);
         var q_1 = new BlockingCollection<ICommand>(100);
         var q_2 = new BlockingCollection<ICommand>(100);
 
@@ -145,7 +147,7 @@ public class SoftStopTest
         IoC.Resolve<ICommand>("Server.CreateAndStart", id_2, q_2, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
 
         var ss_1 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id_1, () => { mre.Set(); }, () => { stop.WaitOne(); });
-        var ss_2 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id_2, () => { mre.Set(); }, () => { stop.WaitOne(); });
+        var ss_2 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id_2, () => { mre1.Set(); }, () => { stop1.WaitOne(); });
 
         IoC.Resolve<ICommand>("Server.SendCommand", id_1, cmd.Object).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", id_1, ss_1).Execute();
@@ -154,7 +156,9 @@ public class SoftStopTest
         IoC.Resolve<ICommand>("Server.SendCommand", id_1, new ActionCommand(() => { })).Execute();
 
         stop.Set();
+        stop1.Set();
         mre.WaitOne();
+        mre1.WaitOne();
         IoC.Resolve<ServerThread>($"GetThreadId.{id_1}").Wait();
         IoC.Resolve<ServerThread>($"GetThreadId.{id_2}").Wait();
 
