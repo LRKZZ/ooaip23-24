@@ -158,7 +158,7 @@ public class ServerThreadTest
         var t = new ServerThread(q);
         new ThreadIdStrategy(id, t).Run();
         var _t = IoC.Resolve<ServerThread>($"GetThreadId.{id}");
-        var b = t.Equals( _t );
-        Assert.True( b );
+        var b = t.Equals(_t);
+        Assert.True(b);
     }
 }
