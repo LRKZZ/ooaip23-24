@@ -1,17 +1,25 @@
 ﻿namespace spacebattle;
 
-public class FileLoggingExceptionHandler : IExceptionHandler
+public class FileLoggingExceptionHandler : ICommand
 {
-    private readonly string _logFilePath;
+    private readonly string _message;
+    private readonly string _path;
 
-    public FileLoggingExceptionHandler(string logFilePath)
+    public FileLoggingExceptionHandler(string message)
     {
-        _logFilePath = logFilePath;
+        _message = message;
+        _path = Path.GetTempFileName();
     }
 
-    public void HandleException(Exception exception, string commandName)
+    public void Execute()
     {
-        var errorMessage = $"Ошибка в команде: {commandName}\nИсключение: {exception}\n";
-        File.AppendAllText(_logFilePath, errorMessage);
+        var createText = _message + Environment.NewLine;
+        File.AppendAllText(_path, createText);
+    }
+
+    public string GetFilePath()
+    {
+        return _path;
     }
 }
+
