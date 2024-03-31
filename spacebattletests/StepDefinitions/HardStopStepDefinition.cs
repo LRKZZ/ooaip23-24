@@ -20,11 +20,13 @@ public class ServerThreadTest
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Command.Create", (object[] args) =>
         {
-            var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
-            new ThreadIdStrategy((Guid)args[0], t).Run();
-            new AfterOpenThreadStrategy(t, (Action)args[3]).Run();
-            t.SetScope(args[2]);
-            return t;
+            return new ActionCommand(() =>
+            {
+                var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
+                new ThreadIdStrategy((Guid)args[0], t).Run();
+                new AfterOpenThreadStrategy(t, (Action)args[3]).Run();
+                t.SetScope(args[2]);
+            });
         }).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Command.Start", (object[] args) =>
@@ -60,7 +62,7 @@ public class ServerThreadTest
         {
             return new ActionCommand(() =>
             {
-                IoC.Resolve<ServerThread>("Server.Command.Create", (Guid)args[0], (BlockingCollection<ICommand>)args[1], args[2], (Action)args[3]);
+                IoC.Resolve<ICommand>("Server.Command.Create", (Guid)args[0], (BlockingCollection<ICommand>)args[1], args[2], (Action)args[3]).Execute();
                 IoC.Resolve<ICommand>("Server.Command.Start", (Guid)args[0]).Execute();
             });
         }).Execute();
