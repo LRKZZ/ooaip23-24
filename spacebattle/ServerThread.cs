@@ -79,7 +79,7 @@ namespace spacebattle
             _scope = scope;
         }
 
-        public BlockingCollection<ICommand> GetQue()
+        internal BlockingCollection<ICommand> GetQue()
         {
             return _queue;
         }

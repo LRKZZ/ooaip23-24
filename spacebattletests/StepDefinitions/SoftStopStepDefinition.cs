@@ -22,10 +22,14 @@ public class SoftStopTest
         {
             return new ActionCommand(() =>
             {
-                var t = new ServerThread((BlockingCollection<ICommand>)args[1]);
+                var q = new BlockingCollection<ICommand>(100);
+                var t = new ServerThread(q);
                 new ThreadIdStrategy((Guid)args[0], t).Run();
-                new AfterOpenThreadStrategy(t, (Action)args[3]).Run();
-                t.SetScope(args[2]);
+                new HardStopIdStrategy((Guid)args[0], t).Run();
+                new SoftStopIdStrategy((Guid)(args[0]), t).Run();
+                new ThreadQueueIdStrategy((Guid)args[0], q).Run();
+                new AfterOpenThreadStrategy(t, (Action)args[1]).Run();
+                t.SetScope(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
             });
         }).Execute();
 
@@ -42,10 +46,7 @@ public class SoftStopTest
         {
             return new ActionCommand(() =>
             {
-                var t = IoC.Resolve<ServerThread>($"GetThreadId.{(Guid)args[0]}");
-                new ActionCommand((Action)args[2]).Execute();
-                new SoftStopCommand(t).Execute();
-                new AfterCloseThreadStrategy(t, (Action)args[1]).Run();
+                IoC.Resolve<ICommand>($"SoftStop.{(Guid)args[0]}", (Action)args[1], (Action)args[2]).Execute();
             });
         }).Execute();
 
@@ -53,8 +54,7 @@ public class SoftStopTest
         {
             return new ActionCommand(() =>
             {
-                var t = IoC.Resolve<ServerThread>($"GetThreadId.{(Guid)args[0]}");
-                var q = t.GetQue();
+                var q = IoC.Resolve<BlockingCollection<ICommand>>($"Queue.{(Guid)args[0]}");
                 q.Add((ICommand)args[1]);
             });
         }).Execute();
@@ -63,7 +63,7 @@ public class SoftStopTest
         {
             return new ActionCommand(() =>
             {
-                IoC.Resolve<ICommand>("Server.Command.Create", (Guid)args[0], (BlockingCollection<ICommand>)args[1], args[2], (Action)args[3]).Execute();
+                IoC.Resolve<ICommand>("Server.Command.Create", (Guid)args[0], (Action)args[1]).Execute();
                 IoC.Resolve<ICommand>("Server.Command.Start", (Guid)args[0]).Execute();
             });
         }).Execute();
@@ -83,13 +83,12 @@ public class SoftStopTest
         var id = Guid.NewGuid();
         var mre = new ManualResetEvent(false);
         var stop = new ManualResetEvent(false);
-        var q = new BlockingCollection<ICommand>(100);
         var cmd = new Mock<ICommand>();
-        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { stop.WaitOne(); });
         cmd.Setup(x => x.Execute()).Verifiable();
 
-        IoC.Resolve<ICommand>("Server.CreateAndStart", id, q, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", id, () => { }).Execute();
 
+        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { stop.WaitOne(); });
         IoC.Resolve<ICommand>("Server.SendCommand", id, new ActionCommand(() => { })).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
         IoC.Resolve<ICommand>("Server.SendCommand", id, new ActionCommand(() => { })).Execute();
@@ -100,7 +99,7 @@ public class SoftStopTest
         IoC.Resolve<ServerThread>($"GetThreadId.{id}").Wait();
 
         cmd.Verify(m => m.Execute(), Times.Once);
-        Assert.Empty(q);
+        Assert.Empty(IoC.Resolve<BlockingCollection<ICommand>>($"Queue.{id}"));
     }
 
     [Fact]
@@ -110,9 +109,8 @@ public class SoftStopTest
         var cmd = new Mock<ICommand>();
         var mre = new ManualResetEvent(false);
         var stop = new ManualResetEvent(false);
-        var q = new BlockingCollection<ICommand>(100);
 
-        IoC.Resolve<ICommand>("Server.CreateAndStart", id, q, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", id, () => { }).Execute();
 
         var exCommand = new Mock<ICommand>();
         exCommand.Setup(x => x.Execute()).Throws<Exception>().Verifiable();
@@ -127,7 +125,7 @@ public class SoftStopTest
         mre.WaitOne();
         IoC.Resolve<ServerThread>($"GetThreadId.{id}").Wait();
 
-        Assert.Empty(q);
+        Assert.Empty(IoC.Resolve<BlockingCollection<ICommand>>($"Queue.{id}"));
         exCommand.Verify(m => m.Execute(), Times.Once);
         cmd.Verify(m => m.Execute(), Times.Once);
     }
@@ -142,11 +140,9 @@ public class SoftStopTest
         var mre1 = new ManualResetEvent(false);
         var stop = new ManualResetEvent(false);
         var stop1 = new ManualResetEvent(false);
-        var q_1 = new BlockingCollection<ICommand>(100);
-        var q_2 = new BlockingCollection<ICommand>(100);
 
-        IoC.Resolve<ICommand>("Server.CreateAndStart", id_1, q_1, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
-        IoC.Resolve<ICommand>("Server.CreateAndStart", id_2, q_2, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")), () => { }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", id_1, () => { }).Execute();
+        IoC.Resolve<ICommand>("Server.CreateAndStart", id_2, () => { }).Execute();
 
         var ss_1 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id_1, () => { mre.Set(); }, () => { stop.WaitOne(); });
         var ss_2 = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id_2, () => { mre1.Set(); }, () => { stop1.WaitOne(); });
