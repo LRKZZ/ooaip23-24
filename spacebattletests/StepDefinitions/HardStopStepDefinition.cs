@@ -32,7 +32,7 @@ public class ServerThreadTest
                 t.SetScope(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
             });
         }).Execute();
-        
+
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Command.Start", (object[] args) =>
         {
             return new ActionCommand(() =>
