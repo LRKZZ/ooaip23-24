@@ -1,6 +1,5 @@
 ﻿using Hwdtech;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 namespace spacebattle;
 
 public class Endpoint : IDisposable
@@ -16,31 +15,31 @@ public class Endpoint : IDisposable
         _app.UseHttpsRedirection();
         _app.Map("/message", (Message message) =>
         {
-            try
+            //try
+            //{
+            //Console.WriteLine(JsonSerializer.Serialize(message));
+            // Console.WriteLine(message.cmd);
+            // Console.WriteLine(message.gameId);
+            // foreach (var tmp in message._additionalData.Values.ToArray())
+            // {
+            //     Console.WriteLine(tmp);
+            // }
+            //отправляет команду в поток
+            if (_scope != null)
             {
-                //Console.WriteLine(JsonSerializer.Serialize(message));
-                // Console.WriteLine(message.cmd);
-                // Console.WriteLine(message.gameId);
-                // foreach (var tmp in message._additionalData.Values.ToArray())
-                // {
-                //     Console.WriteLine(tmp);
-                // }
-                //отправляет команду в поток
-                if (_scope != null)
-                {
-                    IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", _scope).Execute();
-                }
+                IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", _scope).Execute();
+            }
 
-                var gameId = message.gameId;
-                var threadId = IoC.Resolve<Guid>("Server.GetThreadIdByGameId", gameId);
-                var command = IoC.Resolve<ICommand>("Server.BuildToGameCommand", message);
-                IoC.Resolve<ICommand>("Server.SendCommand", threadId, command).Execute();
-                return Results.Ok(message);
-            }
-            catch
-            {
-                return Results.BadRequest();
-            }
+            var gameId = message.gameId;
+            var threadId = IoC.Resolve<Guid>("Server.GetThreadIdByGameId", gameId);
+            var command = IoC.Resolve<ICommand>("Server.BuildToGameCommand", message);
+            IoC.Resolve<ICommand>("Server.SendCommand", threadId, command).Execute();
+            //return Results.Ok(message);
+            //}
+            //catch
+            //{
+            //    return Results.BadRequest();
+            //}
         });
         _app.RunAsync($"http://localhost:{_port}");
     }
@@ -57,7 +56,7 @@ public class Endpoint : IDisposable
         Stop();
     }
 
-    public Endpoint(string port, object scope)
+    public Endpoint(string port, object? scope)
     {
         _port = port;
         _scope = scope;

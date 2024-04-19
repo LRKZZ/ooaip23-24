@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http.Json;
 using Hwdtech;
 using Hwdtech.Ioc;
+using Moq;
 
 public class EndpointTest
 {
@@ -70,13 +71,13 @@ public class EndpointTest
             });
         }).Execute();
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.BuildToGameCommand", (object[] args) =>
-        {
-            return new ActionCommand(() =>
-            {
+        //IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.BuildToGameCommand", (object[] args) =>
+        //{
+        //    return new ActionCommand(() =>
+        //    {
 
-            });
-        }).Execute();
+        //    });
+        //}).Execute();
 
         // Попытаться вот эту штуку реализовать как отдельную стратегию
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.GetThreadIdByGameId", (object[] args) =>
@@ -105,18 +106,23 @@ public class EndpointTest
     [Fact]
     public void SuccessPostRequest()
     {
+        var _mockCommand = new Mock<ICommand>();
+        _mockCommand.Setup(x => x.Execute()).Verifiable();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.BuildToGameCommand", (object[] args) =>
+        {
+            return _mockCommand.Object;
+        }).Execute();
         var id = Guid.NewGuid();
-        Task<HttpResponseMessage>? response;
         _gameThreadMap.Add(3474, id);
         var mre = new ManualResetEvent(false);
         var port = "7860";
+        var status = new HttpStatusCode();
         var tmp = _exception.Data;
         var clientHandler = new HttpClientHandler();
         var points = new Dictionary<string, object>
             {
                 { "cmd", "testcommand" },
                 { "gameId", 3474 },
-
                 {"gg", 54},
                 {"hh", 666},
                 {"Speed", 666},
@@ -130,29 +136,37 @@ public class EndpointTest
         {
             Endpoint.Run();
             var content = JsonContent.Create(points);
-            response = client.PostAsync("/message", content);
+            var response = client.PostAsync("/message", content);
+            status = response.Result.StatusCode;
             var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
             IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
             Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
         }
-        // Необходимо создать поле HttpStatusCode = response.Result.StatusCode, после чего перенести Assert за пределы using
+
         mre.WaitOne();
+        Assert.Equal(HttpStatusCode.OK, status);
+        _mockCommand.Verify(m => m.Execute(), Times.Once());
     }
 
     [Fact]
     public void NotSuccessRequest()
     {
+        var _mockCommand = new Mock<ICommand>();
+        _mockCommand.Setup(x => x.Execute()).Verifiable();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.BuildToGameCommand", (object[] args) =>
+        {
+            return _mockCommand.Object;
+        }).Execute();
         var id = Guid.NewGuid();
         _gameThreadMap.Add(3464, id);
-        Task<HttpResponseMessage>? response;
         var mre = new ManualResetEvent(false);
+        var status = new HttpStatusCode();
         var port = "7860";
         var clientHandler = new HttpClientHandler();
         var points = new Dictionary<string, object>
             {
                 { "cmd", "testcommand" },
                 { "gameId", 3464 },
-
                 {"gg", 54},
                 {"hh", 666},
                 {"Speed", 666},
@@ -166,13 +180,15 @@ public class EndpointTest
         {
             Endpoint.Run();
             var content = JsonContent.Create(555);
-            response = client.PostAsync("/message", content);
+            var response = client.PostAsync("/message", content);
+            status = response.Result.StatusCode;
             var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
             IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
-            Assert.Equal(HttpStatusCode.BadRequest, response.Result.StatusCode);
 
         }
 
         mre.WaitOne();
+        Assert.Equal(HttpStatusCode.BadRequest, status);
+        _mockCommand.Verify(m => m.Execute(), Times.Never());
     }
 }
