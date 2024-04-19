@@ -9,7 +9,7 @@ using Hwdtech.Ioc;
 
 public class EndpointTest
 {
-    private readonly Exception _exception = new Exception();
+    private Exception _exception = new Exception();
     private readonly Hashtable _gameThreadMap = new Hashtable();
     public EndpointTest()
     {
@@ -110,6 +110,7 @@ public class EndpointTest
         _gameThreadMap.Add(3474, id);
         var mre = new ManualResetEvent(false);
         var port = "7860";
+        var tmp = _exception.Data;
         var clientHandler = new HttpClientHandler();
         var points = new Dictionary<string, object>
             {
