@@ -9,7 +9,6 @@ using Hwdtech.Ioc;
 
 public class EndpointTest
 {
-    private Exception _exception = new Exception();
     private readonly Hashtable _gameThreadMap = new Hashtable();
     public EndpointTest()
     {
