@@ -127,14 +127,14 @@ public class EndpointTest
 
         using (var endpoint = new Endpoint(port, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"))))
         {
-            endpoint.Run();
+            Endpoint.Run();
             var content = JsonContent.Create(points);
             response = client.PostAsync("/message", content);
             var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
             IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
             Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
         }
-
+        // Необходимо создать поле HttpStatusCode = response.Result.StatusCode, после чего перенести Assert за пределы using
         mre.WaitOne();
     }
 
@@ -163,7 +163,7 @@ public class EndpointTest
 
         using (var endpoint = new Endpoint(port, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"))))
         {
-            endpoint.Run();
+            Endpoint.Run();
             var content = JsonContent.Create(555);
             response = client.PostAsync("/message", content);
             var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
