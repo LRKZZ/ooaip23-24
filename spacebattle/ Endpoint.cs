@@ -9,7 +9,7 @@ public class Endpoint : IDisposable
     private static string _port;
     private static WebApplication? _app;
 
-    public static void Run()
+    public void Run()
     {
         var webApplicationBuilder = WebApplication.CreateBuilder();
         _app = webApplicationBuilder.Build();
