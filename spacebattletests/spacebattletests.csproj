@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +41,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\spacebattle\spacebattle.csproj" />
+    <ProjectReference Include="..\spacebattleapi\spacebattleapi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

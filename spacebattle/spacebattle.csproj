@@ -16,6 +16,7 @@
     <PackageReference Include="json.Net" Version="1.0.33" />
     <PackageReference Include="Microsoft.Build" Version="17.9.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="MinimalHelpers.Routing" Version="2.0.3" />
   </ItemGroup>
 
 </Project>
