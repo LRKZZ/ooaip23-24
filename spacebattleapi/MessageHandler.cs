@@ -8,6 +8,7 @@ namespace spacebattle
 {
     public class MessageHandler : IEndpointRouteHandlerBuilder
     {
+        private static object? _scope;
         public void MapEndpoints(IEndpointRouteBuilder endpoint)
         {
             endpoint.MapPost("/message", Insert);
@@ -17,6 +18,11 @@ namespace spacebattle
         {
             try
             {
+                if (_scope != null)
+                {
+                    IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", _scope).Execute();
+                }
+
                 var gameId = message.gameId;
                 var threadId = IoC.Resolve<Guid>("Server.GetThreadIdByGameId", gameId);
                 var command = IoC.Resolve<ICommand>("Server.BuildToGameCommand", message);
@@ -26,14 +32,14 @@ namespace spacebattle
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return Results.BadRequest(e.Message);
+                IoC.Resolve<ICommand>("Exception.Handler", e);
+                return Results.BadRequest();
             }
         }
 
         public static void SetScope(object scope)
         {
-            IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", scope).Execute();
+            _scope = scope;
         }
     }
 }

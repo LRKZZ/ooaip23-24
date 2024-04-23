@@ -2,6 +2,8 @@
 
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Net;
+using System.Net.Http.Json;
 using Hwdtech;
 using Hwdtech.Ioc;
 using Microsoft.AspNetCore.Http;
@@ -71,14 +73,6 @@ public class EndpointTest2
             });
         }).Execute();
 
-        //IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.BuildToGameCommand", (object[] args) =>
-        //{
-        //    return new ActionCommand(() =>
-        //    {
-
-        //    });
-        //}).Execute();
-
         // Попытаться вот эту штуку реализовать как отдельную стратегию
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.GetThreadIdByGameId", (object[] args) =>
         {
@@ -144,9 +138,10 @@ public class EndpointTest2
         var mre = new ManualResetEvent(false);
         var tmp = _exception.Data;
 
+        ApiBuilder.Build(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
+
         IoC.Resolve<ICommand>("Server.CreateAndStart", id, () => { }).Execute();
 
-        MessageHandler.SetScope(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
         var status = MessageHandler.Insert(new Message("test", 3574));
 
         var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
@@ -160,6 +155,40 @@ public class EndpointTest2
     [Fact]
     public void MappingTest()
     {
-        WebApi.Start(new string[] { });
+        var _mockCommand = new Mock<ICommand>();
+        _mockCommand.Setup(x => x.Execute()).Verifiable();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.BuildToGameCommand", (object[] args) =>
+        {
+            return _mockCommand.Object;
+        }).Execute();
+
+        var id = Guid.NewGuid();
+        _gameThreadMap.Add(3477, id);
+
+        IoC.Resolve<spacebattle.ICommand>("Server.CreateAndStart", id, () => { }).Execute();
+
+        ApiBuilder.Build(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
+
+        var clientHandler = new HttpClientHandler();
+        var client = new HttpClient(clientHandler);
+        client.BaseAddress = new Uri("http://localhost:7881");
+
+        var points = new Dictionary<string, object>
+            {
+                { "cmd", "testcommand" },
+                { "gameId", 3477 },
+                { "gg", 54 },
+                { "hh", 666 },
+                { "Speed", 666 },
+                { "CanRotate", true }
+            };
+
+        var content = JsonContent.Create(points);
+        var status = client.PostAsync("/message", content);
+
+        var ss = IoC.Resolve<spacebattle.ICommand>("Server.Commands.SoftStop", id, () => { }, () => { });
+        IoC.Resolve<spacebattle.ICommand>("Server.SendCommand", id, ss).Execute();
+
+        Assert.Equal(HttpStatusCode.Accepted, status.Result.StatusCode);
     }
 }

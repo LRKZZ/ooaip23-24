@@ -71,14 +71,6 @@ public class EndpointTest
             });
         }).Execute();
 
-        //IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.BuildToGameCommand", (object[] args) =>
-        //{
-        //    return new ActionCommand(() =>
-        //    {
-
-        //    });
-        //}).Execute();
-
         // Попытаться вот эту штуку реализовать как отдельную стратегию
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.GetThreadIdByGameId", (object[] args) =>
         {
@@ -140,7 +132,7 @@ public class EndpointTest
             status = response.Result.StatusCode;
             var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
             IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
-            // Assert.Equal(HttpStatusCode.OK, response.Result.StatusCode);
+
         }
 
         mre.WaitOne();
