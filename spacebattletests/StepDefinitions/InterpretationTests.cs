@@ -1,4 +1,4 @@
-namespace spacebattle;
+﻿namespace spacebattle;
 
 using Hwdtech;
 using Hwdtech.Ioc;
@@ -29,7 +29,7 @@ public class InterpretationTest
     {
         mockMessage.SetupGet(x => x.cmdType).Returns(testData.CommandType);
         mockMessage.SetupGet(x => x.GameID).Returns(testData.GameID);
-        mockMessage.SetupGet(x => x.GameItemID).Returns(testData.ItemID);  
+        mockMessage.SetupGet(x => x.GameItemID).Returns(testData.ItemID);
         mockMessage.SetupGet(x => x.Properties).Returns(testData.Properties);
     }
 
@@ -46,12 +46,12 @@ public class InterpretationTest
         mockMessage.SetupGet(x => x.Properties).Returns(testData1.Properties);
 
         var intCmd1 = new InterpretationCommand(mockMessage.Object);
-        intCmd1.Execute();        
+        intCmd1.Execute();
 
         SetupMockMessage(mockMessage, testData2);
         intCmd1 = new InterpretationCommand(mockMessage.Object);
-        intCmd1.Execute(); 
-        intCmd1.Execute(); 
+        intCmd1.Execute();
+        intCmd1.Execute();
 
         Assert.True(_gameCommandQueues[1].Count == 1);
         Assert.True(_gameCommandQueues[2].Count == 0);
@@ -92,10 +92,10 @@ public class InterpretationTest
         var properties = new Dictionary<string, object> { { "test command", 1 } };
         var testData = new { CommandType = "", GameID = 2, ItemID = 1, Properties = properties };
         SetupMockMessage(mockMessage, testData);
-        var interpretationCommand = new InterpretationCommand(mockMessage.Object);  
+        var interpretationCommand = new InterpretationCommand(mockMessage.Object);
 
         var exception = Assert.Throws<Exception>(() => interpretationCommand.Execute());
-        Assert.Contains("CommandType cannot be empty", exception.Message);          
+        Assert.Contains("CommandType cannot be empty", exception.Message);
     }
     [Fact]
     public void NullMessageInConstructorThrowsException()
