@@ -20,32 +20,51 @@ public class InterpretationTest
         var command = new Mock<ICommand>();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Command.CommandName", (object[] args) => command.Object).Execute();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetGameQueue", (object[] args) => currentGames).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetQueue", (object[] args) =>
+        {
+
+            if (IoC.Resolve<IDictionary<int, Queue<ICommand>>>("GetGameQueue").TryGetValue((int)args[0], out var queue))
+            {
+                return queue;
+            }
+
+            throw new Exception();
+        }).Execute();
+
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "InsertIntoQueue", (object[] args) =>
+        {
+            var id = (int)args[0];
+            var cmd = (ICommand)args[1];
+
+            var queue = IoC.Resolve<Queue<ICommand>>("GetQueue", id);
+            return new ActionCommand(() => { queue.Enqueue(cmd); });
+        }).Execute();
+    }
+
+    private static void SetupMockMessage(Mock<IMessage> mockMessage, dynamic testData)
+    {
+        mockMessage.SetupGet(x => x.cmdType).Returns(testData.CommandType);
+        mockMessage.SetupGet(x => x.GameID).Returns(testData.GameID);
+        mockMessage.SetupGet(x => x.GameItemID).Returns(testData.ItemID);
+        mockMessage.SetupGet(x => x.Properties).Returns(testData.Properties);
     }
 
     [Fact]
-    public void PositiveTest()
+    public void TestPositiveScenario()
     {
         var mockMessage = new Mock<IMessage>();
-        var properties = new Dictionary<string, object> { { "initial velocity", 1 } };
-        var jsonData1 = new { CommandType = "CommandName", GameID = "1", ItemID = "1", Properties = properties };
-        var jsonData2 = new { CommandType = "CommandName", GameID = "3", ItemID = "1", Properties = properties };
+        var properties = new Dictionary<string, object> { { "test command", 1 } };
+        var testData1 = new { CommandType = "CommandName", GameID = "1", ItemID = "1", Properties = properties };
+        var testData2 = new { CommandType = "CommandName", GameID = "3", ItemID = "1", Properties = properties };
 
-        mockMessage.SetupGet(x => x.cmdType).Returns(jsonData1.CommandType);
-        mockMessage.SetupGet(x => x.GameID).Returns(jsonData1.GameID);
-        mockMessage.SetupGet(x => x.GameItemID).Returns(jsonData1.ItemID);
-        mockMessage.SetupGet(x => x.Properties).Returns(jsonData1.Properties);
+        SetupMockMessage(mockMessage, testData1);
+        var command1 = CommandFactory.CreateCommand(mockMessage.Object);
+        IoC.Resolve<ICommand>("InsertIntoQueue", int.Parse(testData1.GameID), command1).Execute();
 
-        var intCmd = new InterpretationCommands(mockMessage.Object);
-        intCmd.Execute();
-
-        mockMessage.SetupGet(x => x.cmdType).Returns(jsonData2.CommandType);
-        mockMessage.SetupGet(x => x.GameID).Returns(jsonData2.GameID);
-        mockMessage.SetupGet(x => x.GameItemID).Returns(jsonData2.ItemID);
-        mockMessage.SetupGet(x => x.Properties).Returns(jsonData2.Properties);
-
-        intCmd = new InterpretationCommands(mockMessage.Object);
-        intCmd.Execute();
-        intCmd.Execute();
+        SetupMockMessage(mockMessage, testData2);
+        var command2 = CommandFactory.CreateCommand(mockMessage.Object);
+        IoC.Resolve<ICommand>("InsertIntoQueue", int.Parse(testData2.GameID), command2).Execute();
+        IoC.Resolve<ICommand>("InsertIntoQueue", int.Parse(testData2.GameID), command2).Execute();
 
         Assert.True(currentGames[1].Count == 1);
         Assert.True(currentGames[2].Count == 0);
