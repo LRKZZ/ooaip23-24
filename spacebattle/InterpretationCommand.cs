@@ -16,6 +16,7 @@ public class InterpretationCommand : ICommand
         {
             throw new Exception("CommandType cannot be empty");
         }
+
         var cmd = IoC.Resolve<ICommand>("CreateCommand", _message);
         IoC.Resolve<ICommand>("EnqueueCommand", _message.GameID, cmd).Execute();
     }

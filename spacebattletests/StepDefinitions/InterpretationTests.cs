@@ -2,7 +2,6 @@ namespace spacebattle;
 
 using Hwdtech;
 using Hwdtech.Ioc;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 
 public class InterpretationTest
