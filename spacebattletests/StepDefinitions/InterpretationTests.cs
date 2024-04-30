@@ -40,11 +40,8 @@ public class InterpretationTest
         var properties = new Dictionary<string, object> { { "test command", 1 } };
         var testData1 = new { CommandType = "CommandName", GameID = 1, ItemID = 1, Properties = properties };
         var testData2 = new { CommandType = "CommandName", GameID = 3, ItemID = 1, Properties = properties };
-        mockMessage.SetupGet(x => x.cmdType).Returns(testData1.CommandType);
-        mockMessage.SetupGet(x => x.GameID).Returns(testData1.GameID);
-        mockMessage.SetupGet(x => x.GameItemID).Returns(testData1.ItemID);
-        mockMessage.SetupGet(x => x.Properties).Returns(testData1.Properties);
-
+        SetupMockMessage(mockMessage, testData1);
+        
         var intCmd1 = new InterpretationCommand(mockMessage.Object);
         intCmd1.Execute();
 
