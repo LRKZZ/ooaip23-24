@@ -41,7 +41,7 @@ public class InterpretationTest
         var testData1 = new { CommandType = "CommandName", GameID = 1, ItemID = 1, Properties = properties };
         var testData2 = new { CommandType = "CommandName", GameID = 3, ItemID = 1, Properties = properties };
         SetupMockMessage(mockMessage, testData1);
-        
+
         var intCmd1 = new InterpretationCommand(mockMessage.Object);
         intCmd1.Execute();
 
