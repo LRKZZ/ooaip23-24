@@ -3,7 +3,7 @@ namespace spacebattle;
 public interface IMessage
 {
     public string cmdType { get; }
-    public string GameID { get; }
-    public string GameItemID { get; }
+    public int GameID { get; }
+    public int GameItemID { get; }
     public IDictionary<string, object> Properties { get; }
 }

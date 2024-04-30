@@ -1,10 +1,21 @@
 namespace spacebattle;
+
 using Hwdtech;
 
-public static class CommandFactory
+public class CommandFactory
 {
-    public static ICommand CreateCommand(IMessage message)
+    public static object Invoke(params object[] args)
     {
-        return IoC.Resolve<ICommand>("Command." + message.cmdType);
+        var message = (IMessage)args[0];
+
+        try
+        {
+            var cmd = IoC.Resolve<ICommand>("Command." + message.cmdType);
+            return cmd;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Unknown IoC dependency key: " + ex.Message);
+        }
     }
 }
