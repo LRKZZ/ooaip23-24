@@ -6,13 +6,15 @@ using System.Net;
 using System.Net.Http.Json;
 using Hwdtech;
 using Hwdtech.Ioc;
+using Microsoft.AspNetCore.Http;
 using Moq;
+using spacebattleapi;
 
-public class EndpointTest
+public class EndpointTest2
 {
     private Exception _exception = new Exception();
     private readonly Hashtable _gameThreadMap = new Hashtable();
-    public EndpointTest()
+    public EndpointTest2()
     {
         new InitScopeBasedIoCImplementationCommand().Execute();
         IoC.Resolve<Hwdtech.ICommand>(
@@ -107,41 +109,23 @@ public class EndpointTest
         var id = Guid.NewGuid();
         _gameThreadMap.Add(3474, id);
         var mre = new ManualResetEvent(false);
-        var port = "7860";
-        var status = new HttpStatusCode();
         var tmp = _exception.Data;
-        var clientHandler = new HttpClientHandler();
-        var points = new Dictionary<string, object>
-            {
-                { "cmd", "testcommand" },
-                { "gameId", 3474 },
-                {"gg", 54},
-                {"hh", 666},
-                {"Speed", 666},
-                {"CanRotate", true}
-            };
+
         IoC.Resolve<ICommand>("Server.CreateAndStart", id, () => { }).Execute();
-        var client = new HttpClient(clientHandler);
-        client.BaseAddress = new Uri($"http://localhost:{port}");
 
-        using (var endpoint = new Endpoint(port, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"))))
-        {
-            Endpoint.Run();
-            var content = JsonContent.Create(points);
-            var response = client.PostAsync("/message", content);
-            status = response.Result.StatusCode;
-            var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
-            IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
+        MessageHandler.SetScope(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
+        var status = MessageHandler.Insert(new Message("test", 3474));
 
-        }
+        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
+        IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
 
         mre.WaitOne();
-        Assert.Equal(HttpStatusCode.OK, status);
+        Assert.Equal(Results.Accepted().GetType(), status.GetType());
         _mockCommand.Verify(m => m.Execute(), Times.Once());
     }
 
     [Fact]
-    public void NotSuccessRequest()
+    public void UnsuccessPostRequest()
     {
         var _mockCommand = new Mock<ICommand>();
         _mockCommand.Setup(x => x.Execute()).Verifiable();
@@ -150,37 +134,61 @@ public class EndpointTest
             return _mockCommand.Object;
         }).Execute();
         var id = Guid.NewGuid();
-        _gameThreadMap.Add(3464, id);
+        _gameThreadMap.Add(3474, id);
         var mre = new ManualResetEvent(false);
-        var status = new HttpStatusCode();
-        var port = "7860";
+        var tmp = _exception.Data;
+
+        ApiBuilder.Build(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
+
+        IoC.Resolve<ICommand>("Server.CreateAndStart", id, () => { }).Execute();
+
+        var status = MessageHandler.Insert(new Message("test", 3574));
+
+        var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
+        IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
+
+        mre.WaitOne();
+        Assert.Equal(Results.BadRequest().GetType(), status.GetType());
+        _mockCommand.Verify(m => m.Execute(), Times.Never());
+    }
+
+    [Fact]
+    public void MappingTest()
+    {
+        var _mockCommand = new Mock<ICommand>();
+        _mockCommand.Setup(x => x.Execute()).Verifiable();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.BuildToGameCommand", (object[] args) =>
+        {
+            return _mockCommand.Object;
+        }).Execute();
+
+        var id = Guid.NewGuid();
+        _gameThreadMap.Add(3477, id);
+
+        IoC.Resolve<spacebattle.ICommand>("Server.CreateAndStart", id, () => { }).Execute();
+
+        ApiBuilder.Build(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
+
         var clientHandler = new HttpClientHandler();
+        var client = new HttpClient(clientHandler);
+        client.BaseAddress = new Uri("http://localhost:7881");
+
         var points = new Dictionary<string, object>
             {
                 { "cmd", "testcommand" },
-                { "gameId", 3464 },
-                {"gg", 54},
-                {"hh", 666},
-                {"Speed", 666},
-                {"CanRotate", true}
+                { "gameId", 3477 },
+                { "gg", 54 },
+                { "hh", 666 },
+                { "Speed", 666 },
+                { "CanRotate", true }
             };
-        IoC.Resolve<ICommand>("Server.CreateAndStart", id, () => { }).Execute();
-        var client = new HttpClient(clientHandler);
-        client.BaseAddress = new Uri($"http://localhost:{port}");
 
-        using (var endpoint = new Endpoint(port, IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"))))
-        {
-            Endpoint.Run();
-            var content = JsonContent.Create(555);
-            var response = client.PostAsync("/message", content);
-            status = response.Result.StatusCode;
-            var ss = IoC.Resolve<ICommand>("Server.Commands.SoftStop", id, () => { mre.Set(); }, () => { });
-            IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
+        var content = JsonContent.Create(points);
+        var status = client.PostAsync("/message", content);
 
-        }
+        var ss = IoC.Resolve<spacebattle.ICommand>("Server.Commands.SoftStop", id, () => { }, () => { });
+        IoC.Resolve<spacebattle.ICommand>("Server.SendCommand", id, ss).Execute();
 
-        mre.WaitOne();
-        Assert.Equal(HttpStatusCode.BadRequest, status);
-        _mockCommand.Verify(m => m.Execute(), Times.Never());
+        Assert.Equal(HttpStatusCode.Accepted, status.Result.StatusCode);
     }
 }

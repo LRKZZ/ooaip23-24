@@ -10,7 +10,6 @@ namespace spacebattleconsole
 {
     internal class Program
     {
-        private static Exception _exception = new Exception();
         private static readonly Hashtable _gameThreadMap = new Hashtable();
         public static void Main()
         {
@@ -45,7 +44,7 @@ namespace spacebattleconsole
             IoC.Resolve<spacebattle.ICommand>("Server.SendCommand", id, ss).Execute();
         }
 
-        private static Exception InitScope()
+        private static void InitScope()
         {
             new InitScopeBasedIoCImplementationCommand().Execute();
             IoC.Resolve<Hwdtech.ICommand>(
@@ -133,7 +132,6 @@ namespace spacebattleconsole
                     _exception = (Exception)args[0];
                 });
             }).Execute();
-            return _exception;
         }
     }
 }
