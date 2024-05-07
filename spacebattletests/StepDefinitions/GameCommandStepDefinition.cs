@@ -85,13 +85,13 @@ public class GameCommandTest
             });
         }).Execute();
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handler", (object[] args) =>
-        {
-            return new ActionCommand(() =>
-            {
-                _exception = (Exception)args[0];
-            });
-        }).Execute();
+        //IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handler", (object[] args) =>
+        //{
+        //    return new ActionCommand(() =>
+        //    {
+        //        _exception = (Exception)args[0];
+        //    });
+        //}).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "SendCommandToScheduler", (object[] args) =>
         {
