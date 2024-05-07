@@ -9,7 +9,7 @@ using Moq;
 
 public class GameCommandTest
 {
-    private Exception _exception = new Exception();
+    //private Exception _exception = new Exception();
     private readonly Hashtable _gameThreadMap = new Hashtable();
     public GameCommandTest()
     {
