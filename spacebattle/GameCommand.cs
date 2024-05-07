@@ -5,7 +5,7 @@ namespace spacebattle
 {
     public class GameCommand : ICommand
     {
-        public int _gameId { get; }
+        private readonly int _gameId;
         private readonly object _scope;
         private readonly Queue<ICommand> _queue;
         public GameCommand(int gameId, object scope, Queue<ICommand> queue)
@@ -17,7 +17,7 @@ namespace spacebattle
         public void Execute()
         {
             IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", _scope).Execute();
-            var timeout = IoC.Resolve<TimeSpan>("GetTimeQuant");
+            var timeout = new TimeSpan(0, 0, 5);
             var time = new Stopwatch();
             time.Start();
             while (_queue.Count != 0 && time.Elapsed < timeout)

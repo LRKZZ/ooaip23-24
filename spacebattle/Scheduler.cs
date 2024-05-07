@@ -4,9 +4,10 @@ namespace spacebattle
 {
     public class Scheduler
     {
-        public static void SendCommand(Guid thread, ICommand command)
+        public static void SendCommand(Guid thread, ICommand command, object scope)
         {
-            IoC.Resolve<ICommand>("SendCommand", thread, command).Execute();
+            IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", scope).Execute();
+            IoC.Resolve<ICommand>("Server.SendCommand", thread, command).Execute();
         }
     }
 }
