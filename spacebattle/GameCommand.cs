@@ -1,10 +1,13 @@
-﻿namespace spacebattle
+﻿using System.Diagnostics;
+using Hwdtech;
+
+namespace spacebattle
 {
     public class GameCommand : ICommand
     {
         private readonly Guid _gameId;
-        private object _scope;
-        private Queue<ICommand> _queue;
+        private readonly object _scope;
+        private readonly Queue<ICommand> _queue;
         public GameCommand(Guid gameId, object scope, Queue<ICommand> queue) 
         {
             _gameId = gameId;
@@ -13,7 +16,23 @@
         }
         public void Execute() 
         {
+            IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", _scope).Execute();
+            var timeout = IoC.Resolve<TimeSpan>("GetTimeQuant");
+            var time = new Stopwatch();
+            time.Start();
+            while (_queue.Count != 0 && time.Elapsed < timeout)
+            {
+                var cmd = _queue.Dequeue();
+                try
+                {
+                    cmd.Execute();
+                } catch (Exception ex)
+                {
+                    IoC.Resolve<ICommand>("Exception.Handler", cmd, ex).Execute();
+                }
+            }
 
+            IoC.Resolve<ICommand>("SendCommandToScheduler", _gameId, _scope, _queue).Execute();
         }
     }
 }
