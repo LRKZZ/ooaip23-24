@@ -5,16 +5,16 @@ namespace spacebattle
 {
     public class GameCommand : ICommand
     {
-        private readonly Guid _gameId;
+        public int _gameId { get; }
         private readonly object _scope;
         private readonly Queue<ICommand> _queue;
-        public GameCommand(Guid gameId, object scope, Queue<ICommand> queue) 
+        public GameCommand(int gameId, object scope, Queue<ICommand> queue)
         {
             _gameId = gameId;
             _scope = scope;
             _queue = queue;
         }
-        public void Execute() 
+        public void Execute()
         {
             IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", _scope).Execute();
             var timeout = IoC.Resolve<TimeSpan>("GetTimeQuant");
@@ -26,7 +26,8 @@ namespace spacebattle
                 try
                 {
                     cmd.Execute();
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     IoC.Resolve<ICommand>("Exception.Handler", cmd, ex).Execute();
                 }
