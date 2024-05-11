@@ -102,6 +102,12 @@ public class GameCommandTest
                 Scheduler.SendCommand(threadid, tmpcmd, args[1]);
             });
         }).Execute();
+
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetTimeQuant", (object[] args) =>
+        {
+            var time = new TimeSpan(0, 0, 5);
+            return (object)time;
+        }).Execute();
     }
 
     [Fact]

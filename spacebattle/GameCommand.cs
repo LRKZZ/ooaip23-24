@@ -17,7 +17,7 @@ namespace spacebattle
         public void Execute()
         {
             IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", _scope).Execute();
-            var timeout = new TimeSpan(0, 0, 5);
+            var timeout = IoC.Resolve<TimeSpan>("GetTimeQuant");
             var time = new Stopwatch();
             time.Start();
             while (_queue.Count != 0 && time.Elapsed < timeout)
