@@ -105,7 +105,7 @@ public class GameCommandTest
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetTimeQuant", (object[] args) =>
         {
-            var time = new TimeSpan(0, 0, 5);
+            var time = new TimeSpan(0, 0, 10);
             return (object)time;
         }).Execute();
     }
