@@ -129,6 +129,7 @@ public class GameCommandTest
         var ss = IoC.Resolve<ICommand>("Server.Commands.HardStop", id, () => { }, () => { });
         IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
 
+        Assert.NotEmpty(IoC.Resolve<BlockingCollection<ICommand>>($"Queue.{id}"));
         mockCmd.Verify(m => m.Execute(), Times.Once);
     }
 }
