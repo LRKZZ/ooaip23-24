@@ -24,10 +24,13 @@ namespace spacebattletests.StepDefinitions
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.EndMovement", (object[] args) => { return new EndMoveCommand((IMoveCommandEndable)args[0]); }).Execute();
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.UObject.DeleteProperty", (object[] args) =>
             {
-                var target = (IUObject)args[0];
-                var properties = (List<string>)args[1];
-                properties.ForEach(prop => target.DeleteProperty(prop));
-                return "";
+                var _action = new Action(() =>
+               {
+                   var target = (IUObject)args[0];
+                   var properties = (List<string>)args[1];
+                   properties.ForEach(prop => target.DeleteProperty(prop));
+               });
+                return _action;
             }).Execute();
         }
 
