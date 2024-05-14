@@ -33,6 +33,7 @@ namespace spacebattle
                 }
             }
 
+            time.Stop();
             IoC.Resolve<ICommand>("SendCommandToScheduler", _gameId, _scope, _queue).Execute();
         }
     }
