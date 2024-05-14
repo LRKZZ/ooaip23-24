@@ -29,12 +29,11 @@ namespace spacebattle
                 }
                 catch (Exception ex)
                 {
-                    IoC.Resolve<ICommand>("Exception.Handler", cmd, ex).Execute();
+                    IoC.Resolve<IHandler>("Exception.Handler", cmd, ex).Handle();
                 }
             }
 
             time.Stop();
-            IoC.Resolve<ICommand>("SendCommandToScheduler", _gameId, _scope, _queue).Execute();
         }
     }
 }

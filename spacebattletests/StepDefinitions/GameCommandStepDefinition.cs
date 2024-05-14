@@ -9,8 +9,6 @@ using Moq;
 
 public class GameCommandTest
 {
-    //private Exception _exception = new Exception();
-    private readonly Hashtable _gameThreadMap = new Hashtable();
     public GameCommandTest()
     {
         new InitScopeBasedIoCImplementationCommand().Execute();
@@ -20,116 +18,74 @@ public class GameCommandTest
             IoC.Resolve<object>("Scopes.Root")
             )
         ).Execute();
+    }
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Command.Create", (object[] args) =>
+    [Fact]
+    public void SuccessGameTimeoutExecute()
+    {
+        var newScope = IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"));
+        var queue = new Queue<ICommand>();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetTimeQuant", (object[] args) =>
         {
-            return new ActionCommand(() =>
-            {
-                var q = new BlockingCollection<ICommand>(100);
-                var t = new ServerThread(q);
-                new ThreadIdStrategy((Guid)args[0], t).Run();
-                new HardStopIdStrategy((Guid)args[0], t).Run();
-                new SoftStopIdStrategy((Guid)(args[0]), t).Run();
-                new ThreadQueueIdStrategy((Guid)args[0], q).Run();
-                new AfterOpenThreadStrategy(t, (Action)args[1]).Run();
-                t.SetScope(IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current")));
-            });
+            var time = new TimeSpan(0, 0, 0);
+            return (object)time;
         }).Execute();
+        queue.Enqueue(new ActionCommand(() => { }));
+        queue.Enqueue(new ActionCommand(() => { }));
+        var gamecmd = new GameCommand(444, newScope, queue);
+        gamecmd.Execute();
+        Assert.True(queue.Count == 2);
 
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Command.Start", (object[] args) =>
-        {
-            return new ActionCommand(() =>
-            {
-                var t = IoC.Resolve<ServerThread>($"GetThreadId.{(Guid)args[0]}");
-                t.Start();
-            });
-        }).Execute();
-
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Commands.HardStop", (object[] args) =>
-        {
-            return new ActionCommand(() =>
-            {
-                IoC.Resolve<ICommand>($"HardStop.{(Guid)args[0]}", (Action)args[1]).Execute();
-            });
-        }).Execute();
-
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.Commands.SoftStop", (object[] args) =>
-        {
-            return new ActionCommand(() =>
-            {
-                IoC.Resolve<ICommand>($"SoftStop.{(Guid)args[0]}", (Action)args[1], (Action)args[2]).Execute();
-            });
-        }).Execute();
-
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.SendCommand", (object[] args) =>
-        {
-            return new ActionCommand(() =>
-            {
-                var q = IoC.Resolve<BlockingCollection<ICommand>>($"Queue.{(Guid)args[0]}");
-                q.Add((ICommand)args[1]);
-            });
-        }).Execute();
-
-        // Попытаться вот эту штуку реализовать как отдельную стратегию
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.GetThreadIdByGameId", (object[] args) =>
-        {
-            return _gameThreadMap[(int)args[0]];
-        }).Execute();
-
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Server.CreateAndStart", (object[] args) =>
-        {
-            return new ActionCommand(() =>
-            {
-                IoC.Resolve<ICommand>("Server.Command.Create", (Guid)args[0], (Action)args[1]).Execute();
-                IoC.Resolve<ICommand>("Server.Command.Start", (Guid)args[0]).Execute();
-            });
-        }).Execute();
-
-        //IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handler", (object[] args) =>
-        //{
-        //    return new ActionCommand(() =>
-        //    {
-        //        _exception = (Exception)args[0];
-        //    });
-        //}).Execute();
-
-        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "SendCommandToScheduler", (object[] args) =>
-        {
-            return new ActionCommand(() =>
-            {
-                var threadid = (Guid)_gameThreadMap[(int)args[0]];
-                var tmpcmd = new GameCommand((int)args[0], args[1], (Queue<ICommand>)args[2]);
-                Scheduler.SendCommand(threadid, tmpcmd, args[1]);
-            });
-        }).Execute();
-
+    }
+    [Fact]
+    public void SuccessGameAllCommandsExecute()
+    {
+        var newScope = IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"));
+        var queue = new Queue<ICommand>();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetTimeQuant", (object[] args) =>
         {
             var time = new TimeSpan(0, 0, 10);
             return (object)time;
         }).Execute();
+        queue.Enqueue(new ActionCommand(() => { }));
+        var gamecmd = new GameCommand(444, newScope, queue);
+        gamecmd.Execute();
+        Assert.Empty(queue);
     }
-
     [Fact]
-    public void SuccessTest()
+    public void ExceptionHandlerFindHandler()
     {
-        var gameQueue = new Queue<ICommand>();
-        var mockCmd = new Mock<ICommand>();
-        mockCmd.Setup(x => x.Execute()).Verifiable();
-        gameQueue.Enqueue(mockCmd.Object);
-        var scope = IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"));
-        var gamecmd = new GameCommand(432, scope, gameQueue);
-        var id = Guid.NewGuid();
-        _gameThreadMap.Add(432, id);
-
-        IoC.Resolve<ICommand>("Server.CreateAndStart", id, () => { }).Execute();
-
-        IoC.Resolve<ICommand>("Server.SendCommand", id, gamecmd).Execute();
-
-        var ss = IoC.Resolve<ICommand>("Server.Commands.HardStop", id, () => { }, () => { });
-        IoC.Resolve<ICommand>("Server.SendCommand", id, ss).Execute();
-
-        Assert.NotEmpty(IoC.Resolve<BlockingCollection<ICommand>>($"Queue.{id}"));
-        mockCmd.Verify(m => m.Execute(), Times.Once);
+        var newScope = IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"));
+        var mockGoodHandler = new Mock<IHandler>();
+        mockGoodHandler.Setup(x => x.Handle()).Verifiable();
+        var queue = new Queue<ICommand>();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetTimeQuant", (object[] args) =>
+        {
+            var time = new TimeSpan(0, 0, 10);
+            return (object)time;
+        }).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handler", (object[] args) => mockGoodHandler.Object).Execute();
+        queue.Enqueue(new ActionCommand(() => { throw new Exception(); }));
+        var gamecmd = new GameCommand(444, newScope, queue);
+        gamecmd.Execute();
+        mockGoodHandler.Verify(x => x.Handle(), Times.Once);
+    }
+    [Fact]
+    public void ExceptionHandlerNotFindHandler()
+    {
+        var newScope = IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Current"));
+        var queue = new Queue<ICommand>();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "GetTimeQuant", (object[] args) =>
+        {
+            var time = new TimeSpan(0, 0, 10);
+            return (object)time;
+        }).Execute();
+        IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handler", (object[] args) => new DefaultHandler((Exception)args[1])).Execute();
+        queue.Enqueue(new ActionCommand(() => { throw new Exception(); }));
+        var gamecmd = new GameCommand(444, newScope, queue);
+        Assert.Throws<Exception>(() =>
+        {
+            gamecmd.Execute();
+        });
     }
 }
