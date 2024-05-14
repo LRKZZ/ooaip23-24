@@ -1,7 +1,4 @@
 ﻿namespace spacebattle;
-
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Hwdtech;
 using Hwdtech.Ioc;
