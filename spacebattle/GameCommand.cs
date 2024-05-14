@@ -8,7 +8,7 @@ namespace spacebattle
         //private readonly int _gameId;
         private readonly object _scope;
         private readonly Queue<ICommand> _queue;
-        public GameCommand(int gameId, object scope, Queue<ICommand> queue)
+        public GameCommand(object scope, Queue<ICommand> queue)
         {
             //_gameId = gameId;
             _scope = scope;

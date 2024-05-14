@@ -29,7 +29,7 @@ public class GameCommandTest
         }).Execute();
         queue.Enqueue(new ActionCommand(() => { }));
         queue.Enqueue(new ActionCommand(() => { }));
-        var gamecmd = new GameCommand(444, newScope, queue);
+        var gamecmd = new GameCommand(newScope, queue);
         gamecmd.Execute();
         Assert.True(queue.Count == 2);
 
@@ -45,7 +45,7 @@ public class GameCommandTest
             return (object)time;
         }).Execute();
         queue.Enqueue(new ActionCommand(() => { }));
-        var gamecmd = new GameCommand(444, newScope, queue);
+        var gamecmd = new GameCommand(newScope, queue);
         gamecmd.Execute();
         Assert.Empty(queue);
     }
@@ -63,7 +63,7 @@ public class GameCommandTest
         }).Execute();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handler", (object[] args) => mockGoodHandler.Object).Execute();
         queue.Enqueue(new ActionCommand(() => { throw new Exception(); }));
-        var gamecmd = new GameCommand(444, newScope, queue);
+        var gamecmd = new GameCommand(newScope, queue);
         gamecmd.Execute();
         mockGoodHandler.Verify(x => x.Handle(), Times.Once);
     }
@@ -79,7 +79,7 @@ public class GameCommandTest
         }).Execute();
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Exception.Handler", (object[] args) => new DefaultHandler((Exception)args[1])).Execute();
         queue.Enqueue(new ActionCommand(() => { throw new Exception(); }));
-        var gamecmd = new GameCommand(444, newScope, queue);
+        var gamecmd = new GameCommand(newScope, queue);
         Assert.Throws<Exception>(() =>
         {
             gamecmd.Execute();
