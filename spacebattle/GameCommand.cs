@@ -5,7 +5,7 @@ namespace spacebattle
 {
     public class GameCommand : ICommand
     {
-        private readonly int _gameId;
+        //private readonly int _gameId;
         private readonly object _scope;
         private readonly Queue<ICommand> _queue;
         public GameCommand(int gameId, object scope, Queue<ICommand> queue)
