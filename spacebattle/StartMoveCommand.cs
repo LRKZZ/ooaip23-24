@@ -12,7 +12,7 @@ namespace spacebattle
 
         public void Execute()
         {
-            _startable.PropertiesOfOrder.ToList().ForEach(property => IoC.Resolve<ActionCommand>(
+            _startable.PropertiesOfOrder.ToList().ForEach(property => IoC.Resolve<ICommand>(
                 "Game.IUObject.SetProperty",
                 _startable.Order,
                 property.Key,
@@ -26,7 +26,7 @@ namespace spacebattle
 
             var injectCmd = IoC.Resolve<IInjectable>("Game.Commands.Inject", longCmd);
 
-            IoC.Resolve<ActionCommand>("Game.IUObject.SetProperty",
+            IoC.Resolve<ICommand>("Game.IUObject.SetProperty",
                 _startable.Order,
                 "Game.Commands.Inject.LongMove",
                 injectCmd).Execute();
