@@ -1,4 +1,5 @@
 ﻿using Hwdtech;
+
 namespace spacebattle
 {
     public class StartMoveCommand : ICommand
@@ -11,12 +12,12 @@ namespace spacebattle
 
         public void Execute()
         {
-            _startable.PropertiesOfOrder.ToList().ForEach(property => IoC.Resolve<Action>(
+            _startable.PropertiesOfOrder.ToList().ForEach(property => IoC.Resolve<ActionCommand>(
                 "Game.IUObject.SetProperty",
                 _startable.Order,
                 property.Key,
                 property.Value
-            )());
+            ).Execute());
 
             var longCmd = IoC.Resolve<ICommand>(
                 "Game.Commands.LongMove",
@@ -25,12 +26,10 @@ namespace spacebattle
 
             var injectCmd = IoC.Resolve<IInjectable>("Game.Commands.Inject", longCmd);
 
-            IoC.Resolve<Action>(
-                "Game.IUObject.SetProperty",
+            IoC.Resolve<ActionCommand>("Game.IUObject.SetProperty",
                 _startable.Order,
                 "Game.Commands.Inject.LongMove",
-                injectCmd
-            )();
+                injectCmd).Execute();
 
             IoC.Resolve<IQueue>("Game.Queue").Add((ICommand)injectCmd);
         }

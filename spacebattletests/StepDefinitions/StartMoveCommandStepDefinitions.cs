@@ -26,7 +26,7 @@ namespace spacebattletests.StepDefinitions
                 "Game.IUObject.SetProperty",
                 (object[] args) =>
                 {
-                    return new Action(() =>
+                    return new ActionCommand(() =>
                     {
                         var order = (IUObject)args[0];
                         var key = (string)args[1];
@@ -34,12 +34,6 @@ namespace spacebattletests.StepDefinitions
 
                         order.SetProperty(key, value);
                     });
-                    // var order = (IUObject)args[0];
-                    // var key = (string)args[1];
-                    // var value = args[2];
-
-                    // order.SetProperty(key, value);
-                    // return new object();
                 }
             ).Execute();
 
