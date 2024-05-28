@@ -16,33 +16,45 @@ namespace spacebattle
         {
             var propertiesNew = _typeNew.GetProperties().ToList();
 
-            var templateString = @"public class {{new_type_name}}Adapter : {{new_type_name}} 
-        {
-        {{old_type_name}} _obj;
-    
-        public {{new_type_name}}Adapter({{old_type_name}} obj) => _obj = obj;
-    {{for property in (properties_new)}}
-    public {{property.property_type.name}} {{property.name}}
+            var list = new List<ClassProperties>();
+
+            _typeNew.GetProperties().ToList().ForEach(property =>
+            {
+                list.Add(new ClassProperties(property));
+            });
+
+            var templateString = @"using Hwdtech;
+namespace spacebattle;
+
+public class {{new_type_name}}Adapter : {{new_type_name}} 
     {
-    {{if property.can_read}}
+    private readonly {{old_type_name}} _obj;
+    
+    public {{new_type_name}}Adapter({{old_type_name}} obj) => _obj = obj;
+    {{for property in (properties_new)}}
+    public {{property.property_type}} {{property.name}}
+    {
+{{if property.can_read}}
         get
         {
-            return IoC.Resolve<{{property.property_type.name}}>(""Game.Get.Property"", ""{{property.name}}"", _obj);
-        }{{end}}
-    {{if property.can_write}}
+            {
+                return IoC.Resolve<{{property.property_type}}>(""IUObject.Get"", _obj, ""{{property.name}}"");
+            }
+        }{{end}}{{if property.can_write}}
         set
         {
-            return IoC.Resolve<ICommand>(""Game.Set.Property"", ""{{property.name}}"", _obj, value).Execute();
+            {
+                IoC.Resolve<ICommand>(""IUObject.Set"", _obj, ""{{property.name}}"", value).Execute();
+            }
         }{{end}}
-    }
-    {{end}}
+    }{{end}}
     }";
             var template = Template.Parse(templateString);
             var result = template.Render(new
             {
                 new_type_name = _typeNew.Name,
                 old_type_name = _typeOld.Name,
-                properties_new = propertiesNew,
+                properties_new = list,
             });
             return result;
         }

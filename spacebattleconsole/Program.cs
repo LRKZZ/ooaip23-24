@@ -43,6 +43,7 @@ namespace spacebattleconsole
 
             var ss = IoC.Resolve<spacebattle.ICommand>("Server.Commands.SoftStop", id, () => { }, () => { });
             IoC.Resolve<spacebattle.ICommand>("Server.SendCommand", id, ss).Execute();
+
             Console.WriteLine(_exception.ToString());
         }
 
