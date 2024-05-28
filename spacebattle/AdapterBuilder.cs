@@ -26,29 +26,28 @@ namespace spacebattle
             var templateString = @"using Hwdtech;
 namespace spacebattle;
 
-public class {{new_type_name}}Adapter : {{new_type_name}} 
-    {
-    private readonly {{old_type_name}} _obj;
-    
-    public {{new_type_name}}Adapter({{old_type_name}} obj) => _obj = obj;
+public class {{new_type_name}}Adapter : {{new_type_name}}
+{
+	private readonly {{old_type_name}} _obj;
+    	public {{new_type_name}}Adapter({{old_type_name}} obj) => _obj = obj;
     {{for property in (properties_new)}}
-    public {{property.property_type}} {{property.name}}
-    {
+    	public {{property.property_type}} {{property.name}}
+    	{
 {{if property.can_read}}
-        get
-        {
-            {
-                return IoC.Resolve<{{property.property_type}}>(""IUObject.Get"", _obj, ""{{property.name}}"");
-            }
-        }{{end}}{{if property.can_write}}
-        set
-        {
-            {
-                IoC.Resolve<ICommand>(""IUObject.Set"", _obj, ""{{property.name}}"", value).Execute();
-            }
-        }{{end}}
-    }{{end}}
-    }";
+		get
+		{
+			{
+				return IoC.Resolve<{{property.property_type}}>(""IUObject.Get"", _obj, ""{{property.name}}"");
+			}
+		}{{end}}{{if property.can_write}}
+		set
+		{
+			{
+				IoC.Resolve<ICommand>(""IUObject.Set"", _obj, ""{{property.name}}"", value).Execute();
+			}
+		}{{end}}
+	}{{end}}
+}";
             var template = Template.Parse(templateString);
             var result = template.Render(new
             {
