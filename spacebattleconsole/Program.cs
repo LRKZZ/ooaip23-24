@@ -11,6 +11,7 @@ namespace spacebattleconsole
     internal class Program
     {
         private static readonly Hashtable _gameThreadMap = new Hashtable();
+        private static Exception _exception = new Exception();
         public static void Main()
         {
             InitScope();
@@ -42,6 +43,7 @@ namespace spacebattleconsole
 
             var ss = IoC.Resolve<spacebattle.ICommand>("Server.Commands.SoftStop", id, () => { }, () => { });
             IoC.Resolve<spacebattle.ICommand>("Server.SendCommand", id, ss).Execute();
+            Console.WriteLine(_exception.ToString());
         }
 
         private static void InitScope()
