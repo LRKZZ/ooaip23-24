@@ -60,7 +60,7 @@ public class IRotatableAdapter : IRotatable
         Assert.Equal(expectedCode, generatedCode);
     }
 
-	 [Fact]
+    [Fact]
     public void SuccessGenerateAdapterForDictionary()
     {
         var oldtype = typeof(IUObject);
