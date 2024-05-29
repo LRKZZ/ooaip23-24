@@ -15,7 +15,7 @@ public class AdapterGeneratorTest
             )
         ).Execute();
     }
-	
+
     [Fact]
     public void SuccessGenerateAdapterForIRotatable()
     {
