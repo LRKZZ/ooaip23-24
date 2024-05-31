@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +17,9 @@
 		 <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		 <PrivateAssets>all</PrivateAssets>
 	 </PackageReference>
+	 <PackageReference Include="Hwdtech.IoC" Version="1.0.0" />
 	 <PackageReference Include="Hwdtech.Ioc.ScopeBasedIoCImplementation" Version="1.0.0" />
+	 <PackageReference Include="Hwdtech.Ioc.SingleThreadScope" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="moq" Version="4.20.70" />
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
@@ -24,6 +27,12 @@
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
     <PackageReference Include="FluentAssertions" Version="6.2.0" />
+    <PackageReference Include="CoreWCF.Http" Version="1.5.2" />
+    <PackageReference Include="CoreWCF.Primitives" Version="1.5.2" />
+    <PackageReference Include="CoreWCF.WebHttp" Version="1.5.2" />
+    <PackageReference Include="json.Net" Version="1.0.33" />
+    <PackageReference Include="Microsoft.Build" Version="17.3.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\spacebattle\spacebattle.csproj" />
+    <ProjectReference Include="..\spacebattleapi\spacebattleapi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
