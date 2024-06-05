@@ -28,7 +28,7 @@ namespace spacebattletests.Features
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "AngleAction - Копировать.feature"
+#line 1 "DecisionTree.feature"
 #line hidden
         
         public DecisionTreeFeature(DecisionTreeFeature.FixtureData fixtureData, spacebattletests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
