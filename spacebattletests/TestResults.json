@@ -1,0 +1,271 @@
+{
+  "spacebattle.dll": {
+    "D:\\vscode\\ooaip-6\\ooaip23-24\\spacebattle\\Angle.cs": {
+      "spacebattle.Angle": {
+        "System.Int32 spacebattle.Angle::get_X()": {
+          "Lines": {
+            "5": 10
+          },
+          "Branches": []
+        },
+        "spacebattle.Angle spacebattle.Angle::op_Addition(spacebattle.Angle,spacebattle.Angle)": {
+          "Lines": {
+            "13": 1,
+            "14": 1,
+            "15": 1
+          },
+          "Branches": []
+        },
+        "System.Boolean spacebattle.Angle::Equals(System.Object)": {
+          "Lines": {
+            "18": 5,
+            "19": 5,
+            "20": 1,
+            "21": 1,
+            "24": 4,
+            "25": 4,
+            "26": 4
+          },
+          "Branches": [
+            {
+              "Line": 19,
+              "Offset": 2,
+              "EndOffset": 4,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 4
+            },
+            {
+              "Line": 19,
+              "Offset": 2,
+              "EndOffset": 23,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 1
+            },
+            {
+              "Line": 19,
+              "Offset": 26,
+              "EndOffset": 28,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 1
+            },
+            {
+              "Line": 19,
+              "Offset": 26,
+              "EndOffset": 35,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 4
+            }
+          ]
+        },
+        "System.Int32 spacebattle.Angle::GetHashCode()": {
+          "Lines": {
+            "29": 8,
+            "30": 8,
+            "31": 8
+          },
+          "Branches": []
+        },
+        "System.Void spacebattle.Angle::.ctor(System.Int32)": {
+          "Lines": {
+            "7": 16,
+            "8": 16,
+            "9": 16,
+            "10": 16
+          },
+          "Branches": []
+        }
+      }
+    },
+    "D:\\vscode\\ooaip-6\\ooaip23-24\\spacebattle\\EmptyCommand.cs": {
+      "spacebattle.EmptyCommand": {
+        "System.Void spacebattle.EmptyCommand::Execute()": {
+          "Lines": {
+            "5": 2
+          },
+          "Branches": []
+        }
+      }
+    },
+    "D:\\vscode\\ooaip-6\\ooaip23-24\\spacebattle\\EndMoveCommand.cs": {
+      "spacebattle.EndMoveCommand": {
+        "System.Void spacebattle.EndMoveCommand::Execute()": {
+          "Lines": {
+            "14": 1,
+            "15": 1,
+            "16": 1,
+            "17": 1,
+            "18": 1,
+            "19": 1
+          },
+          "Branches": []
+        },
+        "System.Void spacebattle.EndMoveCommand::.ctor(spacebattle.IMoveCommandEndable)": {
+          "Lines": {
+            "8": 1,
+            "9": 1,
+            "10": 1,
+            "11": 1
+          },
+          "Branches": []
+        }
+      }
+    },
+    "D:\\vscode\\ooaip-6\\ooaip23-24\\spacebattle\\MoveCommand.cs": {
+      "spacebattle.MoveCommand": {
+        "System.Void spacebattle.MoveCommand::Execute()": {
+          "Lines": {
+            "13": 4,
+            "14": 4,
+            "15": 1
+          },
+          "Branches": []
+        },
+        "System.Void spacebattle.MoveCommand::.ctor(spacebattle.IMovable)": {
+          "Lines": {
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4
+          },
+          "Branches": []
+        }
+      }
+    },
+    "D:\\vscode\\ooaip-6\\ooaip23-24\\spacebattle\\ReplaceCommand.cs": {
+      "spacebattle.ReplaceCommand": {
+        "System.Void spacebattle.ReplaceCommand::Execute()": {
+          "Lines": {
+            "9": 1
+          },
+          "Branches": []
+        },
+        "System.Void spacebattle.ReplaceCommand::Inject(spacebattle.ICommand)": {
+          "Lines": {
+            "11": 2
+          },
+          "Branches": []
+        },
+        "System.Void spacebattle.ReplaceCommand::.ctor(spacebattle.ICommand)": {
+          "Lines": {
+            "7": 4
+          },
+          "Branches": []
+        }
+      }
+    },
+    "D:\\vscode\\ooaip-6\\ooaip23-24\\spacebattle\\RotateCommand.cs": {
+      "spacebattle.RotateCommand": {
+        "System.Void spacebattle.RotateCommand::Execute()": {
+          "Lines": {
+            "12": 4,
+            "13": 4,
+            "14": 1
+          },
+          "Branches": []
+        },
+        "System.Void spacebattle.RotateCommand::.ctor(spacebattle.IRotatable)": {
+          "Lines": {
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4
+          },
+          "Branches": []
+        }
+      }
+    },
+    "D:\\vscode\\ooaip-6\\ooaip23-24\\spacebattle\\Vector.cs": {
+      "spacebattle.Vector": {
+        "System.Single spacebattle.Vector::get_X()": {
+          "Lines": {
+            "5": 10
+          },
+          "Branches": []
+        },
+        "System.Single spacebattle.Vector::get_Y()": {
+          "Lines": {
+            "6": 10
+          },
+          "Branches": []
+        },
+        "spacebattle.Vector spacebattle.Vector::op_Addition(spacebattle.Vector,spacebattle.Vector)": {
+          "Lines": {
+            "15": 1,
+            "16": 1,
+            "17": 1,
+            "18": 1,
+            "19": 1
+          },
+          "Branches": []
+        },
+        "System.Boolean spacebattle.Vector::Equals(System.Object)": {
+          "Lines": {
+            "22": 5,
+            "23": 5,
+            "24": 1,
+            "25": 1,
+            "28": 4,
+            "29": 4,
+            "30": 4
+          },
+          "Branches": [
+            {
+              "Line": 23,
+              "Offset": 2,
+              "EndOffset": 4,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 4
+            },
+            {
+              "Line": 23,
+              "Offset": 2,
+              "EndOffset": 23,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 1
+            },
+            {
+              "Line": 23,
+              "Offset": 26,
+              "EndOffset": 28,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 1
+            },
+            {
+              "Line": 23,
+              "Offset": 26,
+              "EndOffset": 35,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 4
+            }
+          ]
+        },
+        "System.Int32 spacebattle.Vector::GetHashCode()": {
+          "Lines": {
+            "33": 8,
+            "34": 8,
+            "35": 8
+          },
+          "Branches": []
+        },
+        "System.Void spacebattle.Vector::.ctor(System.Single,System.Single)": {
+          "Lines": {
+            "8": 16,
+            "9": 16,
+            "10": 16,
+            "11": 16,
+            "12": 16
+          },
+          "Branches": []
+        }
+      }
+    }
+  }
+}
