@@ -19,7 +19,7 @@ namespace spacebattletests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class AngleActionFeature : object, Xunit.IClassFixture<AngleActionFeature.FixtureData>, System.IDisposable
+    public partial class DecisionTreeFeature : object, Xunit.IClassFixture<DecisionTreeFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -31,7 +31,7 @@ namespace spacebattletests.Features
 #line 1 "AngleAction.feature"
 #line hidden
         
-        public AngleActionFeature(AngleActionFeature.FixtureData fixtureData, spacebattletests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public DecisionTreeFeature(DecisionTreeFeature.FixtureData fixtureData, spacebattletests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace spacebattletests.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("ru"), "Features", "AngleAction", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("ru"), "Features", "DecisionTree", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,14 +80,14 @@ namespace spacebattletests.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Сравнение двух углов верно")]
-        [Xunit.TraitAttribute("FeatureTitle", "AngleAction")]
-        [Xunit.TraitAttribute("Description", "Сравнение двух углов верно")]
-        public virtual void СравнениеДвухУгловВерно()
+        [Xunit.SkippableFactAttribute(DisplayName="Построение дерева произошло верно")]
+        [Xunit.TraitAttribute("FeatureTitle", "DecisionTree")]
+        [Xunit.TraitAttribute("Description", "Построение дерева произошло верно")]
+        public virtual void ПостроениеДереваПроизошлоВерно()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Сравнение двух углов верно", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Построение дерева произошло верно", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -109,30 +109,27 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 6
- testRunner.Given("первый угол равен 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
+ testRunner.Given("дан файл с векторами по пути \'../../../Collision.txt\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
 #line hidden
 #line 7
- testRunner.And("второй угол равен 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "И ");
+ testRunner.When("происходит считывание файла", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 8
- testRunner.When("происходит сравнение углов", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
-#line hidden
-#line 9
- testRunner.Then("получаем true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
+ testRunner.Then("считанное дерево равно ожидаемому", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "То ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Сравнение двух углов неверно")]
-        [Xunit.TraitAttribute("FeatureTitle", "AngleAction")]
-        [Xunit.TraitAttribute("Description", "Сравнение двух углов неверно")]
-        public virtual void СравнениеДвухУгловНеверно()
+        [Xunit.SkippableFactAttribute(DisplayName="Невозможно считать файл с векторами")]
+        [Xunit.TraitAttribute("FeatureTitle", "DecisionTree")]
+        [Xunit.TraitAttribute("Description", "Невозможно считать файл с векторами")]
+        public virtual void НевозможноСчитатьФайлСВекторами()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Сравнение двух углов неверно", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 11
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Невозможно считать файл с векторами", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -152,61 +149,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 11
+ testRunner.Given("дан файл с векторами", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
+#line hidden
 #line 12
- testRunner.Given("первый угол равен 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
+ testRunner.When("происходит считывание файла", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 13
- testRunner.And("второй угол равен 7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "И ");
-#line hidden
-#line 14
- testRunner.When("происходит сравнение углов", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
-#line hidden
-#line 15
- testRunner.Then("получаем false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Сравнение двух невозможно невозможно")]
-        [Xunit.TraitAttribute("FeatureTitle", "AngleAction")]
-        [Xunit.TraitAttribute("Description", "Сравнение двух невозможно невозможно")]
-        public virtual void СравнениеДвухНевозможноНевозможно()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Сравнение двух невозможно невозможно", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 17
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 18
- testRunner.Given("первый угол равен 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
-#line hidden
-#line 19
- testRunner.And("второй угол неопределён", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "И ");
-#line hidden
-#line 20
- testRunner.When("происходит сравнение углов", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
-#line hidden
-#line 21
- testRunner.Then("возникает ошибка сравнения углов", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Тогда ");
+ testRunner.Then("получается ошибка считывания файла", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "То ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -219,12 +169,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                AngleActionFeature.FeatureSetup();
+                DecisionTreeFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                AngleActionFeature.FeatureTearDown();
+                DecisionTreeFeature.FeatureTearDown();
             }
         }
     }
