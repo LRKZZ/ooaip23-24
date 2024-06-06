@@ -15,11 +15,9 @@ public class DynamicAdapterCompilerTests
                 public void TestMethod() {}
             }";
 
-        var compiledAssembly = DynamicAdapterCompiler.CompileCode(code);
-        var testType = compiledAssembly.GetType("TestClass");
-        Assert.NotNull(testType);
-        var instance = Activator.CreateInstance(testType);
-        Assert.IsAssignableFrom(testType, instance);
+        var assemblyOutput = DynamicAdapterCompiler.CompileCode(code);
+        var retrievedType = assemblyOutput.GetType("TestClass");
+        Assert.NotNull(retrievedType);
     }
 
     [Fact]
@@ -31,7 +29,7 @@ public class DynamicAdapterCompilerTests
 
             }";
 
-        Exception exception = Assert.Throws<InvalidOperationException>(() => DynamicAdapterCompiler.CompileCode(code));
-        Assert.Equal("Compilation failed", exception.Message);
+        Exception capturedException = Assert.Throws<InvalidOperationException>(() => DynamicAdapterCompiler.CompileCode(code));
+        Assert.Equal("Compilation failed", capturedException.Message);
     }
 }

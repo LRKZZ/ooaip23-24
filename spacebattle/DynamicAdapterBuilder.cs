@@ -10,30 +10,30 @@ public class DynamicAdapterCompiler
 {
     public static Assembly CompileCode(string sourceCode)
     {
-        var assemblyName = Path.GetRandomFileName();
-        var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
+        var assemblyId = Path.GetRandomFileName();
+        var codeStructure = CSharpSyntaxTree.ParseText(sourceCode);
 
-        var references = new List<MetadataReference>
+        var assemblyReferences = new List<MetadataReference>
         {
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
             MetadataReference.CreateFromFile(typeof(IoC).Assembly.Location)
         };
 
-        var compilation = CSharpCompilation.Create(
-            assemblyName,
-            new[] { syntaxTree },
-            references,
+        var codeCompilation = CSharpCompilation.Create(
+            assemblyId,
+            new[] { codeStructure },
+            assemblyReferences,
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
-        using var ms = new MemoryStream();
-        var result = compilation.Emit(ms);
+        using var stream = new MemoryStream();
+        var compilationResult = codeCompilation.Emit(stream);
 
-        if (!result.Success)
+        if (!compilationResult.Success)
         {
             throw new InvalidOperationException("Compilation failed");
         }
 
-        ms.Seek(0, SeekOrigin.Begin);
-        return Assembly.Load(ms.ToArray());
+        stream.Seek(0, SeekOrigin.Begin);
+        return Assembly.Load(stream.ToArray());
     }
 }

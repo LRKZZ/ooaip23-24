@@ -5,39 +5,39 @@ using System.Text.RegularExpressions;
 
 public class AdapterBuilder
 {
-    private readonly string adaptername;
-    private readonly string adaptertypename;
-    private readonly string targettypename;
-    private string? properties;
+    private readonly string _builderName;
+    private readonly string _typeName;
+    private readonly string _targetType;
+    private string? _adapterProperties;
 
-    public AdapterBuilder(Type adaptertype, Type targettype)
+    public AdapterBuilder(Type sourceType, Type destinationType)
     {
-        adaptername = adaptertype.Name.Substring(1);
-        adaptertypename = adaptertype.Name;
-        targettypename = FormatGenericType(targettype);
+        _builderName = sourceType.Name.Substring(1);
+        _typeName = sourceType.Name;
+        _targetType = FormatGenericType(destinationType);
     }
 
-    public void CreateProperty(PropertyInfo p)
+    public void CreateProperty(PropertyInfo prop)
     {
-        string get = string.Empty, set = string.Empty;
+        string getProperty = string.Empty, setProperty = string.Empty;
 
-        var propertyname = FormatGenericType(p.PropertyType);
+        var propertyName = FormatGenericType(prop.PropertyType);
 
-        if (p.CanRead)
+        if (prop.CanRead)
         {
-            get = $@"   get {{ return IoC.Resolve<{propertyname}>(""Game.{p.Name}.Get"", target); }}";
+            getProperty = $@"   get {{ return IoC.Resolve<{propertyName}>(""Game.{prop.Name}.Get"", target); }}";
         }
 
-        if (p.CanWrite)
+        if (prop.CanWrite)
         {
-            set = $@"   set {{ IoC.Resolve<_ICommand.ICommand>(""Game.{p.Name}.Set"", target, value).Execute(); }}";
+            setProperty = $@"   set {{ IoC.Resolve<_ICommand.ICommand>(""Game.{prop.Name}.Set"", target, value).Execute(); }}";
         }
 
-        properties +=
+        _adapterProperties +=
         $@"
-        public {propertyname} {p.Name} {{
-            {get}
-            {set}
+        public {propertyName} {prop.Name} {{
+            {getProperty}
+            {setProperty}
         }}
         ";
     }
@@ -48,7 +48,7 @@ public class AdapterBuilder
 
         if (type.IsGenericType)
         {
-            typeName = typeName.Substring(0, typeName.IndexOf('`'));
+            typeName = typeName[..typeName.IndexOf('`')];
 
             var typeArgs = type.GetGenericArguments();
             var typeArgNames = new string[typeArgs.Length];
@@ -65,10 +65,10 @@ public class AdapterBuilder
 
     public string Build()
     {
-        var result = @$"class {adaptername}Adapter : {adaptertypename} {{
-        {targettypename} target;
-        public {adaptername}Adapter({targettypename} target) => this.target = target; 
-        {properties}
+        var result = @$"class {_builderName}Adapter : {_typeName} {{
+        {_targetType} target;
+        public {_builderName}Adapter({_targetType} target) => this.target = target; 
+        {_adapterProperties}
     }}";
 
         result = Regex.Replace(result, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline);

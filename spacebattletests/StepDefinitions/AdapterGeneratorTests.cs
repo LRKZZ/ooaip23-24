@@ -18,7 +18,7 @@ public class AdapterGeneratorTests
     public void AdapterCodeGeneratorTest_1()
     {
 
-        var moveStartableAdapterCode =
+        var adapterCodeForStartable =
        @"class MoveStartableAdapter : IMoveStartable {
         Object target;
         public MoveStartableAdapter(Object target) => this.target = target; 
@@ -30,7 +30,7 @@ public class AdapterGeneratorTests
         }
     }";
 
-        var movableAdapterCode =
+        var adapterCodeForMovable =
         @"class MovableAdapter : IMovable {
         Vector target;
         public MovableAdapter(Vector target) => this.target = target; 
@@ -43,7 +43,7 @@ public class AdapterGeneratorTests
         }
     }";
 
-        Assert.Equal(moveStartableAdapterCode, IoC.Resolve<string>("Game.Reflection.GenerateAdapterCode", typeof(IMoveStartable), typeof(object)));
-        Assert.Equal(movableAdapterCode, IoC.Resolve<string>("Game.Reflection.GenerateAdapterCode", typeof(IMovable), typeof(Vector)));
+        Assert.Equal(adapterCodeForStartable, IoC.Resolve<string>("Game.Reflection.GenerateAdapterCode", typeof(IMoveStartable), typeof(object)));
+        Assert.Equal(adapterCodeForMovable, IoC.Resolve<string>("Game.Reflection.GenerateAdapterCode", typeof(IMovable), typeof(Vector)));
     }
 }

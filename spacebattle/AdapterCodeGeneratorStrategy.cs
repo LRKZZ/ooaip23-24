@@ -5,20 +5,20 @@ using SpaceBattle;
 
 public class AdapterCodeGeneratorStrategy : IStrategy
 {
-    public object Strategy(params object[] args)
+    public object Strategy(params object[] paramsArray)
     {
-        var adapterType = (Type)args[0];
-        var targetType = (Type)args[1];
+        var sourceType = (Type)paramsArray[0];
+        var destinationType = (Type)paramsArray[1];
 
-        var builder = new AdapterBuilder(adapterType, targetType);
+        var adapterConstructor = new AdapterBuilder(sourceType, destinationType);
 
-        var properties = adapterType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        var sourceProperties = sourceType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-        foreach (var p in properties)
+        foreach (var propertyItem in sourceProperties)
         {
-            builder.CreateProperty(p);
+            adapterConstructor.CreateProperty(propertyItem);
         }
 
-        return builder.Build();
+        return adapterConstructor.Build();
     }
 }
