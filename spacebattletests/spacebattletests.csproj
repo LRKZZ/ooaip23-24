@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\AngleAction - Копировать.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Features\Spaceship - Копировать.feature.cs" />
   </ItemGroup>
 
@@ -16,11 +17,9 @@
 		 <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		 <PrivateAssets>all</PrivateAssets>
 	 </PackageReference>
-	 <PackageReference Include="Hwdtech.IoC" Version="1.0.0" />
 	 <PackageReference Include="Hwdtech.Ioc.ScopeBasedIoCImplementation" Version="1.0.0" />
-	 <PackageReference Include="Hwdtech.Ioc.SingleThreadScope" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-    <PackageReference Include="moq" Version="4.20.69" />
+    <PackageReference Include="moq" Version="4.20.70" />
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
     <PackageReference Include="SpecFlow.xUnit" Version="3.9.40" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -45,12 +44,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Features\Collision.feature.cs">
+      <DependentUpon>Collision.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Features\StartMoveCommand.feature.cs">
+      <DependentUpon>StartMoveCommand.feature</DependentUpon>
+    </Compile>
     <Compile Update="Features\AngleAction.feature.cs">
       <DependentUpon>AngleAction.feature</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowFeatureFiles Update="Features\Collision.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Features\StartMoveCommand.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Features\Vector.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>

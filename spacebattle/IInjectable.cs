@@ -1,6 +1,7 @@
-﻿namespace spacebattle;
-
-public interface IInjectable
+﻿namespace spacebattle
 {
-    void Inject(ICommand obj);
+    public interface IInjectable
+    {
+        void Inject(ICommand obj);
+    }
 }

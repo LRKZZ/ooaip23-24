@@ -1,7 +1,7 @@
-﻿namespace spacebattle
+﻿namespace spacebattle;
+
+public interface Strategy
 {
-    public interface Strategy
-    {
-        public object Execute(params object[] args);
-    }
+    object Execute(params object[] args);
+
 }
