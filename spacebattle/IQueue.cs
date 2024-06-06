@@ -1,8 +1,8 @@
 ﻿namespace spacebattle
 {
-    internal interface IQueue<T>
+    public interface IQueue
     {
-        public void Add(T item);
-        public T Take();
+        void Add(ICommand cmd);
+        ICommand Take();
     }
 }
