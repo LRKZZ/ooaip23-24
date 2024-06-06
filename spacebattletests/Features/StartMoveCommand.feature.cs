@@ -110,7 +110,7 @@ namespace spacebattletests.Features
             {
                 this.ScenarioStart();
 #line 9
-    testRunner.Given("я выполняю команду начала движения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
+    testRunner.Given("я выполняю команду начала движения для успешного выполнения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
 #line hidden
 #line 10
     testRunner.When("команда успешно выполняется", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
@@ -154,7 +154,7 @@ namespace spacebattletests.Features
             {
                 this.ScenarioStart();
 #line 15
-    testRunner.Given("я выполняю команду начала движения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
+    testRunner.Given("я выполняю команду начала движения для успешного выполнения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
 #line hidden
 #line 16
     testRunner.When("не могу установить свойства", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
@@ -195,7 +195,7 @@ namespace spacebattletests.Features
             {
                 this.ScenarioStart();
 #line 20
-    testRunner.Given("я выполняю команду начала движения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
+    testRunner.Given("я выполняю команду начала движения для успешного выполнения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
 #line hidden
 #line 21
     testRunner.When("не могу добавить команду в очередь", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
@@ -236,7 +236,7 @@ namespace spacebattletests.Features
             {
                 this.ScenarioStart();
 #line 25
-    testRunner.Given("я выполняю команду начала движения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
+    testRunner.Given("я выполняю команду начала движения для успешного выполнения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
 #line hidden
 #line 26
     testRunner.When("не могу прочитать свойства заказа", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
@@ -277,7 +277,7 @@ namespace spacebattletests.Features
             {
                 this.ScenarioStart();
 #line 30
-    testRunner.Given("я выполняю команду начала движения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
+    testRunner.Given("я выполняю команду начала движения для успешного выполнения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Допустим ");
 #line hidden
 #line 31
     testRunner.When("не могу прочитать заказ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
@@ -318,7 +318,7 @@ namespace spacebattletests.Features
             {
                 this.ScenarioStart();
 #line 35
-    testRunner.Given("заменяемая команда и внедряемая команда созданы", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
+    testRunner.Given("заменяемая команда и внедряемая команда созданы для начала движения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
 #line hidden
 #line 36
     testRunner.When("внедряемая команда внедряется в заменяемую команду", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");

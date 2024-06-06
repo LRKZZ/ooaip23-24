@@ -59,7 +59,7 @@ namespace spacebattletests.StepDefinitions
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Command.EmptyCommand", (object[] args) => new EmptyCommand()).Execute();
         }
 
-        [Given(@"я выполняю команду начала движения")]
+        [Given(@"я выполняю команду начала движения для успешного выполнения")]
         public void GivenЯВыполняюКомандуНачалаДвижения()
         {
             StartScope();
@@ -180,7 +180,7 @@ namespace spacebattletests.StepDefinitions
 
         private Mock<spacebattle.ICommand> _mockCommand = new Mock<spacebattle.ICommand>();
 
-        [Given(@"заменяемая команда и внедряемая команда созданы")]
+        [Given(@"заменяемая команда и внедряемая команда созданы для начала движения")]
         public void GivenReplaceableAndInjectableCommandsCreated()
         {
             StartScope();
@@ -188,7 +188,7 @@ namespace spacebattletests.StepDefinitions
             _mockCommand.Setup(x => x.Execute()).Verifiable();
         }
 
-        [When(@"внедряемая команда внедряется в заменяемую команду")]
+        [When(@"внедряемая команда внедряется в заменяемую команду StartMoveCommand")]
         public void WhenInjectableCommandInjectedIntoReplaceableCommand()
         {
             var injectCommand = new ReplaceCommand(_mockCommand.Object);
@@ -196,7 +196,7 @@ namespace spacebattletests.StepDefinitions
             injectCommand.Execute();
         }
 
-        [Then(@"заменяемая команда не выполняется")]
+        [Then(@"заменяемая команда не выполняется в StartMoveCommand")]
         public void ThenReplaceableCommandNotExecuted()
         {
             _mockCommand.Verify(m => m.Execute(), Times.Never());

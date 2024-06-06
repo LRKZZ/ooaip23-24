@@ -109,7 +109,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 6
-  testRunner.Given("заменяемая команда и внедряемая команда созданы", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
+  testRunner.Given("заменяемая команда и внедряемая команда созданы для инъекции", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
 #line hidden
 #line 7
   testRunner.When("внедряемая команда внедряется в заменяемую команду", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");

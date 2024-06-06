@@ -9,7 +9,7 @@ namespace spacebattle
     {
         private Mock<ICommand> _mockCommand = new Mock<spacebattle.ICommand>();
 
-        [Given(@"заменяемая команда и внедряемая команда созданы")]
+        [Given(@"заменяемая команда и внедряемая команда созданы для инъекции")]
         public void GivenReplaceableAndInjectableCommandsCreated()
         {
             new InitScopeBasedIoCImplementationCommand().Execute();
