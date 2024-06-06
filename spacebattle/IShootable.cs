@@ -1,6 +1,6 @@
 ﻿namespace spacebattle
 {
-    public interface IFirable
+    public interface IShootable
     {
         public Angle Angle { get; set; }
         public Vector Speed { get; set; }

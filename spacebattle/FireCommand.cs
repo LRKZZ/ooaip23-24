@@ -4,9 +4,9 @@ namespace spacebattle
 {
     public class FireCommand : ICommand
     {
-        private readonly IFirable _torpedo;
+        private readonly IShootable _torpedo;
         private readonly Vector _speed;
-        public FireCommand(IFirable torpedo, Vector speed)
+        public FireCommand(IShootable torpedo, Vector speed)
         {
             _torpedo = torpedo;
             _speed = speed;
