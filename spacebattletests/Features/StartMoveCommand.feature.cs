@@ -289,14 +289,14 @@ namespace spacebattletests.Features
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Внедрение команды в заменяемую команду")]
+        [Xunit.SkippableFactAttribute(DisplayName="Внедрение команды в заменяемую команду в StartMoveCommand")]
         [Xunit.TraitAttribute("FeatureTitle", "StartMoveCommand")]
-        [Xunit.TraitAttribute("Description", "Внедрение команды в заменяемую команду")]
-        public virtual void ВнедрениеКомандыВЗаменяемуюКоманду()
+        [Xunit.TraitAttribute("Description", "Внедрение команды в заменяемую команду в StartMoveCommand")]
+        public virtual void ВнедрениеКомандыВЗаменяемуюКомандуВStartMoveCommand()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Внедрение команды в заменяемую команду", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Внедрение команды в заменяемую команду в StartMoveCommand", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 34
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -321,10 +321,10 @@ namespace spacebattletests.Features
     testRunner.Given("заменяемая команда и внедряемая команда созданы для начала движения", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Дано ");
 #line hidden
 #line 36
-    testRunner.When("внедряемая команда внедряется в заменяемую команду", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
+    testRunner.When("внедряемая команда внедряется в заменяемую команду StartMoveCommand", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Когда ");
 #line hidden
 #line 37
-    testRunner.Then("заменяемая команда не выполняется", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "То ");
+    testRunner.Then("заменяемая команда не выполняется в StartMoveCommand", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "То ");
 #line hidden
             }
             this.ScenarioCleanup();
