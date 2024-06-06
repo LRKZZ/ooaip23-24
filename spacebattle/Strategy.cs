@@ -1,6 +1,6 @@
 ﻿namespace spacebattle
 {
-    public interface IStrategy
+    public interface Strategy
     {
         public object Execute(params object[] args);
     }

@@ -1,6 +1,6 @@
 ﻿namespace spacebattle;
 
-public class RemoveGameStrategy : IStrategy
+public class RemoveGameStrategy : Strategy
 {
     public object Execute(params object[] args)
     {

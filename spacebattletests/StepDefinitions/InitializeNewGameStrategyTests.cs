@@ -16,13 +16,13 @@ public class InitializeNewGameStrategyTests
         var mockCommand = new Mock<spacebattle.ICommand>();
         mockCommand.Setup(x => x.Execute());
 
-        var mockStrategyReturningCommand = new Mock<IStrategy>();
+        var mockStrategyReturningCommand = new Mock<Strategy>();
         mockStrategyReturningCommand.Setup(x => x.Execute(It.IsAny<object[]>())).Returns(mockCommand.Object);
 
-        var mockStrategyReturningDictionary = new Mock<IStrategy>();
+        var mockStrategyReturningDictionary = new Mock<Strategy>();
         mockStrategyReturningDictionary.Setup(x => x.Execute()).Returns(new Dictionary<int, spacebattle.ICommand> { { 1, mockCommand.Object } });
 
-        var mockStrategyReturningScopeDictionary = new Mock<IStrategy>();
+        var mockStrategyReturningScopeDictionary = new Mock<Strategy>();
         mockStrategyReturningScopeDictionary.Setup(x => x.Execute()).Returns(new Dictionary<int, object> { { 0, IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))) } });
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "RetrieveGameScope", (object[] args) => mockStrategyReturningScopeDictionary.Object.Execute(args)).Execute();

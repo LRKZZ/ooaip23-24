@@ -14,7 +14,7 @@ namespace spacebattletests
             IoC.Resolve<Hwdtech.ICommand>("Scopes.Current.Set", IoC.Resolve<object>("Scopes.New", IoC.Resolve<object>("Scopes.Root"))).Execute();
 
             var queue = new Queue<spacebattle.ICommand>();
-            var mockStrategy = new Mock<IStrategy>();
+            var mockStrategy = new Mock<Strategy>();
             mockStrategy.Setup(c => c.Execute(It.IsAny<object[]>())).Returns(queue).Verifiable();
 
             IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "RetrieveQueueByGameId", (object[] args) => mockStrategy.Object.Execute(args)).Execute();

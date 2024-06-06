@@ -1,7 +1,7 @@
 ﻿using Hwdtech;
 namespace spacebattle;
 
-public class CreateGameStrategy : IStrategy
+public class CreateGameStrategy : Strategy
 {
     public object Execute(params object[] args)
     {

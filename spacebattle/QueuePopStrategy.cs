@@ -1,6 +1,6 @@
 ﻿namespace spacebattle;
 using Hwdtech;
-public class QueuePopStrategy : IStrategy
+public class QueuePopStrategy : Strategy
 {
     public object Execute(params object[] args)
     {

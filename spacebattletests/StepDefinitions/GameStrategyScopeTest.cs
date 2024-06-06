@@ -16,7 +16,7 @@ namespace spacebattletests
             var mockCommand = new Mock<spacebattle.ICommand>();
             mockCommand.Setup(x => x.Execute());
 
-            var mockStrategyReturnsCommand = new Mock<IStrategy>();
+            var mockStrategyReturnsCommand = new Mock<Strategy>();
             mockStrategyReturnsCommand.Setup(x => x.Execute(It.IsAny<object[]>())).Returns(mockCommand.Object).Verifiable();
 
             var idGame = 321;
