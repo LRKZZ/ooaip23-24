@@ -18,7 +18,6 @@
 		 <PrivateAssets>all</PrivateAssets>
 	 </PackageReference>
 	 <PackageReference Include="Hwdtech.Ioc.ScopeBasedIoCImplementation" Version="1.0.0" />
-	 <PackageReference Include="Hwdtech.Ioc.SingleThreadScope" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="moq" Version="4.20.70" />
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
