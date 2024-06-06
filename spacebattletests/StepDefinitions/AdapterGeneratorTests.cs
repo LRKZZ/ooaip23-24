@@ -19,7 +19,8 @@ public class AdapterGeneratorTests
     {
 
         var adapterCodeForStartable =
-    @"public class MoveStartableAdapter : IMoveStartable
+    @"
+public class MoveStartableAdapter : IMoveStartable
 {
     private Object _internalTarget;
     public MoveStartableAdapter(Object target)
@@ -39,7 +40,8 @@ public class AdapterGeneratorTests
 }";
 
         var adapterCodeForMovable =
-    @"public class MovableAdapter : IMovable
+    @"
+public class MovableAdapter : IMovable
 {
     private Vector _internalTarget;
     public MovableAdapter(Vector target)
