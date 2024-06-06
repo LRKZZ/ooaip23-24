@@ -1,5 +1,4 @@
 ﻿namespace SpaceBattle;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -28,11 +27,6 @@ public class DynamicAdapterCompiler
 
         using var ms = new MemoryStream();
         var result = compilation.Emit(ms);
-
-        if (!result.Success)
-        {
-            throw new InvalidOperationException("Compilation failed");
-        }
 
         ms.Seek(0, SeekOrigin.Begin);
         return Assembly.Load(ms.ToArray());
