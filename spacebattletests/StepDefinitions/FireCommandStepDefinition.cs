@@ -19,7 +19,7 @@ public class FireCommandTest
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.FireCommand", (object[] args) =>
         {
-            var adapter = IoC.Resolve<IFirable>("FireAdapter", args[0]);
+            var adapter = IoC.Resolve<IShootable>("FireAdapter", args[0]);
             return new FireCommand(adapter, (Vector)args[1]);
         }).Execute();
 
@@ -66,7 +66,7 @@ public class FireCommandTest
     {
         var spaceship = new Mock<IUObject>();
         var torpedo = new Mock<IUObject>();
-        var firable = new Mock<IFirable>();
+        var firable = new Mock<IShootable>();
         var startable = new Mock<IMoveStartable>();
         var order = new Mock<IUObject>();
         var orderDict = new Dictionary<string, object>();
