@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MinimalHelpers.Routing" Version="2.0.3" />
+    <PackageReference Include="Hwdtech.IoC" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\spacebattle\spacebattle.csproj" />
+    <ProjectReference Include="..\spacebattleapi\spacebattleapi.csproj" />
+  </ItemGroup>
+
+</Project>
