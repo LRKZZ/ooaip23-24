@@ -65,12 +65,25 @@ public class AdapterBuilder
 
     public string Build()
     {
-        var result = @$"class {_builderName}Adapter : {_typeName} {{
-        {_targetType} target;
-        public {_builderName}Adapter({_targetType} target) => this.target = target; 
-        {_adapterProperties}
-    }}";
+        var result = $@"
+public class {_builderName}Adapter : {_typeName}
+{{
+    private {_targetType} _internalTarget;
 
+    public {_builderName}Adapter({_targetType} target)
+    {{
+        _internalTarget = target;
+    }}
+
+    {_adapterProperties}
+
+    public override string ToString()
+    {{
+        return ""{_builderName}Adapter wrapping "" + _internalTarget.ToString();
+    }}
+}}";
+
+        result = Regex.Replace(result, @"\b_ICommand\b", "Hwdtech");
         result = Regex.Replace(result, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline);
         return result;
     }

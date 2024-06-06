@@ -19,29 +19,45 @@ public class AdapterGeneratorTests
     {
 
         var adapterCodeForStartable =
-       @"class MoveStartableAdapter : IMoveStartable {
-        Object target;
-        public MoveStartableAdapter(Object target) => this.target = target; 
+    @"public class MoveStartableAdapter : IMoveStartable
+{
+    private Object _internalTarget;
+    public MoveStartableAdapter(Object target)
+    {
+        _internalTarget = target;
+    }
         public IUObject Order {
                get { return IoC.Resolve<IUObject>(""Game.Order.Get"", target); }
         }
         public Dictionary<String, Object> PropertiesOfOrder {
                get { return IoC.Resolve<Dictionary<String, Object>>(""Game.PropertiesOfOrder.Get"", target); }
         }
-    }";
+    public override string ToString()
+    {
+        return ""MoveStartableAdapter wrapping "" + _internalTarget.ToString();
+    }
+}";
 
         var adapterCodeForMovable =
-        @"class MovableAdapter : IMovable {
-        Vector target;
-        public MovableAdapter(Vector target) => this.target = target; 
+    @"public class MovableAdapter : IMovable
+{
+    private Vector _internalTarget;
+    public MovableAdapter(Vector target)
+    {
+        _internalTarget = target;
+    }
         public Vector Position {
                get { return IoC.Resolve<Vector>(""Game.Position.Get"", target); }
-               set { IoC.Resolve<_ICommand.ICommand>(""Game.Position.Set"", target, value).Execute(); }
+               set { IoC.Resolve<Hwdtech.ICommand>(""Game.Position.Set"", target, value).Execute(); }
         }
         public Vector Velocity {
                get { return IoC.Resolve<Vector>(""Game.Velocity.Get"", target); }
         }
-    }";
+    public override string ToString()
+    {
+        return ""MovableAdapter wrapping "" + _internalTarget.ToString();
+    }
+}";
 
         Assert.Equal(adapterCodeForStartable, IoC.Resolve<string>("Game.Reflection.GenerateAdapterCode", typeof(IMoveStartable), typeof(object)));
         Assert.Equal(adapterCodeForMovable, IoC.Resolve<string>("Game.Reflection.GenerateAdapterCode", typeof(IMovable), typeof(Vector)));
