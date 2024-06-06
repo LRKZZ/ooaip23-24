@@ -1,6 +1,6 @@
 ﻿namespace spacebattle;
 
-public interface IStrategy
+public interface Strategy
 {
     object Execute(params object[] args);
 }

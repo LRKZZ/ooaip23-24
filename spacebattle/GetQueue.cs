@@ -1,7 +1,7 @@
 ﻿namespace spacebattle;
 using Hwdtech;
 
-public class GetQueue : IStrategy
+public class GetQueue : Strategy
 {
     public object Execute(params object[] args)
     {
