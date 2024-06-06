@@ -21,4 +21,17 @@ public class DynamicAdapterCompilerTests
         var instance = Activator.CreateInstance(testType);
         Assert.IsAssignableFrom(testType, instance);
     }
+
+    [Fact]
+    public void EnsureDynamicCompilationFails()
+    {
+        var code = @"
+            public interface ITestInterface { void TestMethod(); }
+            public class TestClass : ITestInterface {
+
+            }";
+
+        Exception exception = Assert.Throws<InvalidOperationException>(() => DynamicAdapterCompiler.CompileCode(code));
+        Assert.Equal("Compilation failed", exception.Message);
+    }
 }
