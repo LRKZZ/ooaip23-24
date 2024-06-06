@@ -1,4 +1,4 @@
-namespace spacebattletests;
+﻿namespace spacebattletests;
 using Hwdtech;
 using Hwdtech.Ioc;
 using spacebattle;

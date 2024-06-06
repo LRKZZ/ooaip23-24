@@ -1,4 +1,4 @@
-namespace spacebattletests;
+﻿namespace spacebattletests;
 using System;
 using SpaceBattle;
 using Xunit;

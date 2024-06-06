@@ -1,4 +1,4 @@
-namespace SpaceBattle;
+﻿namespace SpaceBattle;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
