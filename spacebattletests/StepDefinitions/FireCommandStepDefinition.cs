@@ -52,7 +52,7 @@ public class FireCommandTest
     }
 
     [Fact]
-    public void SuccessGameTimeoutExecute()
+    public void SuccessFireCommand()
     {
         var spaceship = new Mock<IUObject>();
         var torpedo = new Mock<IUObject>();
