@@ -1,8 +1,8 @@
-namespace spacebattletests;
-using spacebattle;
-using Moq;
+﻿namespace spacebattletests;
 using Hwdtech;
 using Hwdtech.Ioc;
+using Moq;
+using spacebattle;
 
 public class TestDeployFleetCommand
 {

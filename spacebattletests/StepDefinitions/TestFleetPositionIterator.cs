@@ -1,7 +1,7 @@
-namespace spacebattletests;
-using spacebattle;
+﻿namespace spacebattletests;
 using Hwdtech;
 using Hwdtech.Ioc;
+using spacebattle;
 
 public class TestFleetPositionIterator
 {
