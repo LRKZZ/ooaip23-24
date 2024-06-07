@@ -2,7 +2,9 @@
 {
     public interface IShootable
     {
-        public Angle Angle { get; set; }
+        public Vector Position { get; set; }
         public Vector Speed { get; set; }
+
+        public float ScalarSpeed { get; set; }
     }
 }

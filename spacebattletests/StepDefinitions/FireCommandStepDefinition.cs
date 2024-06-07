@@ -20,7 +20,7 @@ public class FireCommandTest
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Game.Commands.FireCommand", (object[] args) =>
         {
             var adapter = IoC.Resolve<IShootable>("FireAdapter", args[0]);
-            return new FireCommand(adapter, (Vector)args[1]);
+            return new FireCommand(adapter);
         }).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>(
@@ -38,16 +38,6 @@ public class FireCommandTest
                     });
                 }
             ).Execute();
-
-        var longMoveCommand = new Mock<ICommand>().Object;
-        IoC.Resolve<Hwdtech.ICommand>(
-            "IoC.Register",
-            "Game.Commands.LongMove",
-            (object[] args) =>
-            {
-                return longMoveCommand;
-            }
-        ).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>(
             "IoC.Register",
@@ -75,15 +65,20 @@ public class FireCommandTest
         var realQueue = new Queue<ICommand>();
 
         startable = new Mock<IMoveStartable>();
-        order = new Mock<IUObject>();
         orderDict = new Dictionary<string, object>();
-        properties = new Dictionary<string, object> {
-            { "id", 1 },
-        };
 
-        startable.SetupGet(s => s.PropertiesOfOrder).Returns(properties);
-        startable.SetupGet(s => s.Order).Returns(order.Object);
-        order.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(orderDict.Add);
+        var longMoveCommand = new Mock<ICommand>();
+        longMoveCommand.Setup(x => x.Execute()).Verifiable();
+        IoC.Resolve<Hwdtech.ICommand>(
+            "IoC.Register",
+            "Game.Commands.LongMove",
+            (object[] args) =>
+            {
+                return longMoveCommand.Object;
+            }
+        ).Execute();
+
+        torpedo.Setup(o => o.SetProperty(It.IsAny<string>(), It.IsAny<object>())).Callback<string, object>(orderDict.Add);
         queue.Setup(q => q.Add(It.IsAny<ICommand>())).Callback(realQueue.Enqueue);
 
         IoC.Resolve<Hwdtech.ICommand>(
@@ -102,20 +97,38 @@ public class FireCommandTest
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "Create.Torpedo", (object[] args) =>
         {
+            var shoot = (IShootable)args[0];
+            torpedo.Setup(s => s.GetProperty("Position")).Returns(shoot.Position);
+            torpedo.Setup(s => s.GetProperty("Speed")).Returns(shoot.Speed);
+            torpedo.Setup(s => s.GetProperty("ScalarSpeed")).Returns(shoot.ScalarSpeed);
             return torpedo.Object;
         }).Execute();
 
         IoC.Resolve<Hwdtech.ICommand>("IoC.Register", "IMoveStartableAdapter", (object[] args) =>
         {
+            var obj = (IUObject)args[0];
+            properties = new Dictionary<string, object>
+            {
+                { "Position",  obj.GetProperty("Position")},
+                { "Speed",  obj.GetProperty("Speed")},
+                { "ScalarSpeed",  obj.GetProperty("ScalarSpeed")},
+            };
+            startable.SetupGet(s => s.PropertiesOfOrder).Returns(properties);
+            startable.SetupGet(s => s.Order).Returns((IUObject)args[0]);
             return startable.Object;
         }).Execute();
 
-        var firecmd = IoC.Resolve<ICommand>("Game.Commands.FireCommand", spaceship, new Vector(1, 1));
+        var firecmd = IoC.Resolve<ICommand>("Game.Commands.FireCommand", spaceship);
 
         firecmd.Execute();
 
-        Assert.Contains("id", orderDict.Keys);
-        Assert.Contains("Game.Commands.Inject.LongMove", orderDict.Keys);
+        Assert.Contains("Position", orderDict.Keys);
+        Assert.Contains("Speed", orderDict.Keys);
+        Assert.Contains("ScalarSpeed", orderDict.Keys);
+        Assert.NotEmpty(realQueue);
 
+        realQueue.Dequeue().Execute();
+
+        longMoveCommand.Verify(cmd => cmd.Execute(), Times.Once);
     }
 }
