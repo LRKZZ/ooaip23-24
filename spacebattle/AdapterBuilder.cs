@@ -1,4 +1,4 @@
-﻿using Scriban;
+using Scriban;
 
 namespace spacebattle
 {
