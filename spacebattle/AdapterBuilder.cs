@@ -1,76 +1,61 @@
-﻿namespace spacebattle;
+using Scriban;
 
-using System.Reflection;
-using System.Text.RegularExpressions;
-
-public class AdapterBuilder
+namespace spacebattle
 {
-    private readonly string _builderName;
-    private readonly string _typeName;
-    private readonly string _targetType;
-    private string? _adapterProperties;
-
-    public AdapterBuilder(Type sourceType, Type destinationType)
+    public class AdapterBuilder
     {
-        _builderName = sourceType.Name[1..];
-        _typeName = sourceType.Name;
-        _targetType = FormatGenericType(destinationType);
-    }
+        private readonly Type _typeOld;
+        private readonly Type _typeNew;
 
-    public void CreateProperty(PropertyInfo prop)
-    {
-        string getProperty = string.Empty, setProperty = string.Empty;
-
-        var propertyName = FormatGenericType(prop.PropertyType);
-
-        if (prop.CanRead)
+        public AdapterBuilder(Type typeOld, Type typeNew)
         {
-            getProperty = $@"   get {{ return IoC.Resolve<{propertyName}>(""Game.{prop.Name}.Get"", target); }}";
+            _typeOld = typeOld;
+            _typeNew = typeNew;
         }
-
-        if (prop.CanWrite)
+        public string Build()
         {
-            setProperty = $@"   set {{ IoC.Resolve<_ICommand.ICommand>(""Game.{prop.Name}.Set"", target, value).Execute(); }}";
-        }
+            var propertiesNew = _typeNew.GetProperties().ToList();
 
-        _adapterProperties +=
-        $@"
-        public {propertyName} {prop.Name} {{
-            {getProperty}
-            {setProperty}
-        }}
-        ";
-    }
+            var list = new List<ClassProperties>();
 
-    private static string FormatGenericType(Type type)
-    {
-        var typeName = type.Name;
-
-        if (type.IsGenericType)
-        {
-            typeName = typeName[..typeName.IndexOf('`')];
-
-            var typeArgs = type.GetGenericArguments();
-            var typeArgNames = new string[typeArgs.Length];
-            for (var i = 0; i < typeArgs.Length; i++)
+            _typeNew.GetProperties().ToList().ForEach(property =>
             {
-                typeArgNames[i] = FormatGenericType(typeArgs[i]);
-            }
+                list.Add(new ClassProperties(property));
+            });
 
-            typeName = $"{typeName}<{string.Join(", ", typeArgNames)}>";
+            var templateString = @"using Hwdtech;
+namespace spacebattle;
+
+public class {{new_type_name}}Adapter : {{new_type_name}}
+{
+	private readonly {{old_type_name}} _obj;
+    	public {{new_type_name}}Adapter({{old_type_name}} obj) => _obj = obj;
+    {{for property in (properties_new)}}
+    	public {{property.property_type}} {{property.name}}
+    	{
+{{if property.can_read}}
+		get
+		{
+			{
+				return IoC.Resolve<{{property.property_type}}>(""IUObject.Get"", _obj, ""{{property.name}}"");
+			}
+		}{{end}}{{if property.can_write}}
+		set
+		{
+			{
+				IoC.Resolve<ICommand>(""IUObject.Set"", _obj, ""{{property.name}}"", value).Execute();
+			}
+		}{{end}}
+	}{{end}}
+}";
+            var template = Template.Parse(templateString);
+            var result = template.Render(new
+            {
+                new_type_name = _typeNew.Name,
+                old_type_name = _typeOld.Name,
+                properties_new = list,
+            });
+            return result;
         }
-
-        return typeName;
-    }
-
-    public string Build()
-    {
-        var result = @$"class {_builderName}Adapter : {_typeName} {{
-        {_targetType} target;
-        public {_builderName}Adapter({_targetType} target) => this.target = target; 
-        {_adapterProperties}
-    }}";
-        result = Regex.Replace(result, @"^\s+$[\r\n]*", string.Empty, RegexOptions.Multiline);
-        return result;
     }
 }
